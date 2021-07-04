@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
 	createStackNavigator,
 	TransitionPresets,
@@ -6,19 +6,24 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "../../screens/login.screen";
 import RegistrationScreen from "../../screens/register.screen";
-import HomeScreen from "../../screens/home.screen";
+import DrawerMenuNavigator from "./menu.navigator";
+// import { BottomNavigator } from "./bottom-navigation";
+import ProductDetailsScreen from "../../screens/product-details.screen";
+
+import { DrawerActions } from "@react-navigation/native";
+export const navigationRef = React.createRef();
+export function openDrawer(routeName, params) {
+	navigationRef.current.dispatch(DrawerActions.openDrawer());
+}
 
 const MainStackNavigator = createStackNavigator();
 
-const MainNavigator = ({ navigation }) => {
-	// useEffect(() => {
-	// 	navigation.toggleDrawer();
-	// }, []);
+const MainNavigator = () => {
 	return (
-		<NavigationContainer>
+		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"
-				initialRouteName="Home"
+				initialRouteName="Menu"
 				screenOptions={{
 					...TransitionPresets.ModalPresentationIOS,
 				}}
@@ -28,10 +33,17 @@ const MainNavigator = ({ navigation }) => {
 					component={LoginScreen}
 				/>
 				<MainStackNavigator.Screen
+					name="ProductDetails"
+					component={ProductDetailsScreen}
+				/>
+				<MainStackNavigator.Screen
 					name="Registration Form"
 					component={RegistrationScreen}
 				/>
-				<MainStackNavigator.Screen name="Home" component={HomeScreen} />
+				<MainStackNavigator.Screen
+					name="Menu"
+					component={DrawerMenuNavigator}
+				/>
 			</MainStackNavigator.Navigator>
 		</NavigationContainer>
 	);

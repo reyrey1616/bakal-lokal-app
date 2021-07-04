@@ -1,34 +1,35 @@
-import React from "react";
-import {
-	createStackNavigator,
-	TransitionPresets,
-} from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
-import LoginScreen from "../../screens/login.screen";
-import RegistrationScreen from "../../screens/register.screen";
+// import React, { useEffect } from "react";
+// import {
+// 	createStackNavigator,
+// 	TransitionPresets,
+// } from "@react-navigation/stack";
+// import ProductDetailsScreen from "../../screens/product-details.screen";
+// import ProductsScreen from "../../screens/products.screen";
 
-const MainStackNavigator = createStackNavigator();
+// const MainStackNavigator = createStackNavigator();
 
-const ProductNavigator = () => {
-	return (
-		<NavigationContainer>
-			<MainStackNavigator.Navigator
-				headerMode="none"
-				screenOptions={{
-					...TransitionPresets.ModalPresentationIOS,
-				}}
-			>
-				<MainStackNavigator.Screen
-					name="Login"
-					component={LoginScreen}
-				/>
-				<MainStackNavigator.Screen
-					name="Registration Form"
-					component={RegistrationScreen}
-				/>
-			</MainStackNavigator.Navigator>
-		</NavigationContainer>
-	);
-};
+// const ProductNavigator = ({ navigation }) => {
+// 	// useEffect(() => {
+// 	// 	alert("wow");
+// 	// 	navigation.navigate("Products");
+// 	// }, []);
+// 	return (
+// 		<MainStackNavigator.Navigator
+// 			headerMode="none"
+// 			screenOptions={{
+// 				...TransitionPresets.ModalPresentationIOS,
+// 			}}
+// 		>
+// 			<MainStackNavigator.Screen
+// 				name="Products"
+// 				component={ProductsScreen}
+// 			/>
+// 			<MainStackNavigator.Screen
+// 				name="ProductDetails"
+// 				component={ProductDetailsScreen}
+// 			/>
+// 		</MainStackNavigator.Navigator>
+// 	);
+// };
 
-export default ProductNavigator;
+// export default ProductNavigator;

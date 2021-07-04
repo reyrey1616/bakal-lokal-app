@@ -3,20 +3,30 @@ import styled from "styled-components";
 import { Text } from "react-native";
 const PrimaryButton = styled(Button)`
 	background: ${(props) => props.theme.colors.brand.orange};
+	padding-right: 15;
+	padding-left: 15;
+	align-items: center;
+	justify-content: center;
 `;
 
 const SecondaryButton = styled(Button)`
-	background: transparent;
+	background: white;
 	color: ${(props) => props.theme.colors.brand.orange};
-	border: 1px solid ${(props) => props.theme.colors.brand.orange};
+	padding-right: 15;
+	padding-left: 15;
+	align-items: center;
+	justify-content: center;
+	${"" /* border: 1px solid ${(props) => props.theme.colors.brand.orange}; */};
 `;
 
 const PrimaryButtonText = styled(Text)`
 	color: #ffffff;
+	text-align: center;
 `;
 
 const SecondaryButtonText = styled(Text)`
 	color: ${(props) => props.theme.colors.brand.orange} !important;
+	text-align: center;
 `;
 
 const GreenButton = styled(Button)`

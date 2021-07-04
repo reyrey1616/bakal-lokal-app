@@ -17,6 +17,7 @@ import { theme } from "./src/infra/theme/";
 import { SafeArea } from "./src/components/utils/safe-area.component";
 // import MenuNavigator from "./src/infra/navigation/menu.navigator";
 import MainNavigator from "./src/infra/navigation/main.navigation";
+
 export default function App() {
 	const [cabinLoaded] = useCabin({
 		Cabin_400Regular,

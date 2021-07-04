@@ -8,7 +8,7 @@ import {
 } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 import { SafeArea } from "../../components/utils/safe-area.component";
-import HomeScreen from "../../screens/home.screen";
+import { BottomNavigator } from "./bottom-navigation";
 // import ProductsScreen from "../../screens/products.screen";
 import { theme } from "../theme";
 const Drawer = createDrawerNavigator();
@@ -19,9 +19,10 @@ const SampleScreen = () => (
 	</SafeArea>
 );
 
-const AppNavigator = () => (
+const DrawerMenuNavigator = () => (
 	<Drawer.Navigator
 		// screenOptions={createScreenOptions}
+		initialRouteName="Home"
 		drawerContentOptions={{
 			activeTintColor: "tomato",
 			inactiveTintColor: "gray",
@@ -42,7 +43,7 @@ const AppNavigator = () => (
 				),
 			}}
 			name="Home"
-			component={HomeScreen}
+			component={BottomNavigator}
 		/>
 		<Drawer.Screen
 			style={{ background: "red" }}
@@ -208,4 +209,4 @@ const AppNavigator = () => (
 	</Drawer.Navigator>
 );
 
-export default AppNavigator;
+export default DrawerMenuNavigator;

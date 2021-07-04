@@ -1,23 +1,24 @@
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
-import {
-	Header,
-	Button,
-	Right,
-	Body,
-	Left,
-	Icon,
-	Item,
-	Input,
-} from "native-base";
-import { Grid, Col, Row } from "react-native-easy-grid";
+import { Header, Body, Item, Input } from "native-base";
+import { Grid, Col } from "react-native-easy-grid";
 import { colors } from "../../infra/theme/colors";
-import { Spacer } from "../spacer/spacer.component";
 import { Ionicons } from "@expo/vector-icons";
-
-const HeaderWithSearch = ({ navigation }) => {
+import styled from "styled-components";
+import { openDrawer } from "../../infra/navigation/main.navigation";
+const HeaderContainer = styled(Header)`
+	background: #fff;
+	elevation: 5;
+	padding: 0;
+	margin: 0;
+	shadow-color: rgba(0,0,0,0.1);
+	shadow-offset: { width: 0, height: 1 };
+	shadow-opacity: 0.5;
+    shadow-radius: 2; 
+`;
+const HeaderWithSearch = () => {
 	return (
-		<Header style={{ color: "#ffffff", padding: 0 }} searchBar>
+		<HeaderContainer>
 			<Grid
 				style={{
 					display: "flex",
@@ -26,7 +27,12 @@ const HeaderWithSearch = ({ navigation }) => {
 				}}
 			>
 				<Col size={15}>
-					<TouchableOpacity style={{ padding: 10 }}>
+					<TouchableOpacity
+						style={{ padding: 10 }}
+						onPress={() => {
+							openDrawer();
+						}}
+					>
 						<Ionicons
 							name="menu-outline"
 							size={40}
@@ -35,25 +41,28 @@ const HeaderWithSearch = ({ navigation }) => {
 					</TouchableOpacity>
 				</Col>
 				<Col size={70}>
-					<Body style={{ paddingRight: 15 }}>
+					<Body style={{ paddingRight: 15, paddingTop: 6 }}>
 						<Item>
-							<Icon name="ios-search" />
-							<Input placeholder="Search" />
+							<Ionicons
+								name="search-outline"
+								size={24}
+								color={colors.brand.orange}
+							/>
+							<Input placeholder="Search products or shop" />
 						</Item>
 					</Body>
 				</Col>
-				<TouchableOpacity style={{ padding: 10 }}>
+				<TouchableOpacity style={{ padding: 10, paddingTop: 15 }}>
 					<Image
 						source={require("../../assets/logo/bl-basket.png")}
 						style={{
-							width: 35,
-							height: 35,
-							borderRadius: "50%",
+							width: 30,
+							height: 30,
 						}}
 					/>
 				</TouchableOpacity>
 			</Grid>
-		</Header>
+		</HeaderContainer>
 	);
 };
 

@@ -6,6 +6,7 @@ export const colors = {
 		black: "#555555",
 		grey: "#8e949a",
 		dirtywhite: "#e9eff0",
+		gradient: "linear-gradient(to right, #f7ae6d 0%, #fd8922 100%)",
 	},
 	ui: {
 		orange: "#fd8922",
