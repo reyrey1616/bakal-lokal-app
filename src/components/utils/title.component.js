@@ -1,11 +1,12 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text } from "../typography/text.component";
 import { colors } from "../../infra/theme/colors";
 import { fontSizes } from "../../infra/theme/fonts";
-export const SectionTitle = ({ text1, text2 }) => {
+export const SectionTitle = ({ text1, text2, variant = "title" }) => {
 	return (
 		<Text>
 			<Text
+				variant={variant}
 				style={{
 					color: colors.brand.orange,
 					fontSize: fontSizes.h5,
@@ -15,6 +16,7 @@ export const SectionTitle = ({ text1, text2 }) => {
 				{text1}
 			</Text>
 			<Text
+				variant={variant}
 				style={{
 					color: colors.brand.black,
 					fontSize: fontSizes.h5,

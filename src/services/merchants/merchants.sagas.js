@@ -60,5 +60,5 @@ function* getOneMerchantsStart() {
 }
 
 export default function* MerchantSagas() {
-	return all([call(getMerchantsStart), call(getOneMerchantsStart)]);
+	yield all([call(getMerchantsStart), call(getOneMerchantsStart)]);
 }

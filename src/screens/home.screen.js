@@ -10,7 +10,7 @@ import {
 } from "../components/home-page/home.components";
 import styled from "styled-components";
 import { CategoriesList } from "../components/categories/categories.component";
-import { openDrawer } from "../../App";
+import { DrawerActions } from "@react-navigation/native";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
 		<SafeArea>
 			<HeaderWithSearch
 				openDrawer={() => {
-					openDrawer();
+					navigation.dispatch()
 				}}
 			/>
 

@@ -6,6 +6,7 @@ import { colors } from "../../infra/theme/colors";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components";
 import { openDrawer } from "../../infra/navigation/main.navigation";
+import { useNavigation, useRoute } from "@react-navigation/native";
 const HeaderContainer = styled(Header)`
 	background: #fff;
 	elevation: 5;
@@ -17,6 +18,8 @@ const HeaderContainer = styled(Header)`
     shadow-radius: 2; 
 `;
 const HeaderWithSearch = () => {
+	const navigation = useNavigation();
+	const route = useRoute();
 	return (
 		<HeaderContainer>
 			<Grid
@@ -52,7 +55,14 @@ const HeaderWithSearch = () => {
 						</Item>
 					</Body>
 				</Col>
-				<TouchableOpacity style={{ padding: 10, paddingTop: 15 }}>
+				<TouchableOpacity
+					style={{ padding: 10, paddingTop: 15 }}
+					onPress={() => {
+						navigation.navigate("Cart", {
+							previousScreen: route?.name,
+						});
+					}}
+				>
 					<Image
 						source={require("../../assets/logo/bl-basket.png")}
 						style={{

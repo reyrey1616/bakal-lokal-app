@@ -1,4 +1,4 @@
-import AuthActionTypes from "./category.types";
+import AuthActionTypes from "./auth.types";
 import { createReducer } from "../utils";
 import { asyncStoreRemove, asyncStoreSave } from "../utils";
 const INITIAL_STATE = {
@@ -10,6 +10,8 @@ const INITIAL_STATE = {
 };
 
 const authLoading = (state) => {
+
+	console.log
 	return {
 		...state,
 		loading: true,

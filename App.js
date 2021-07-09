@@ -17,6 +17,11 @@ import { theme } from "./src/infra/theme/";
 import { SafeArea } from "./src/components/utils/safe-area.component";
 // import MenuNavigator from "./src/infra/navigation/menu.navigator";
 import MainNavigator from "./src/infra/navigation/main.navigation";
+import axios from "axios";
+import { Provider } from "react-redux";
+import store from "./src/services/store";
+axios.defaults.baseURL = "http://locahost:5000/api/v1/";
+// axios.defaults.baseURL = "https://bakal-lokal.xyz/api/v1/";
 
 export default function App() {
 	const [cabinLoaded] = useCabin({
@@ -32,10 +37,12 @@ export default function App() {
 
 	return (
 		<SafeArea>
-			<ThemeProvider theme={theme}>
-				<MainNavigator />
-			</ThemeProvider>
-			<ExpoStatusBar style="auto" />
+			<Provider store={store}>
+				<ThemeProvider theme={theme}>
+					<MainNavigator />
+				</ThemeProvider>
+				<ExpoStatusBar style="auto" />
+			</Provider>
 		</SafeArea>
 	);
 }

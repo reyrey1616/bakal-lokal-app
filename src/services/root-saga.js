@@ -1,8 +1,6 @@
 import { all, call } from "@redux-saga/core/effects";
+import AuthSagas from "./auth/auth.sagas";
 
-import ProductSagas from "./products/products.sagas";
-import CategoriesSagas from "./category/category.sagas";
-import MerchantSagas from "./merchants/merchants.sagas";
 export default function* rootSaga() {
-	yield all([call(ProductSagas), call(CategoriesSagas), call(MerchantSagas)]);
+	yield all([call(AuthSagas)]);
 }

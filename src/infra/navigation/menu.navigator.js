@@ -11,6 +11,7 @@ import { SafeArea } from "../../components/utils/safe-area.component";
 import { BottomNavigator } from "./bottom-navigation";
 // import ProductsScreen from "../../screens/products.screen";
 import { theme } from "../theme";
+import LoginScreen from "../../screens/login.screen";
 const Drawer = createDrawerNavigator();
 
 const SampleScreen = () => (
@@ -204,7 +205,7 @@ const DrawerMenuNavigator = () => (
 				),
 			}}
 			name="Logout"
-			component={SampleScreen}
+			component={LoginScreen}
 		/>
 	</Drawer.Navigator>
 );

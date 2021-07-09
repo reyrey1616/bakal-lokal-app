@@ -21,12 +21,14 @@ function* signInAsync({ payload }) {
 			password: payload?.password,
 		};
 
-		loginRequest = yield axios.post(
-			`/auth/customer-login`,
-			loginCredentials
-		);
+		console.log(loginCredentials);
+		const url = `https://bakal-lokal.xyz/api/v1/api/v1/auth/customer-login`;
+		console.log(url);
+		loginRequest = yield axios.post(url, loginCredentials);
 
 		loginResponse = yield loginRequest.data;
+
+		console.log(loginResponse);
 
 		if (!loginRequest.token && loginResponse.error) {
 			if (loginResponse.error === "Email not found") {
@@ -70,10 +72,16 @@ function* signInAsync({ payload }) {
 	}
 }
 
-function* signUpAsync({ payload }) {
+function* signUpAsync({ payload, callback }) {
 	try {
 		// const { fname, mname, lname, email } = payload;
-		const request = yield axios.post("/customers", payload);
+		// payload.isVerified = true;
+		console.log(payload);
+
+		const request = yield axios.post(
+			"http://172.24.80.1:5000/api/v1/customers",
+			payload
+		);
 		const response = yield request.data;
 		if (response.success === true) {
 			const id = response.otherResp[0];
@@ -93,6 +101,7 @@ function* signUpAsync({ payload }) {
 		}
 
 		yield put(registerSuccess());
+		callback();
 	} catch (error) {
 		if (error.response && error.response.data.error) {
 			const errorResponse = error.response.data.error;
@@ -158,6 +167,6 @@ function* loadUserStart() {
 	yield takeLatest(AuthActionTypes.GET_USER_START, loadUserAsync);
 }
 
-export default function* CategoriesSagas() {
-	return all([call(loginStart), call(registerStart), call(loadUserStart)]);
+export default function* AuthSagas() {
+	yield all([call(loginStart), call(loadUserStart), call(registerStart)]);
 }

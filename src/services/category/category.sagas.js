@@ -31,5 +31,5 @@ function* getCategoriesStart() {
 }
 
 export default function* CategoriesSagas() {
-	return all([call(getCategoriesStart)]);
+	yield all([call(getCategoriesStart)]);
 }

@@ -69,5 +69,5 @@ function* getProductsOnSaleStart() {
 }
 
 export default function* ProductSagas() {
-	return all([call(getProductsStart), call(getProductsOnSaleStart)]);
+	yield all([call(getProductsStart), call(getProductsOnSaleStart)]);
 }

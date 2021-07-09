@@ -1,8 +1,10 @@
 import AuthActionTypes from "./auth.types";
-
-export const loginStart = () => {
+import { Alert } from "react-native";
+export const loginStart = (payload, callback) => {
 	return {
 		type: AuthActionTypes.LOGIN_START,
+		payload,
+		callback,
 	};
 };
 export const loginSuccess = (payload) => {
@@ -19,9 +21,11 @@ export const loginFail = (err) => {
 	};
 };
 
-export const registerStart = () => {
+export const registerStart = (payload, callback) => {
 	return {
 		type: AuthActionTypes.REGISTER_START,
+		payload,
+		callback,
 	};
 };
 export const registerSuccess = (payload) => {

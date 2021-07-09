@@ -9,6 +9,7 @@ import RegistrationScreen from "../../screens/register.screen";
 import DrawerMenuNavigator from "./menu.navigator";
 // import { BottomNavigator } from "./bottom-navigation";
 import ProductDetailsScreen from "../../screens/product-details.screen";
+import CartScreen from "../../screens/cart.screen";
 
 import { DrawerActions } from "@react-navigation/native";
 export const navigationRef = React.createRef();
@@ -44,6 +45,7 @@ const MainNavigator = () => {
 					name="Menu"
 					component={DrawerMenuNavigator}
 				/>
+				<MainStackNavigator.Screen name="Cart" component={CartScreen} />
 			</MainStackNavigator.Navigator>
 		</NavigationContainer>
 	);

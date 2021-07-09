@@ -41,7 +41,7 @@ export const updateState = (oldObject, newValues) => {
 	return Object.assign({}, oldObject, newValues);
 };
 
-const asyncStoreSave = async (key, value) => {
+export const asyncStoreSave = async (key, value) => {
 	try {
 		await AsyncStorage.setItem(key, value);
 	} catch (e) {
@@ -49,10 +49,18 @@ const asyncStoreSave = async (key, value) => {
 	}
 };
 
-const asyncStoreRemove = async (key) => {
+export const asyncStoreRemove = async (key) => {
 	try {
 		await AsyncStorage.removeItem(key);
 	} catch (e) {
 		Alert.alert("Failed to remove the data to the async storage");
+	}
+};
+
+export const asyncStoreGet = async (key) => {
+	try {
+		return await AsyncStorage.getItem(key);
+	} catch (e) {
+		Alert.alert("Failed to get the data to the async storage");
 	}
 };

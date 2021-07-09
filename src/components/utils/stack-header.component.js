@@ -28,7 +28,12 @@ export const StackHeader = ({ previousScreen }) => {
 					navigation.navigate(`${previousScreen}`);
 				}}
 			/>
-			<TouchableOpacity style={{ padding: 10, paddingTop: 15 }}>
+			<TouchableOpacity
+				style={{ padding: 10, paddingTop: 15 }}
+				onPress={() => {
+					navigation.navigate("Cart");
+				}}
+			>
 				<Image
 					source={require("../../assets/logo/bl-basket.png")}
 					style={{
