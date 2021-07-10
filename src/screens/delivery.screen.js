@@ -7,12 +7,13 @@ import styled from "styled-components";
 import { CartTotals } from "../components/cart/cart-totals.component";
 import { colors } from "../infra/theme/colors";
 import ButtonTypes from "../components/utils/buttons.component";
-import { Form, Item, Picker, Icon, Label } from "native-base";
+import { Form, Picker, Label } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import CustomDatePicker from "../components/utils/date-picker.component";
 import moment from "moment";
 import DeliveryAddressForm from "../components/delivery-option/delivery-address.component";
 import PickupLocation from "../components/delivery-option/pickup-location.component";
+import { useNavigation, useRoute } from "@react-navigation/native";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -33,6 +34,8 @@ const userData = {
 };
 const DeliveryScreen = ({ route }) => {
 	// const { previousScreen } = route?.params;
+	const navigation = useNavigation();
+	const page = useRoute();
 
 	const [form, setForm] = useState({
 		deliveryOption: "Pick-up",
@@ -55,6 +58,12 @@ const DeliveryScreen = ({ route }) => {
 	};
 
 	const deliveryOptionOnChange = () => {};
+
+	const deliveryOptionSubmit = () => {
+		navigation.navigate("Checkout", {
+			previousScreen: page?.name,
+		});
+	};
 	return (
 		<SafeArea>
 			<BLHeader
@@ -210,7 +219,13 @@ const DeliveryScreen = ({ route }) => {
 					bottom: 0,
 				}}
 			>
-				<Button block warning>
+				<Button
+					block
+					warning
+					onPress={() => {
+						deliveryOptionSubmit();
+					}}
+				>
 					<ButtonTypes.PrimaryButtonText>
 						Proceed to billing
 					</ButtonTypes.PrimaryButtonText>
