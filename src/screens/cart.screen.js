@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { CartTotals } from "../components/cart/cart-totals.component";
 import { colors } from "../infra/theme/colors";
 import ButtonTypes from "../components/utils/buttons.component";
+import { useNavigation, useRoute } from "@react-navigation/core";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -24,6 +25,8 @@ const userData = {
 
 const CartScreen = ({ route }) => {
 	const { previousScreen } = route?.params;
+	const page = useRoute();
+	const navigation = useNavigation();
 	return (
 		<SafeArea>
 			<ScrollViewContainer
@@ -46,7 +49,15 @@ const CartScreen = ({ route }) => {
 						backgroundColor: "white",
 					}}
 				>
-					<Button block warning>
+					<Button
+						block
+						warning
+						onPress={() => {
+							navigation.navigate("Delivery", {
+								previousScreen: page?.name,
+							});
+						}}
+					>
 						<ButtonTypes.PrimaryButtonText>
 							Proceed to billing
 						</ButtonTypes.PrimaryButtonText>

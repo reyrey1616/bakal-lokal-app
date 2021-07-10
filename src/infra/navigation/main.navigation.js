@@ -10,6 +10,7 @@ import DrawerMenuNavigator from "./menu.navigator";
 // import { BottomNavigator } from "./bottom-navigation";
 import ProductDetailsScreen from "../../screens/product-details.screen";
 import CartScreen from "../../screens/cart.screen";
+import DeliveryScreen from "../../screens/delivery.screen";
 
 import { DrawerActions } from "@react-navigation/native";
 export const navigationRef = React.createRef();
@@ -24,7 +25,7 @@ const MainNavigator = () => {
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"
-				initialRouteName="Menu"
+				initialRouteName="Delivery"
 				screenOptions={{
 					...TransitionPresets.ModalPresentationIOS,
 				}}
@@ -46,6 +47,10 @@ const MainNavigator = () => {
 					component={DrawerMenuNavigator}
 				/>
 				<MainStackNavigator.Screen name="Cart" component={CartScreen} />
+				<MainStackNavigator.Screen
+					name="Delivery"
+					component={DeliveryScreen}
+				/>
 			</MainStackNavigator.Navigator>
 		</NavigationContainer>
 	);
