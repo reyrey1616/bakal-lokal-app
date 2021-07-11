@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { theme } from "../../infra/theme";
 import { Text } from "../typography/text.component";
 import styled from "styled-components/native";
@@ -9,6 +9,9 @@ import Variations from "./product-variations.component";
 import moment from "moment";
 import getPrice from "../../utils/getPrice";
 import { BottomCart } from "../bottom-cart/bottom-cart.component";
+
+import { updateCartStart } from "../../services/auth/auth.actions";
+import { useDispatch } from "react-redux";
 const SectionView = styled(View)`
 	margin-top: 5;
 	padding-top: 10;
@@ -48,7 +51,7 @@ const dateCompareIfOnSale = (date1, date2) => {
 };
 export const ProductDetails = ({ product, navigation }) => {
 	const [variant, setVariant] = useState(null);
-
+	const dispatch = useDispatch();
 	const onSelectVariation = (variant) => {
 		setVariant(variant);
 	};
@@ -58,7 +61,38 @@ export const ProductDetails = ({ product, navigation }) => {
 	};
 
 	const onAddToCart = (quantity) => {
-		console.log(quantity);
+		if (product?.product_type === "Variable") {
+			dispatch(
+				updateCartStart({
+					payload: {
+						product: product?._id,
+						variant: variant?.name?.trim(),
+						variantDetails: variant,
+						variant_id: variant?.id?.trim(),
+						quantity: quantity,
+						actionType: "ADD",
+					},
+					callback: () => {
+						Alert.alert("Bakal Lokal", "Added to Bayong");
+					},
+				})
+			);
+		} else {
+			dispatch(
+				updateCartStart({
+					payload: {
+						product: product?._id,
+						variant: null,
+						variantDetails: null,
+						quantity: quantity,
+						actionType: "ADD",
+					},
+					callback: () => {
+						Alert.alert("Bakal Lokal", "Added to Bayong");
+					},
+				})
+			);
+		}
 	};
 
 	const VariationPriceRange = () => (
