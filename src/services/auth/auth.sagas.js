@@ -7,12 +7,15 @@ import {
 	registerFail,
 	getUserSuccess,
 	getUserFail,
+	updateCartSuccess,
+	updateCartFail,
 } from "./auth.actions";
 import { Alert } from "react-native";
 import AuthActionTypes from "./auth.types";
 import updateCartItem from "../../utils/updateCartItems";
-import { asyncStoreRemove } from "../utils";
-function* signInAsync({ payload }) {
+import { asyncStoreRemove, asyncStoreSave } from "../utils";
+
+function* signInAsync({ payload, callback }) {
 	try {
 		let loginRequest;
 		let loginResponse;
@@ -21,9 +24,7 @@ function* signInAsync({ payload }) {
 			password: payload?.password,
 		};
 
-		console.log(loginCredentials);
-		const url = `https://bakal-lokal.xyz/api/v1/api/v1/auth/customer-login`;
-		console.log(url);
+		const url = `/auth/customer-login`;
 		loginRequest = yield axios.post(url, loginCredentials);
 
 		loginResponse = yield loginRequest.data;
@@ -45,12 +46,11 @@ function* signInAsync({ payload }) {
 					user: loginResponse?.data,
 				})
 			);
-			Alert.alert("Login success");
-			callback(loginResponse.token);
+			yield asyncStoreSave("token", loginResponse.token);
+			yield callback(loginResponse.token);
 		}
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
-
 		if (errorResponse) {
 			yield put(loginFail(errorResponse));
 
@@ -65,9 +65,6 @@ function* signInAsync({ payload }) {
 			} else {
 				Alert.alert(errorResponse);
 			}
-		} else {
-			yield put(loginFail(error.message));
-			Alert.alert("Error signing in");
 		}
 	}
 }
@@ -128,31 +125,63 @@ function* loadUserAsync({ callback }) {
 			return;
 		} else if (response.success && response.data) {
 			response.data.cartItems = updateCartItem(response.data);
-
+			console.log(response);
 			yield put(
 				getUserSuccess({
-					token: response.token,
 					user: response.data,
 				})
 			);
-			callback(response.data);
+			yield callback(response.data);
 		}
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
 		if (errorResponse) {
 			yield put(getUserFail(errorResponse));
+
 			Alert.alert(
 				"Something went wrong! Please login your account again."
 			);
-			yield asyncStoreRemove("token");
-		} else {
-			yield put(getUserFail(error.message));
-			Alert.alert(
-				"Something went wrong! Please login your account again."
-			);
-			yield asyncStoreRemove("token");
+			// yield asyncStoreRemove("token");
 		}
 	}
+}
+
+function* updateCartAsync({ payload, callback }) {
+	try {
+		console.log(payload?.variantDetails);
+
+		const resp = yield axios.post(`/customers/cart`, {
+			actionType: payload?.actionType,
+			product: payload?.product,
+			variant: payload?.variant,
+			quantity: payload?.quantity,
+			variant_id: payload?.variant_id,
+			variantDetails: payload?.variantDetails,
+		});
+
+		const data = yield resp.data.data;
+
+		data.cartItems = updateCartItem(data);
+
+		yield put(updateCartSuccess(data));
+		callback();
+	} catch (error) {
+		if (error.response && error.response.data.error) {
+			const errorResponse = error.response.data.error;
+			yield put(updateCartFail(errorResponse));
+			fireAlert(errorResponse, "warning");
+		} else {
+			yield put(updateCartFail(error.message));
+			Alert.alert(
+				"Error executing action. Please try again later!",
+				"warning"
+			);
+		}
+	}
+}
+
+function* updateCartStart() {
+	yield takeLatest(AuthActionTypes.UPDATE_CART_START, updateCartAsync);
 }
 
 function* loginStart() {
@@ -168,5 +197,10 @@ function* loadUserStart() {
 }
 
 export default function* AuthSagas() {
-	yield all([call(loginStart), call(loadUserStart), call(registerStart)]);
+	yield all([
+		call(loginStart),
+		call(loadUserStart),
+		call(registerStart),
+		call(updateCartStart),
+	]);
 }

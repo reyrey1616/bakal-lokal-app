@@ -38,3 +38,23 @@ export const getProductsOnSaleFail = (err) => {
 		payload: err,
 	};
 };
+
+export const getProductsByMerchantStart = (merchantId) => {
+	return {
+		type: ProductActionTypes.GET_PRODUCTS_BY_MERCHANT_START,
+		merchantId,
+	};
+};
+export const getProductsByMerchantSuccess = (payload) => {
+	return {
+		type: ProductActionTypes.GET_PRODUCTS_BY_MERCHANT_SUCCESS,
+		payload,
+	};
+};
+
+export const getProductsByMerchantFail = (err) => {
+	return {
+		type: ProductActionTypes.GET_PRODUCTS_BY_MERCHANT_FAIL,
+		payload: err,
+	};
+};

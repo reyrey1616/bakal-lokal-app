@@ -81,7 +81,7 @@ export const MerchantDetails = ({ merchant, navigation }) => {
 											color: theme.colors.brand.orange,
 										}}
 									>
-										{cat}
+										{cat?.name}
 										{index <
 										merchant?.categories?.length - 1
 											? ",\u00A0"
@@ -105,7 +105,7 @@ export const MerchantDetails = ({ merchant, navigation }) => {
 						Shop details
 					</Text>
 					<Spacer position="bottom" size="medium" />
-					<Text variant="caption">{merchant?.description}</Text>
+					<Text variant="caption">{merchant?.about}</Text>
 				</SectionView>
 				{/* Name */}
 				<MerchantTitleSection>
@@ -136,11 +136,11 @@ export const MerchantDetails = ({ merchant, navigation }) => {
 							</Text>
 						</Text>
 						<TouchableOpacity
-							onPress={() => {
-								navigation.navigate("Shops", {
-									merchant: product?.merchant,
-								});
-							}}
+						// onPress={() => {
+						// 	navigation.navigate("Shops", {
+						// 		merchant: product?.merchant,
+						// 	});
+						// }}
 						>
 							<Text
 								style={{

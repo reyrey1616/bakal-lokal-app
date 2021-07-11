@@ -7,14 +7,14 @@ export const getMerchantsStart = () => {
 };
 export const getMerchantsSuccess = (payload) => {
 	return {
-		type: MerchantActionTypes.GET_MERCHANTS_START,
+		type: MerchantActionTypes.GET_MERCHANTS_SUCCESS,
 		payload,
 	};
 };
 
 export const getMerchantsFail = (err) => {
 	return {
-		type: MerchantActionTypes.GET_MERCHANTS_START,
+		type: MerchantActionTypes.GET_MERCHANTS_FAIL,
 		payload: err,
 	};
 };
@@ -26,14 +26,14 @@ export const getOneMerchantsStart = () => {
 };
 export const getOneMerchantsSuccess = (payload) => {
 	return {
-		type: MerchantActionTypes.GET_ONE_MERCHANT_START,
+		type: MerchantActionTypes.GET_ONE_MERCHANT_SUCCESS,
 		payload,
 	};
 };
 
 export const getOneMerchantsFail = (err) => {
 	return {
-		type: MerchantActionTypes.GET_ONE_MERCHANT_START,
+		type: MerchantActionTypes.GET_ONE_MERCHANT_FAIL,
 		payload: err,
 	};
 };

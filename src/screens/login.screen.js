@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
 import {
 	Button,
@@ -17,28 +17,46 @@ import { Spacer } from "../components/spacer/spacer.component";
 import { AntDesign } from "@expo/vector-icons";
 import { Text } from "../components/typography/text.component";
 import { colors } from "../infra/theme/colors";
-import { theme } from "../infra/theme";
 import SectionTitle from "../components/utils/title.component";
 import { useDispatch } from "react-redux";
 import { loginStart } from "../services/auth/auth.actions";
+import { theme } from "../infra/theme";
+import { connect } from "react-redux";
+import {
+	selectCurrentUser,
+	selectAuthentication,
+} from "../services/auth/auth.selectors";
+import { createStructuredSelector } from "reselect";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, currentUser, isAuthenticated }) => {
 	const dispatch = useDispatch();
 	const [form, setForm] = useState({
-		email: "",
-		password: "",
+		email: "guidoriagaorey16@gmail.com",
+		password: "12345678",
 	});
 
+	useEffect(() => {
+		console.log(isAuthenticated);
+
+		if (currentUser) {
+			navigation.navigate("Menu");
+		}
+	}, [currentUser]);
+
 	const onSubmit = (data) => {
+		navigation.navigate("Menu");
+
 		if (data?.email === "") {
 			Alert.alert("Bakal Lokal", "Please input email!");
 		} else if (data?.password === "") {
 			Alert.alert("Bakal Lokal", "Please input password!");
 		} else {
+			navigation.navigate("Menu");
+
 			dispatch(
-				loginStart(data, () => {
-					Alert.alert("Bakal Lokal", "Login success!");
+				loginStart(data, (token) => {
 					navigation.navigate("Menu");
+					Alert.alert("Bakal Lokal", "Login Success");
 				})
 			);
 		}
@@ -106,6 +124,7 @@ const LoginScreen = ({ navigation }) => {
 								style={{
 									color: colors.brand.black,
 									fontWeight: "bold",
+									fontSize: theme?.fontSizes?.h4,
 								}}
 							>
 								Welcome to
@@ -115,6 +134,7 @@ const LoginScreen = ({ navigation }) => {
 								style={{
 									color: colors.brand.orange,
 									fontWeight: "bold",
+									fontSize: theme?.fontSizes?.h4,
 								}}
 							>
 								BAKAL LOKAL
@@ -223,4 +243,8 @@ const LoginScreen = ({ navigation }) => {
 	);
 };
 
-export default LoginScreen;
+const mapStateToProps = createStructuredSelector({
+	isAuthenticated: selectAuthentication,
+	currentUser: selectCurrentUser,
+});
+export default connect(mapStateToProps)(LoginScreen);

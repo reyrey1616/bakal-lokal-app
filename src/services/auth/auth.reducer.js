@@ -1,26 +1,23 @@
 import AuthActionTypes from "./auth.types";
 import { createReducer } from "../utils";
-import { asyncStoreRemove, asyncStoreSave } from "../utils";
 const INITIAL_STATE = {
 	user: null,
 	error: null,
 	loading: false,
 	token: null,
 	isAuthenticated: false,
+	isLoaded: false,
 };
 
 const authLoading = (state) => {
-
-	console.log
 	return {
 		...state,
 		loading: true,
+		isLoaded: false,
 	};
 };
 
-const authFail = async (state, action) => {
-	await asyncStoreRemove("token");
-
+const authFail = (state, action) => {
 	return {
 		...state,
 		loading: false,
@@ -29,8 +26,7 @@ const authFail = async (state, action) => {
 	};
 };
 
-const login = async (state, action) => {
-	await asyncStoreSave("token", action?.payload?.token);
+const login = (state, action) => {
 	return {
 		...state,
 		loading: false,
@@ -49,16 +45,14 @@ const register = (state) => {
 	};
 };
 
-const getUser = async (state, action) => {
-	await asyncStoreSave("token", action?.payload?.token);
-
+const loadUser = (state, action) => {
 	return {
 		...state,
 		loading: false,
-		user: action.payload?.user,
-		token: action.payload?.token,
-		error: null,
 		isAuthenticated: true,
+		user: action.payload,
+		token: action.payload?.token,
+		isLoaded: true,
 	};
 };
 
@@ -72,6 +66,6 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.REGISTER_FAIL]: authFail,
 
 	[AuthActionTypes.GET_USER_START]: authLoading,
-	[AuthActionTypes.GET_USER_SUCCESS]: getUser,
+	[AuthActionTypes.GET_USER_SUCCESS]: loadUser,
 	[AuthActionTypes.GET_USER_FAIL]: authFail,
 });

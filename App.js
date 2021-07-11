@@ -1,5 +1,5 @@
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components/native";
 // import { StyleProvider } from "native-base";
 // import getTheme from "./native-base-theme/components";
@@ -20,6 +20,7 @@ import MainNavigator from "./src/infra/navigation/main.navigation";
 import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./src/services/store";
+
 // axios.defaults.baseURL = "https://192.168.208.1:5000/api/v1/";
 axios.defaults.baseURL = "https://bakal-lokal.xyz/api/v1/";
 

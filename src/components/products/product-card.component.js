@@ -37,7 +37,7 @@ const dateCompareIfOnSale = (date1, date2) => {
 export const ProductCard = ({ product }) => {
 	const navigation = useNavigation();
 	const route = useRoute();
-	console.log(`https://bakal-lokal.xyz/products/${product?.profileImage}`);
+	
 
 	return (
 		<TouchableOpacity

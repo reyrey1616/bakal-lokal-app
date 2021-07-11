@@ -8,37 +8,7 @@ const ScrollViewContainer = styled(ScrollView)`
 	height: auto;
 `;
 
-export const merchants = [
-	{
-		id: 1,
-		name: "Rivory Frozen Goods",
-		image: require("../../assets/design/background.png"),
-		categories: ["Food and Beverage", "Local"],
-		numberOfProducts: 24,
-		description:
-			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa, odio facilis minima facere assumenda explicabo veritatis reiciendis cumque quidem nostrum maiores fuga distinctio alias, quas quasi fugiat modi maxime dicta.",
-	},
-	{
-		id: 2,
-		name: "Dela Yna",
-		image: require("../../assets/design/background.png"),
-		categories: ["Food and Beverage", "Local"],
-		numberOfProducts: 24,
-		description:
-			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa, odio facilis minima facere assumenda explicabo veritatis reiciendis cumque quidem nostrum maiores fuga distinctio alias, quas quasi fugiat modi maxime dicta.",
-	},
-	{
-		id: 3,
-		name: "Braskape",
-		image: require("../../assets/design/background.png"),
-		categories: ["Food and Beverage", "Local"],
-		numberOfProducts: 24,
-		description:
-			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa, odio facilis minima facere assumenda explicabo veritatis reiciendis cumque quidem nostrum maiores fuga distinctio alias, quas quasi fugiat modi maxime dicta.",
-	},
-];
-
-export const MerchantsContainer = ({ navigation }) => {
+export const MerchantsContainer = ({ navigation, merchants }) => {
 	return (
 		<View style={{ flex: 1 }}>
 			<ScrollViewContainer

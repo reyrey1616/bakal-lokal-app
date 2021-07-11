@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 const merchantsSelector = (state) => state.merchants;
 
-export const selectLoading = createSelector(
+export const selectMerchantLoading = createSelector(
 	[merchantsSelector],
 	(merchant) => merchant.loading
 );

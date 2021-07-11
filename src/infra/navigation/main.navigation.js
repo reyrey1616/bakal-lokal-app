@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	createStackNavigator,
 	TransitionPresets,
@@ -12,9 +12,15 @@ import ProductDetailsScreen from "../../screens/product-details.screen";
 import CartScreen from "../../screens/cart.screen";
 import DeliveryScreen from "../../screens/delivery.screen";
 import CheckoutScreen from "../../screens/checkout.screen";
-
 import { DrawerActions } from "@react-navigation/native";
+import { getUserStart } from "../../services/auth/auth.actions";
+import { selectCurrentUser } from "../../services/auth/auth.selectors";
+import { useDispatch, useSelector } from "react-redux";
+import setAuthToken from "../../utils/setAuthToken";
+import { asyncStoreGet } from "../../services/utils";
+import { Alert } from "react-native";
 export const navigationRef = React.createRef();
+
 export function openDrawer(routeName, params) {
 	navigationRef.current.dispatch(DrawerActions.openDrawer());
 }
@@ -22,6 +28,21 @@ export function openDrawer(routeName, params) {
 const MainStackNavigator = createStackNavigator();
 
 const MainNavigator = () => {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const fetchUser = async () => {
+			const token = await asyncStoreGet("token");
+			console.log(token);
+			if (token) {
+				setAuthToken(token);
+				dispatch(getUserStart());
+			}
+		};
+
+		fetchUser();
+	}, [dispatch]);
+
 	return (
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator

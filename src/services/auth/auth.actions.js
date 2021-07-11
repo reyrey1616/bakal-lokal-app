@@ -59,3 +59,26 @@ export const getUserFail = (err) => {
 		payload: err,
 	};
 };
+
+// UPDATE CART
+export const updateCartStart = ({ payload, callback = () => {} }) => {
+	return {
+		type: AuthActionTypes.UPDATE_CART_START,
+		payload,
+		callback,
+	};
+};
+
+export const updateCartSuccess = (payload) => {
+	return {
+		type: AuthActionTypes.UPDATE_CART_SUCCESS,
+		payload,
+	};
+};
+
+export const updateCartFail = (payload) => {
+	return {
+		type: AuthActionTypes.UPDATE_CART_FAIL,
+		payload,
+	};
+};

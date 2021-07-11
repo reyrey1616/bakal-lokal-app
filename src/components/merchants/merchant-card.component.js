@@ -31,7 +31,9 @@ export const MerchantCard = ({ merchant, navigation }) => {
 			<CardContainer>
 				<CardItem cardBody>
 					<Image
-						source={merchant?.image}
+						source={{
+							uri: `https://bakal-lokal.xyz/merchants/${merchant?.logo}`,
+						}}
 						style={{
 							height: 150,
 							width: null,
@@ -61,6 +63,7 @@ export const MerchantCard = ({ merchant, navigation }) => {
 								merchant.categories.map((cat, index) => {
 									return (
 										<Text
+											key={cat?._id}
 											style={{
 												fontSize:
 													theme?.fontSizes.caption,
@@ -68,7 +71,7 @@ export const MerchantCard = ({ merchant, navigation }) => {
 													theme.colors.brand.orange,
 											}}
 										>
-											{cat}{" "}
+											{cat?.name}{" "}
 											{index <
 											merchant?.categories?.length - 1
 												? ",\u00A0"
@@ -100,7 +103,7 @@ export const MerchantCard = ({ merchant, navigation }) => {
 									color: theme.colors.brand.grey,
 								}}
 							>
-								{merchant?.numberOfProducts} products
+								{/* {merchant?.numberOfProducts} products */}
 							</Text>
 						</View>
 					</View>

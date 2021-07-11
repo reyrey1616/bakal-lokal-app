@@ -2,41 +2,59 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import Buttons from "../utils/buttons.component";
 import { FontAwesome5 } from "@expo/vector-icons";
-const image = { uri: "https://reactjs.org/logo-og.png" };
+import { useNavigation } from "@react-navigation/core";
 
-export const ShopAllProducts = () => (
-	<View style={styles.products}>
-		<ImageBackground
-			imageStyle={{ borderRadius: 10 }}
-			source={require("../../assets/design/background.png")}
-			style={styles.productImage}
-		>
-			<Buttons.SecondaryButton style={styles.button}>
-				<Buttons.SecondaryButtonText style={{ paddingRight: 15 }}>
-					Shop all products
-				</Buttons.SecondaryButtonText>
-				<FontAwesome5 name="angle-right" size={15} color="orange" />
-			</Buttons.SecondaryButton>
-		</ImageBackground>
-	</View>
-);
+export const ShopAllProducts = () => {
+	const navigation = useNavigation();
 
-export const Shops = () => (
-	<View style={styles.shops}>
-		<ImageBackground
-			imageStyle={{ borderRadius: 10 }}
-			source={require("../../assets/design/background.png")}
-			style={styles.shopImage}
-		>
-			<Buttons.PrimaryButton style={styles.shopsButton}>
-				<Buttons.PrimaryButtonText style={{ paddingRight: 15 }}>
-					View shops
-				</Buttons.PrimaryButtonText>
-				<FontAwesome5 name="angle-right" size={15} color="white" />
-			</Buttons.PrimaryButton>
-		</ImageBackground>
-	</View>
-);
+	return (
+		<View style={styles.products}>
+			<ImageBackground
+				imageStyle={{ borderRadius: 10 }}
+				source={require("../../assets/design/background.png")}
+				style={styles.productImage}
+			>
+				<Buttons.SecondaryButton
+					style={styles.button}
+					onPress={() => {
+						navigation.navigate("Products");
+					}}
+				>
+					<Buttons.SecondaryButtonText style={{ paddingRight: 15 }}>
+						Shop all products
+					</Buttons.SecondaryButtonText>
+					<FontAwesome5 name="angle-right" size={15} color="orange" />
+				</Buttons.SecondaryButton>
+			</ImageBackground>
+		</View>
+	);
+};
+
+export const Shops = () => {
+	const navigation = useNavigation();
+
+	return (
+		<View style={styles.shops}>
+			<ImageBackground
+				imageStyle={{ borderRadius: 10 }}
+				source={require("../../assets/design/background.png")}
+				style={styles.shopImage}
+			>
+				<Buttons.PrimaryButton
+					style={styles.shopsButton}
+					onPress={() => {
+						navigation.navigate("Shops");
+					}}
+				>
+					<Buttons.PrimaryButtonText style={{ paddingRight: 15 }}>
+						View shops
+					</Buttons.PrimaryButtonText>
+					<FontAwesome5 name="angle-right" size={15} color="white" />
+				</Buttons.PrimaryButton>
+			</ImageBackground>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	products: {

@@ -11,7 +11,7 @@ import MerchantActionTypes from "./merchants.types";
 
 function* getMerchantsAsync() {
 	try {
-		const request = yield axios.get("/merchants/?status=Active");
+		const request = yield axios.get("/merchants/merchants-only");
 		let response = yield request?.data?.data;
 		yield put(getMerchantsSuccess(response));
 	} catch (error) {
@@ -20,8 +20,6 @@ function* getMerchantsAsync() {
 		if (errorResponse) {
 			yield put(getMerchantsFail(errorResponse));
 			Alert.alert(errorResponse);
-		} else {
-			yield put(getMerchantsFail(errorResponse));
 			Alert.alert("Error loading shops!");
 		}
 	}

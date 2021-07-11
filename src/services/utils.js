@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 export const addItem = (item, itemToAdd) => {
 	let existing = item.find((i) => i._id === itemToAdd._id);
 	existing = item.find((i) => i._id === itemToAdd._id);
@@ -45,6 +47,7 @@ export const asyncStoreSave = async (key, value) => {
 	try {
 		await AsyncStorage.setItem(key, value);
 	} catch (e) {
+		console.log(e);
 		Alert.alert("Failed to save the data to the async storage");
 	}
 };

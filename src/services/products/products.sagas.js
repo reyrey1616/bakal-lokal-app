@@ -11,6 +11,8 @@ import {
 	getProductsSuccess,
 	getProductsOnSaleSuccess,
 	getProductsOnSaleFail,
+	getProductsByMerchantSuccess,
+	getProductsByMerchantFail,
 } from "./products.actions";
 import { Alert } from "react-native";
 import ProductActionTypes from "./products.types";
@@ -32,9 +34,30 @@ function* getProductsAsync() {
 		if (errorResponse) {
 			yield put(getProductsFail(errorResponse));
 			Alert.alert(errorResponse);
-		} else {
-			yield put(getProductsFail(errorResponse));
-			Alert.alert("Error loading products!");
+		}
+	}
+}
+
+function* getProductsByMerchantAsync({ merchantId }) {
+	try {
+		console.log(merchantId);
+		const request = yield axios.get(
+			`/merchants/${merchantId}/all-products`
+		);
+		let response = yield request?.data?.data;
+		response.forEach((m) => {
+			m.categoryArray = m.categories.map((c) => c.slug);
+		});
+
+		console.log(response);
+
+		yield put(getProductsByMerchantSuccess(response));
+	} catch (error) {
+		const errorResponse = error?.response?.data?.error;
+
+		if (errorResponse) {
+			yield put(getProductsByMerchantFail(errorResponse));
+			Alert.alert(errorResponse);
 		}
 	}
 }
@@ -72,6 +95,17 @@ function* getProductsOnSaleStart() {
 	);
 }
 
+function* getProductsByMerchant() {
+	yield takeLatest(
+		ProductActionTypes.GET_PRODUCTS_BY_MERCHANT_START,
+		getProductsByMerchantAsync
+	);
+}
+
 export default function* AuthSagas() {
-	yield all([call(getProductsStart), call(getProductsOnSaleStart)]);
+	yield all([
+		call(getProductsStart),
+		call(getProductsOnSaleStart),
+		call(getProductsByMerchant),
+	]);
 }
