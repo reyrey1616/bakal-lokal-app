@@ -9,29 +9,20 @@ import { CartTotals } from "../components/cart/cart-totals.component";
 import { colors } from "../infra/theme/colors";
 import ButtonTypes from "../components/utils/buttons.component";
 import { useNavigation, useRoute } from "@react-navigation/core";
+import { selectCurrentUser } from "../services/auth/auth.selectors";
+import { useSelector } from "react-redux";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
 `;
 
-const userData = {
-	subTotal: 745,
-	deliveryFee: 40,
-	transactionFee: 15,
-	discount: 0,
-	grandTotal: 800,
-	withCoupon: true,
-	barangay: "North Baluarte",
-	fullAddress: "North Baluarte, Molo, Iloilo City, Iloilo",
-	city: "Iloilo City",
-	province: "Iloilo",
-	postcode: "5000",
-};
-
 const CartScreen = ({ route }) => {
 	const { previousScreen } = route?.params;
 	const page = useRoute();
 	const navigation = useNavigation();
+
+	const currentUser = useSelector(selectCurrentUser);
+
 	return (
 		<SafeArea>
 			<ScrollViewContainer
@@ -44,8 +35,8 @@ const CartScreen = ({ route }) => {
 			>
 				<View style={{ width: "100%" }}>
 					<BLHeader title="Bayong" previousScreen={previousScreen} />
-					<CartTable />
-					<CartTotals userData={userData} />
+					<CartTable data={currentUser && currentUser?.cartItems} />
+					<CartTotals data={{}} />
 				</View>
 				<View
 					style={{

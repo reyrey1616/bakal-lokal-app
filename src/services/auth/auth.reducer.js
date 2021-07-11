@@ -7,6 +7,9 @@ const INITIAL_STATE = {
 	token: null,
 	isAuthenticated: false,
 	isLoaded: false,
+	deliveryFee: 0,
+	discount: 0,
+	transactionFee: 15,
 };
 
 const authLoading = (state) => {
@@ -56,10 +59,45 @@ const loadUser = (state, action) => {
 	};
 };
 
+const updateUser = (state, action) => {
+	return {
+		...state,
+		loading: false,
+		isAuthenticated: true,
+		user: action.payload,
+		isLoaded: true,
+	};
+};
+
+const setDeliveryFee = (state, action) => {
+	return {
+		...state,
+		deliveryFee: action.payload,
+	};
+};
+
+const setDiscount = (state, action) => {
+	return {
+		...state,
+		dicount: action.payload,
+	};
+};
+
+const setTransactionFee = (state, action) => {
+	return {
+		...state,
+		transactionFee: action.payload,
+	};
+};
+
 export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.LOGIN_START]: authLoading,
 	[AuthActionTypes.LOGIN_SUCCESS]: login,
 	[AuthActionTypes.LOGIN_FAIL]: authFail,
+
+	[AuthActionTypes.UPDATE_CART_START]: authLoading,
+	[AuthActionTypes.UPDATE_CART_SUCCESS]: updateUser,
+	[AuthActionTypes.UPDATE_CART_FAIL]: authFail,
 
 	[AuthActionTypes.REGISTER_START]: authLoading,
 	[AuthActionTypes.REGISTER_SUCCESS]: register,
@@ -68,4 +106,8 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.GET_USER_START]: authLoading,
 	[AuthActionTypes.GET_USER_SUCCESS]: loadUser,
 	[AuthActionTypes.GET_USER_FAIL]: authFail,
+
+	[AuthActionTypes.SET_DELIVERY_FEE]: setDeliveryFee,
+	[AuthActionTypes.SET_DISCOUNT]: setDiscount,
+	[AuthActionTypes.SET_TRANSACTION_FEE]: setTransactionFee,
 });

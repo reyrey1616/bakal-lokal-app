@@ -125,13 +125,8 @@ function* loadUserAsync({ callback }) {
 			return;
 		} else if (response.success && response.data) {
 			response.data.cartItems = updateCartItem(response.data);
-			console.log(response);
-			yield put(
-				getUserSuccess({
-					user: response.data,
-				})
-			);
-			yield callback(response.data);
+			yield put(getUserSuccess(response?.data));
+			yield callback(response?.data);
 		}
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
@@ -141,15 +136,12 @@ function* loadUserAsync({ callback }) {
 			Alert.alert(
 				"Something went wrong! Please login your account again."
 			);
-			// yield asyncStoreRemove("token");
 		}
 	}
 }
 
 function* updateCartAsync({ payload, callback }) {
 	try {
-		console.log(payload?.variantDetails);
-
 		const resp = yield axios.post(`/customers/cart`, {
 			actionType: payload?.actionType,
 			product: payload?.product,
@@ -169,12 +161,12 @@ function* updateCartAsync({ payload, callback }) {
 		if (error.response && error.response.data.error) {
 			const errorResponse = error.response.data.error;
 			yield put(updateCartFail(errorResponse));
-			fireAlert(errorResponse, "warning");
+			Alert.alert("Bakal Lokal", errorResponse);
 		} else {
 			yield put(updateCartFail(error.message));
 			Alert.alert(
-				"Error executing action. Please try again later!",
-				"warning"
+				"Bakal Lokal",
+				"Error executing action. Please try again later!"
 			);
 		}
 	}

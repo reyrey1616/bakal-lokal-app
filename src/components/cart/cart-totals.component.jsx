@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "../typography/text.component";
 import currencyFormat from "../../utils/currencyFormat";
 import styled from "styled-components";
 import { colors } from "../../infra/theme/colors";
+import { useSelector } from "react-redux";
+import {
+	selectCurrentUser,
+	selectDeliveryFee,
+	selectDiscount,
+	selectTransactionFee,
+} from "../../services/auth/auth.selectors";
+
 const Flex = styled(View)`
 	flex-direction: row;
 	justify-content: space-between;
@@ -11,7 +19,41 @@ const Flex = styled(View)`
 	padding: 5px 15px;
 `;
 
-export const CartTotals = ({ userData }) => {
+export const CartTotals = () => {
+	const currentUser = useSelector(selectCurrentUser);
+
+	const _deliveryFee = useSelector(selectDeliveryFee);
+	const _discount = useSelector(selectDiscount);
+	const _transactionFee = useSelector(selectTransactionFee);
+
+	const [data, setData] = useState({
+		subTotal: 0,
+		deliveryFee: 0,
+		transactionFee: 15,
+		grandTotal: 0,
+		discount: 0,
+	});
+
+	useEffect(() => {
+		const subTotal = currentUser?.cartItems?.reduce((acc, item) => {
+			return acc + item?.subTotal;
+		}, 0);
+
+		const grandTotal =
+			subTotal +
+			data?.transactionFee +
+			data?.deliveryFee -
+			data?.discount;
+
+		setData({
+			...data,
+			subTotal,
+			grandTotal,
+			deliveryFee: _deliveryFee,
+			discount: _discount,
+			transactionFee: _transactionFee,
+		});
+	}, [currentUser]);
 	return (
 		<View
 			style={{
@@ -31,20 +73,20 @@ export const CartTotals = ({ userData }) => {
 			>
 				<Flex>
 					<Text variant="title">Subtotal</Text>
-					<Text> {currencyFormat(userData?.subTotal)}</Text>
+					<Text> {currencyFormat(data && data?.subTotal)}</Text>
 				</Flex>
 				<Flex>
 					<Text variant="body">Delivery Fee</Text>
-					<Text> {currencyFormat(userData?.deliveryFee)}</Text>
+					<Text> {currencyFormat(data && data?.deliveryFee)}</Text>
 				</Flex>
 				<Flex>
 					<Text variant="body">Order fee</Text>
-					<Text> {currencyFormat(userData?.transactionFee)}</Text>
+					<Text> {currencyFormat(data && data?.transactionFee)}</Text>
 				</Flex>
-				{userData.withCoupon ? (
+				{data && data.withCoupon ? (
 					<Flex>
 						<Text variant="body">Discount</Text>
-						<Text> {currencyFormat(userData?.discount)}</Text>
+						<Text> {currencyFormat(data && data?.discount)}</Text>
 					</Flex>
 				) : (
 					<Flex>
@@ -57,7 +99,7 @@ export const CartTotals = ({ userData }) => {
 							</Text>
 						</TouchableOpacity>
 
-						<Text> {currencyFormat(userData?.discount)}</Text>
+						<Text> {currencyFormat(data && data?.discount)}</Text>
 					</Flex>
 				)}
 			</View>
@@ -65,7 +107,7 @@ export const CartTotals = ({ userData }) => {
 			<Flex style={{ paddingTop: 15, paddingBottom: 15 }}>
 				<Text variant="title">Total</Text>
 				<Text variant="title">
-					{currencyFormat(userData?.grandTotal)}
+					{currencyFormat(data && data?.grandTotal)}
 				</Text>
 			</Flex>
 		</View>

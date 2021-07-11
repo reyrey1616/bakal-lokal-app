@@ -82,3 +82,24 @@ export const updateCartFail = (payload) => {
 		payload,
 	};
 };
+
+export const setDeliveryFee = (payload) => {
+	return {
+		type: AuthActionTypes.SET_DELIVERY_FEE,
+		payload,
+	};
+};
+
+export const setDiscount = (payload) => {
+	return {
+		type: AuthActionTypes.SET_DISCOUNT,
+		payload,
+	};
+};
+
+export const setTransactionFee = (payload) => {
+	return {
+		type: AuthActionTypes.SET_TRANSACTION_FEE,
+		payload,
+	};
+};

@@ -8,8 +8,6 @@ export const selectAuthLoading = createSelector(
 );
 
 export const selectCurrentUser = createSelector([authSelector], (auth) => {
-	console.log(auth.user);
-
 	return auth.user;
 });
 
@@ -21,4 +19,17 @@ export const selectCurrentUserLoaded = createSelector(
 export const selectAuthentication = createSelector(
 	[authSelector],
 	(auth) => auth.isAuthenticated
+);
+
+export const selectDeliveryFee = createSelector(
+	[authSelector],
+	(auth) => auth.deliveryFee
+);
+export const selectDiscount = createSelector(
+	[authSelector],
+	(auth) => auth.discount
+);
+export const selectTransactionFee = createSelector(
+	[authSelector],
+	(auth) => auth.transactionFee
 );
