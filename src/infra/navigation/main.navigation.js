@@ -26,7 +26,7 @@ const MainNavigator = () => {
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"
-				initialRouteName="Checkout"
+				initialRouteName="Menu"
 				screenOptions={{
 					...TransitionPresets.ModalPresentationIOS,
 				}}

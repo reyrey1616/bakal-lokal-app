@@ -40,7 +40,7 @@ const createScreenOptions = ({ route }) => {
 export const BottomNavigator = () => (
 	<Tab.Navigator
 		screenOptions={createScreenOptions}
-		initialRouteName="Home"
+		initialRouteName="Products"
 		tabBarOptions={{
 			activeTintColor: theme.colors.brand.orange,
 			inactiveTintColor: "gray",

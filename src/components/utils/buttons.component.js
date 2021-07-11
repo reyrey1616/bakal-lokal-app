@@ -2,7 +2,10 @@ import { Button } from "native-base";
 import styled from "styled-components";
 import { Text } from "react-native";
 const PrimaryButton = styled(Button)`
-	background: ${(props) => props.theme.colors.brand.orange};
+	background: ${(props) =>
+		props.disabled
+			? props.theme.colors.brand.grey
+			: props.theme.colors.brand.orange};
 	padding-right: 15;
 	padding-left: 15;
 	align-items: center;
@@ -16,7 +19,6 @@ const SecondaryButton = styled(Button)`
 	padding-left: 15;
 	align-items: center;
 	justify-content: center;
-	${"" /* border: 1px solid ${(props) => props.theme.colors.brand.orange}; */};
 `;
 
 const PrimaryButtonText = styled(Text)`

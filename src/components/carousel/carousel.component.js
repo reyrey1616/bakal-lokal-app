@@ -28,7 +28,7 @@ export default class ImageCarousel extends React.Component {
 									height: 175,
 								}}
 								source={{
-									uri: `${item?.item?.image}`,
+									uri: `${item?.item}`,
 								}}
 							/>
 						);

@@ -19,17 +19,27 @@ const images = [
 	},
 ];
 
-const onValueChange = (val) => {
-	console.log(val);
-};
 const ProductDetailsScreen = ({ navigation, route }) => {
 	const { product, previousScreen } = route?.params;
+
+	if (!product) {
+		Alert.alert("Error loading product!");
+	}
+
+	const galleryImages = product?.gallery?.map(
+		(img) => `https://bakal-lokal.xyz/products_gallery/${img}`
+	);
+
 	return (
-		<SafeArea style={{ position: "relative" }}>
+		<SafeArea>
 			<StackHeader previousScreen={previousScreen} />
-			<Carousel data={images} />
+			<Carousel
+				data={[
+					`https://bakal-lokal.xyz/products/${product?.profileImage}`,
+					...galleryImages,
+				]}
+			/>
 			<ProductDetails product={product} navigation={navigation} />
-			<BottomCart onValueChange={onValueChange} />
 		</SafeArea>
 	);
 };

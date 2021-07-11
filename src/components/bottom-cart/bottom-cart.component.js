@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { Input, Item } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import ButtonTypes from "../utils/buttons.component";
 import { colors } from "../../infra/theme/colors";
-export const BottomCart = ({ onValueChange }) => {
+export const BottomCart = ({ onValueChange, onAddToCart, disabled }) => {
 	const [quantity, setQuantity] = useState(1);
 
 	const quantityChange = (type = "add", value = 1) => {
@@ -64,11 +64,15 @@ export const BottomCart = ({ onValueChange }) => {
 				/>
 			</Item>
 			<ButtonTypes.PrimaryButton
+				disabled={disabled}
 				style={{
 					width: "60%",
 					paddingTop: 10,
 					paddingBottom: 10,
 					height: 50,
+				}}
+				onPress={() => {
+					onAddToCart(quantity);
 				}}
 			>
 				<ButtonTypes.PrimaryButtonText>

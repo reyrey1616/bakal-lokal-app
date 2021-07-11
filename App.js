@@ -20,8 +20,8 @@ import MainNavigator from "./src/infra/navigation/main.navigation";
 import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./src/services/store";
-axios.defaults.baseURL = "http://locahost:5000/api/v1/";
-// axios.defaults.baseURL = "https://bakal-lokal.xyz/api/v1/";
+// axios.defaults.baseURL = "https://192.168.208.1:5000/api/v1/";
+axios.defaults.baseURL = "https://bakal-lokal.xyz/api/v1/";
 
 export default function App() {
 	const [cabinLoaded] = useCabin({

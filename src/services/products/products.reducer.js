@@ -1,5 +1,6 @@
 import ProductActionTypes from "./products.types";
 import { createReducer } from "../utils";
+import { Alert } from "react-native";
 
 const INITIAL_STATE = {
 	products: [],

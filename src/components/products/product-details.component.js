@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
 import { theme } from "../../infra/theme";
 import { Text } from "../typography/text.component";
 import styled from "styled-components/native";
-import { AntDesign } from "@expo/vector-icons";
 import currencyFormat from "../../utils/currencyFormat";
 import { Spacer } from "../spacer/spacer.component";
 import Variations from "./product-variations.component";
+import moment from "moment";
+import getPrice from "../../utils/getPrice";
+import { BottomCart } from "../bottom-cart/bottom-cart.component";
 const SectionView = styled(View)`
 	margin-top: 5;
 	padding-top: 10;
@@ -31,12 +33,77 @@ const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
 `;
+
+const dateCompareIfOnSale = (date1, date2) => {
+	if (!date1 || !date2) {
+		return false;
+	}
+	if (
+		moment(date1).format("YYYY-MM-DD") >= moment(date2).format("YYYY-MM-DD")
+	) {
+		return true;
+	} else {
+		return false;
+	}
+};
 export const ProductDetails = ({ product, navigation }) => {
+	const [variant, setVariant] = useState(null);
+
 	const onSelectVariation = (variant) => {
-		console.log(variant);
+		setVariant(variant);
 	};
+
+	const onValueChange = (val) => {
+		console.log(val);
+	};
+
+	const onAddToCart = (quantity) => {
+		console.log(quantity);
+	};
+
+	const VariationPriceRange = () => (
+		<Text variant="body" style={{ color: theme.colors.brand.orange }}>
+			{" "}
+			{currencyFormat(
+				Math.min.apply(
+					Math,
+					product.variations.map((v) => {
+						if (
+							dateCompareIfOnSale(
+								v?.saleDetails?.saleEndDate,
+								new Date(Date.now())
+							)
+						) {
+							return v?.saleDetails?.salePrice;
+						} else {
+							return v.srp;
+						}
+					})
+				)
+			)}{" "}
+			{" - "}
+			{currencyFormat(
+				Math.max.apply(
+					Math,
+					product.variations.map((v) => {
+						if (
+							dateCompareIfOnSale(
+								v?.saleDetails?.saleEndDate,
+								new Date(Date.now())
+							)
+						) {
+							return v?.saleDetails?.salePrice;
+						} else {
+							return v.srp;
+						}
+					})
+				)
+			)}
+		</Text>
+	);
+
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={{ flex: 1, position: "relative" }}>
 			<ScrollViewContainer
 				contentContainerStyle={{
 					flexGrow: 1,
@@ -57,47 +124,66 @@ export const ProductDetails = ({ product, navigation }) => {
 					</View>
 					<Spacer position="bottom" size="medium" />
 
-					<Text
-						variant="body"
-						style={{ color: theme.colors.brand.orange }}
-					>
-						{currencyFormat(product?.price)}
-					</Text>
+					{product?.product_type === "Variable" ? (
+						!variant ? (
+							<VariationPriceRange />
+						) : (
+							<Text
+								variant="body"
+								style={{ color: theme.colors.brand.orange }}
+							>
+								{currencyFormat(getPrice(variant))}
+							</Text>
+						)
+					) : (
+						<Text
+							variant="body"
+							style={{ color: theme.colors.brand.orange }}
+						>
+							{currencyFormat(getPrice(product))}
+						</Text>
+					)}
 				</ProductTitleSection>
 
 				{/* Variation */}
-				<SectionView>
-					<Spacer position="bottom" size="medium" />
+				{product?.product_type === "Variable" && (
+					<SectionView>
+						<Spacer position="bottom" size="medium" />
 
-					<Text
-						variant="body"
-						style={{
-							color: theme.colors.brand.black,
-							fontWeight: "bold",
-						}}
-					>
-						Variable
-					</Text>
-					<Spacer position="bottom" size="medium" />
-					<View
-						style={{
-							flexDirection: "row",
-							justifyContent: "space-between",
-						}}
-					>
 						<Text
+							variant="body"
 							style={{
-								fontSize: theme?.fontSizes.caption,
-								color: theme.colors.brand.orange,
+								color: theme.colors.brand.black,
+								fontWeight: "bold",
 							}}
 						>
-							None
+							Variable
 						</Text>
-						{/* Variations */}
-						<Variations onSelectVariation={onSelectVariation} />
-					</View>
-					<Spacer position="bottom" size="medium" />
-				</SectionView>
+						<Spacer position="bottom" size="medium" />
+						<View
+							style={{
+								flexDirection: "row",
+								justifyContent: "space-between",
+							}}
+						>
+							<Text
+								style={{
+									fontSize: theme?.fontSizes.caption,
+									color: theme.colors.brand.orange,
+								}}
+							>
+								{variant ? variant?.name : "None"}
+							</Text>
+							{/* Variations */}
+							<Variations
+								onSelectVariation={onSelectVariation}
+								variations={product?.variations}
+								productImage={`https://bakal-lokal.xyz/products/${product?.profileImage}`}
+							/>
+						</View>
+						<Spacer position="bottom" size="medium" />
+					</SectionView>
+				)}
 
 				{/* Categories */}
 				<SectionView>
@@ -115,7 +201,7 @@ export const ProductDetails = ({ product, navigation }) => {
 					<Spacer position="bottom" size="medium" />
 					<View>
 						{product &&
-							product.categories.map((cat, index) => {
+							product?.categoryArray?.map((cat, index) => {
 								return (
 									<Text
 										style={{
@@ -124,7 +210,8 @@ export const ProductDetails = ({ product, navigation }) => {
 										}}
 									>
 										{cat}
-										{index < product?.categories?.length - 1
+										{index <
+										product?.categoryArray?.length - 1
 											? ",\u00A0"
 											: ""}
 									</Text>
@@ -167,7 +254,7 @@ export const ProductDetails = ({ product, navigation }) => {
 						variant="body"
 						style={{ color: theme.colors.brand.orange }}
 					>
-						{product?.merchant}
+						{product?.merchant?.name}
 					</Text>
 				</SectionView>
 
@@ -218,6 +305,17 @@ export const ProductDetails = ({ product, navigation }) => {
 					</View>
 				</ProductTitleSection>
 			</ScrollViewContainer>
+			<BottomCart
+				onValueChange={onValueChange}
+				disabled={
+					product?.product_type === "Variable"
+						? variant
+							? false
+							: true
+						: false
+				}
+				onAddToCart={onAddToCart}
+			/>
 		</View>
 	);
 };

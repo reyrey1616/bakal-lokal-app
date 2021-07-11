@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import ProductActionTypes from "./products.types";
 
 export const getProductsStart = () => {
@@ -7,14 +8,14 @@ export const getProductsStart = () => {
 };
 export const getProductsSuccess = (payload) => {
 	return {
-		type: ProductActionTypes.GET_PRODUCTS_START,
+		type: ProductActionTypes.GET_PRODUCTS_SUCCESS,
 		payload,
 	};
 };
 
 export const getProductsFail = (err) => {
 	return {
-		type: ProductActionTypes.GET_PRODUCTS_START,
+		type: ProductActionTypes.GET_PRODUCTS_FAIL,
 		payload: err,
 	};
 };
@@ -26,14 +27,14 @@ export const getProductsOnSaleStart = () => {
 };
 export const getProductsOnSaleSuccess = (payload) => {
 	return {
-		type: ProductActionTypes.GET_SALE_PRODUCTS_START,
+		type: ProductActionTypes.GET_SALE_PRODUCTS_SUCCESS,
 		payload,
 	};
 };
 
 export const getProductsOnSaleFail = (err) => {
 	return {
-		type: ProductActionTypes.GET_SALE_PRODUCTS_START,
+		type: ProductActionTypes.GET_SALE_PRODUCTS_FAIL,
 		payload: err,
 	};
 };

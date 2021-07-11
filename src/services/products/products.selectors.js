@@ -12,8 +12,11 @@ export const selectSaleProducts = createSelector(
 	(prod) => prod.saleProducts
 );
 
-export const selectPublicProducts = createSelector([productsSelector], (prod) =>
-	shuffle(prod.products)
+export const selectPublicProducts = createSelector(
+	[productsSelector],
+	(prod) => {
+		return shuffle(prod.products);
+	}
 );
 
 function shuffle(array) {

@@ -1,4 +1,10 @@
-import { all, call, put, takeLatest } from "@redux-saga/core/effects";
+import {
+	all,
+	call,
+	put,
+	takeLatest,
+	takeEvery,
+} from "@redux-saga/core/effects";
 import axios from "axios";
 import {
 	getProductsFail,
@@ -12,10 +18,9 @@ import ProductActionTypes from "./products.types";
 function* getProductsAsync() {
 	try {
 		const request = yield axios.get(
-			"/products/?adminApproval=Approved&postStatus=Published"
+			"/products/?adminApproval=Approved&postStatus=Published&limit=20"
 		);
 		let response = yield request?.data?.data;
-
 		response.forEach((m) => {
 			m.categoryArray = m.categories.map((c) => c.slug);
 		});
@@ -56,7 +61,6 @@ function* getOnSaleProductsAsync() {
 		}
 	}
 }
-
 function* getProductsStart() {
 	yield takeLatest(ProductActionTypes.GET_PRODUCTS_START, getProductsAsync);
 }
@@ -68,6 +72,6 @@ function* getProductsOnSaleStart() {
 	);
 }
 
-export default function* ProductSagas() {
+export default function* AuthSagas() {
 	yield all([call(getProductsStart), call(getProductsOnSaleStart)]);
 }

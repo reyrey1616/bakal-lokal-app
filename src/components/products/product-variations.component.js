@@ -5,9 +5,10 @@ import { AntDesign } from "@expo/vector-icons";
 import { colors } from "../../infra/theme/colors";
 import { Button } from "native-base";
 import ButtonTypes from "../utils/buttons.component";
-const Variations = ({ onSelectVariation }) => {
+const Variations = ({ onSelectVariation, variations, productImage }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [variant, setVariant] = useState(null);
+
 	return (
 		<View style={styles.centeredView}>
 			<Modal
@@ -29,29 +30,48 @@ const Variations = ({ onSelectVariation }) => {
 								height: 275,
 								borderRadius: 15,
 							}}
-							source={require("../../assets/design/background.png")}
+							source={{
+								uri: variant
+									? `https://bakal-lokal.xyz/product_variations/${variant?.variation_image}`
+									: productImage,
+							}}
 						/>
 						{/* Variant Buttons */}
 						<View style={styles.variationsContainer}>
-							<View style={styles.variationView}>
-								<TouchableOpacity style={styles.variation}>
-									<Text
-										style={{ color: colors.brand.orange }}
-									>
-										Really really long text...
-									</Text>
-								</TouchableOpacity>
-							</View>
-							<View style={styles.variationView}>
-								<TouchableOpacity style={styles.variation}>
-									<Text>Really really long text...</Text>
-								</TouchableOpacity>
-							</View>
-							<View style={styles.variationView}>
-								<TouchableOpacity style={styles.variation}>
-									<Text>Really really long text...</Text>
-								</TouchableOpacity>
-							</View>
+							{variations &&
+								variations?.map((v) => {
+									return (
+										<View style={styles.variationView}>
+											<TouchableOpacity
+												style={{
+													...styles.variation,
+													backgroundColor:
+														variant?.name ===
+														v?.name
+															? colors.brand
+																	.orange
+															: "transparent",
+												}}
+												onPress={() => {
+													setVariant(v);
+												}}
+											>
+												<Text
+													style={{
+														color:
+															variant?.name ===
+															v?.name
+																? "white"
+																: colors.brand
+																		.orange,
+													}}
+												>
+													{`${v?.name}`}
+												</Text>
+											</TouchableOpacity>
+										</View>
+									);
+								})}
 						</View>
 
 						{/* Options */}
@@ -61,8 +81,15 @@ const Variations = ({ onSelectVariation }) => {
 								warning
 								style={styles.optionButton}
 								onPress={() => {
-									setModalVisible(false);
-									onSelectVariation(variant);
+									if (variant) {
+										setModalVisible(false);
+
+										onSelectVariation(variant);
+									} else {
+										Alert.alert(
+											"Please select a variation"
+										);
+									}
 								}}
 							>
 								<ButtonTypes.PrimaryButtonText>
