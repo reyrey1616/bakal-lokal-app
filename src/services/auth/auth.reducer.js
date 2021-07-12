@@ -21,6 +21,8 @@ const INITIAL_STATE = {
 		province: "",
 		postcode: "",
 		paymentMethod: null,
+		selectedVoucher: null,
+		logistic: null,
 	},
 };
 
