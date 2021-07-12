@@ -103,3 +103,10 @@ export const setTransactionFee = (payload) => {
 		payload,
 	};
 };
+
+export const setDeliveryDetails = (payload) => {
+	return {
+		type: AuthActionTypes.SET_DELIVERY_DETAILS,
+		payload,
+	};
+};

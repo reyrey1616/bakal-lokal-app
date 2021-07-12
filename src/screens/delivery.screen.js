@@ -7,61 +7,62 @@ import styled from "styled-components";
 import { CartTotals } from "../components/cart/cart-totals.component";
 import { colors } from "../infra/theme/colors";
 import ButtonTypes from "../components/utils/buttons.component";
-import { Form, Picker, Label } from "native-base";
+import { Form, Picker, Label, Content, Spinner } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import CustomDatePicker from "../components/utils/date-picker.component";
 import moment from "moment";
 import DeliveryAddressForm from "../components/delivery-option/delivery-address.component";
 import PickupLocation from "../components/delivery-option/pickup-location.component";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+	selectDeliveryDetails,
+	selectAuthLoading,
+	selectCurrentUser,
+} from "../services/auth/auth.selectors";
+import { useSelector, useDispatch } from "react-redux";
+import { setDeliveryDetails } from "../services/auth/auth.actions";
+
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
 `;
 
-const userData = {
-	subTotal: 745,
-	deliveryFee: 40,
-	transactionFee: 15,
-	discount: 0,
-	grandTotal: 800,
-	withCoupon: false,
-	barangay: "North Baluarte",
-	fullAddress: "North Baluarte, Molo, Iloilo City, Iloilo",
-	city: "Iloilo City",
-	province: "Iloilo",
-	postcode: "5000",
-};
 const DeliveryScreen = ({ route }) => {
 	// const { previousScreen } = route?.params;
 	const navigation = useNavigation();
 	const page = useRoute();
+	const dispatch = useDispatch();
+	const form = useSelector(selectDeliveryDetails);
+	const user = useSelector(selectCurrentUser);
+	const loading = useSelector(selectAuthLoading);
 
-	const [form, setForm] = useState({
-		deliveryOption: "Pick-up",
-		// date: null,
-		date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
-		time: moment(),
-		fullAddress: "",
-		barangay: "",
-		city: "",
-		province: "",
-		postcode: "",
-	});
+	useEffect(() => {
+		console.log(user);
+		dispatch(
+			setDeliveryDetails({
+				...form,
+				baranggay: user?.baranggay,
+				fullAddress: user?.fullAddress,
+				city: user?.city,
+				baranggay: user?.baranggay,
+				province: user?.province,
+				postcode: user?.postcode,
+			})
+		);
+	}, []);
 
 	useEffect(() => {
 		console.log(form);
 	}, [form]);
 
 	const onSetForm = (data) => {
-		setForm(data);
+		dispatch(setDeliveryDetails(data));
 	};
-
-	const deliveryOptionOnChange = () => {};
 
 	const deliveryOptionSubmit = () => {
 		navigation.navigate("Checkout", {
 			previousScreen: page?.name,
+			form,
 		});
 	};
 	return (
@@ -113,10 +114,12 @@ const DeliveryScreen = ({ route }) => {
 								}}
 								selectedValue={form?.deliveryOption}
 								onValueChange={(value) => {
-									setForm({
-										...form,
-										deliveryOption: value,
-									});
+									dispatch(
+										setDeliveryDetails({
+											...form,
+											deliveryOption: value,
+										})
+									);
 								}}
 							>
 								<Picker.Item
@@ -146,10 +149,12 @@ const DeliveryScreen = ({ route }) => {
 									<CustomDatePicker
 										onSelectDate={(date) => {
 											console.log(date);
-											setForm({
-												...form,
-												date,
-											});
+											dispatch(
+												setDeliveryDetails({
+													...form,
+													date,
+												})
+											);
 											console.log(form);
 										}}
 										value={moment(form?.date).format(
@@ -170,10 +175,12 @@ const DeliveryScreen = ({ route }) => {
 									<CustomDatePicker
 										onSelectDate={(time) => {
 											console.log(time);
-											setForm({
-												...form,
-												time,
-											});
+											dispatch(
+												setDeliveryDetails({
+													...form,
+													time,
+												})
+											);
 										}}
 										value={moment(form?.time).format(
 											"h:mm:ss a"
@@ -198,16 +205,20 @@ const DeliveryScreen = ({ route }) => {
 					{/* Delivery Address */}
 
 					{form?.deliveryOption === "Delivery" ? (
-						<DeliveryAddressForm
-							form={form}
-							setForm={(data) => {
-								onSetForm(data);
-							}}
-						/>
+						loading ? (
+							<Spinner color="orange" />
+						) : (
+							<DeliveryAddressForm
+								form={form}
+								setForm={(data) => {
+									onSetForm(data);
+								}}
+							/>
+						)
 					) : (
 						<PickupLocation />
 					)}
-					<CartTotals userData={userData} />
+					<CartTotals />
 				</View>
 			</ScrollViewContainer>
 			<View

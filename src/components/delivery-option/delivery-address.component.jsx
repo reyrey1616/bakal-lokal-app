@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Item, Label, Input } from "native-base";
 const DeliveryAddressForm = ({ setForm, form }) => {
+	console.log(form);
 	return (
 		<View
 			style={{
@@ -18,6 +19,7 @@ const DeliveryAddressForm = ({ setForm, form }) => {
 
 				<Item regular>
 					<Input
+						value={form?.fullAddress}
 						onChangeText={(value) => {
 							console.log(value);
 							setForm({
@@ -38,9 +40,10 @@ const DeliveryAddressForm = ({ setForm, form }) => {
 						onChangeText={(value) => {
 							setForm({
 								...form,
-								barangay: value,
+								baranggay: value,
 							});
 						}}
+						value={form?.baranggay}
 					/>
 				</Item>
 			</View>
@@ -57,6 +60,7 @@ const DeliveryAddressForm = ({ setForm, form }) => {
 								city: value,
 							});
 						}}
+						value={form?.city}
 					/>
 				</Item>
 			</View>
@@ -73,6 +77,7 @@ const DeliveryAddressForm = ({ setForm, form }) => {
 								province: value,
 							});
 						}}
+						value={form?.province}
 					/>
 				</Item>
 			</View>
@@ -89,6 +94,7 @@ const DeliveryAddressForm = ({ setForm, form }) => {
 								postcode: value,
 							});
 						}}
+						value={form?.postcode}
 					/>
 				</Item>
 			</View>

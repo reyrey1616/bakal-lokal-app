@@ -1,5 +1,6 @@
 import AuthActionTypes from "./auth.types";
 import { createReducer } from "../utils";
+import moment from "moment";
 const INITIAL_STATE = {
 	user: null,
 	error: null,
@@ -10,6 +11,17 @@ const INITIAL_STATE = {
 	deliveryFee: 0,
 	discount: 0,
 	transactionFee: 15,
+	deliveryDetails: {
+		deliveryOption: "Pick-up",
+		date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
+		time: moment(),
+		fullAddress: "",
+		baranggay: "",
+		city: "",
+		province: "",
+		postcode: "",
+		paymentMethod: null,
+	},
 };
 
 const authLoading = (state) => {
@@ -90,6 +102,13 @@ const setTransactionFee = (state, action) => {
 	};
 };
 
+const setDeliveryDetails = (state, action) => {
+	return {
+		...state,
+		deliveryDetails: action.payload,
+	};
+};
+
 export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.LOGIN_START]: authLoading,
 	[AuthActionTypes.LOGIN_SUCCESS]: login,
@@ -110,4 +129,5 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.SET_DELIVERY_FEE]: setDeliveryFee,
 	[AuthActionTypes.SET_DISCOUNT]: setDiscount,
 	[AuthActionTypes.SET_TRANSACTION_FEE]: setTransactionFee,
+	[AuthActionTypes.SET_DELIVERY_DETAILS]: setDeliveryDetails,
 });

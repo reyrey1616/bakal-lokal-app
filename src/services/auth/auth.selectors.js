@@ -33,3 +33,8 @@ export const selectTransactionFee = createSelector(
 	[authSelector],
 	(auth) => auth.transactionFee
 );
+
+export const selectDeliveryDetails = createSelector(
+	[authSelector],
+	(auth) => auth.deliveryDetails
+);

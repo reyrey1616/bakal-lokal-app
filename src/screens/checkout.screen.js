@@ -9,6 +9,9 @@ import { colors } from "../infra/theme/colors";
 import ButtonTypes from "../components/utils/buttons.component";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import PaymentMethodItem from "../components/checkout/payment-methods.component";
+import { selectDeliveryDetails } from "../services/auth/auth.selectors";
+import { setDeliveryDetails } from "../services/auth/auth.actions";
+import { useSelector, useDispatch } from "react-redux";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -37,11 +40,17 @@ const CheckoutScreen = ({ route }) => {
 	// const { previousScreen } = route?.params;
 	const page = useRoute();
 	const navigation = useNavigation();
-
+	const dispatch = useDispatch();
+	const deliveryDetails = useSelector(selectDeliveryDetails);
 	const [paymentMethod, setPaymentMethod] = useState("Gcash");
 
 	const onSelect = (val) => {
-		setPaymentMethod(val);
+		dispatch(
+			setDeliveryDetails({
+				...deliveryDetails,
+				paymentMethod: val,
+			})
+		);
 	};
 	return (
 		<SafeArea>
@@ -63,7 +72,10 @@ const CheckoutScreen = ({ route }) => {
 							<PaymentMethodItem
 								key={data?.id}
 								selected={
-									paymentMethod === data?.name ? true : false
+									deliveryDetails?.paymentMethod ===
+									data?.name
+										? true
+										: false
 								}
 								name={data?.name}
 								content={data?.content}
