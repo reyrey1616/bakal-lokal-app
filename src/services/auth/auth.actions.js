@@ -110,3 +110,26 @@ export const setDeliveryDetails = (payload) => {
 		payload,
 	};
 };
+
+// ADD ORDER @CUSTOMER
+export const addOrderStart = ({ payload, callback }) => {
+	return {
+		type: AuthActionTypes.ADD_ORDER_START,
+		payload,
+		callback,
+	};
+};
+
+export const addOrderSuccess = (payload) => {
+	return {
+		type: AuthActionTypes.ADD_ORDER_SUCCESS,
+		payload,
+	};
+};
+
+export const addOrderFail = (payload) => {
+	return {
+		type: AuthActionTypes.ADD_ORDER_FAIL,
+		payload,
+	};
+};

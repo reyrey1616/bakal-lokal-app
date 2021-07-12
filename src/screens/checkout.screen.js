@@ -18,7 +18,8 @@ import {
 } from "../services/auth/auth.selectors";
 import { setDeliveryDetails } from "../services/auth/auth.actions";
 import { useSelector, useDispatch } from "react-redux";
-import { acc } from "react-native-reanimated";
+import { addOrderStart } from "../services/auth/auth.actions";
+
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -137,10 +138,10 @@ const CheckoutScreen = ({ route }) => {
 				);
 
 			const newOrder = {
-				logistic,
 				pickupDate: pickUpDateTime.pickupDate,
 				pickupTime: pickUpDateTime.pickupTime,
 				customer: user && user?._id,
+				logistic: "Lihog",
 				deliveryOption,
 				subTotal,
 				transactionFee,
@@ -171,30 +172,30 @@ const CheckoutScreen = ({ route }) => {
 
 			console.log(newOrder);
 
-			// addOrder({
-			// 	payload: newOrder,
-			// 	callback: async () => {
-			// 		const customerInfo = {
-			// 			...deliveryAddressData,
-			// 			actionType: "checkout",
-			// 		};
-
-			// 		if (selectedVoucher) {
-			// 			await updateCouponUsage(selectedVoucher);
-			// 		}
-
-			// 		updateCustomer({
-			// 			payload: customerInfo,
-			// 			callback: async () => {
-			// 				Alert.alert("Order Successfully!");
-
-			// 				setTimeout(() => {
-			// 					navigation.navigate("Products");
-			// 				}, 1500);
-			// 			},
-			// 		});
-			// 	},
-			// });
+			dispatch(
+				addOrderStart({
+					payload: newOrder,
+					callback: async () => {
+						Alert.alert("Order Successfully!");
+						// const customerInfo = {
+						// 	...deliveryAddressData,
+						// 	actionType: "checkout",
+						// };
+						// if (selectedVoucher) {
+						// 	await updateCouponUsage(selectedVoucher);
+						// }
+						// updateCustomer({
+						// 	payload: customerInfo,
+						// 	callback: async () => {
+						// 		Alert.alert("Order Successfully!");
+						// 		setTimeout(() => {
+						// 			navigation.navigate("Products");
+						// 		}, 1500);
+						// 	},
+						// });
+					},
+				})
+			);
 		}
 	};
 	return (

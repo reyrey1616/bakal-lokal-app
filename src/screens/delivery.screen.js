@@ -28,7 +28,6 @@ const ScrollViewContainer = styled(ScrollView)`
 `;
 
 const DeliveryScreen = ({ route }) => {
-	// const { previousScreen } = route?.params;
 	const navigation = useNavigation();
 	const page = useRoute();
 	const dispatch = useDispatch();
@@ -62,15 +61,12 @@ const DeliveryScreen = ({ route }) => {
 	const deliveryOptionSubmit = () => {
 		navigation.navigate("Checkout", {
 			previousScreen: page?.name,
-			form,
+			orderInfo: form,
 		});
 	};
 	return (
 		<SafeArea>
-			<BLHeader
-				title="Delivery summary"
-				// previousScreen={previousScreen}
-			/>
+			<BLHeader title="Delivery summary" previousScreen={"Cart"} />
 			<ScrollViewContainer
 				contentContainerStyle={{
 					flexGrow: 1,

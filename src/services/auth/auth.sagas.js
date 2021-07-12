@@ -9,6 +9,8 @@ import {
 	getUserFail,
 	updateCartSuccess,
 	updateCartFail,
+	addOrderSuccess,
+	addOrderFail,
 } from "./auth.actions";
 import { Alert } from "react-native";
 import AuthActionTypes from "./auth.types";
@@ -172,6 +174,104 @@ function* updateCartAsync({ payload, callback }) {
 	}
 }
 
+function* addOrderAsync({ payload, callback }) {
+	try {
+		const {
+			customer,
+			cartItems,
+			voucher,
+			paymentMethod,
+			subTotal,
+			transactionFee,
+			deliveryFee,
+			discount,
+			grandTotal,
+			billing_fullAddress,
+			billing_province,
+			billing_city,
+			billing_postcode,
+			billing_destination,
+			billing_baranggay,
+			lat,
+			lng,
+			email,
+			fullName,
+			deliveryOption,
+			contactNumber,
+			// merchants,
+			// orderDetailsContent,
+			pickupDate,
+			pickupTime,
+			logistic,
+		} = payload;
+
+		const orderReq = yield axios.post(`/orders/${customer}`, {
+			pickupDate,
+			pickupTime,
+			deliveryOption,
+			customer,
+			cartItems,
+			voucher,
+			paymentMethod,
+			subTotal,
+			transactionFee,
+			deliveryFee,
+			discount,
+			grandTotal,
+			billing_fullAddress,
+			billing_province,
+			billing_city,
+			billing_postcode,
+			billing_destination,
+			billing_baranggay,
+			lat,
+			lng,
+			contactNumber,
+			// merchants,
+			// orderDetailsContent,
+			logistic,
+			orderDate: new Date(Date.now()),
+		});
+
+		const orderRes = orderReq.data.data;
+
+		// newOrderEmail({
+		// 	to_name: fullName,
+		// 	email: `${email}, bakallokal@gmail.com`,
+		// 	orderNo: `BL-${orderRes.orderNumber}`,
+		// 	amount: grandTotal,
+		// 	orderDateTime: Date.now(),
+		// 	deliveryOption,
+		// 	subTotal,
+		// 	discount,
+		// 	deliveryFee,
+		// 	transactionFee,
+		// 	grandTotal,
+		// 	contactNumber,
+		// 	fullAddress: billing_fullAddress,
+		// 	paymentMethod,
+		// 	merchants,
+		// 	orderDetailsContent,
+		// });
+
+		yield put(addOrderSuccess(orderRes));
+		callback();
+	} catch (error) {
+		if (error.response && error.response.data.error) {
+			const errorResponse = error.response.data.error;
+			yield put(addOrderFail(errorResponse));
+			Alert.alert(errorResponse, "error");
+		} else {
+			yield put(addOrderFail(error.message));
+			Alert.alert("Error updated order", "error");
+		}
+	}
+}
+
+function* addOrderStart() {
+	yield takeLatest(AuthActionTypes.ADD_ORDER_START, addOrderAsync);
+}
+
 function* updateCartStart() {
 	yield takeLatest(AuthActionTypes.UPDATE_CART_START, updateCartAsync);
 }
@@ -194,5 +294,6 @@ export default function* AuthSagas() {
 		call(loadUserStart),
 		call(registerStart),
 		call(updateCartStart),
+		call(addOrderStart),
 	]);
 }

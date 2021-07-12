@@ -110,6 +110,28 @@ const setDeliveryDetails = (state, action) => {
 		deliveryDetails: action.payload,
 	};
 };
+const orderSuccess = (state, action) => {
+	return {
+		...state,
+		loading: false,
+		deliveryFee: 0,
+		discount: 0,
+		transactionFee: 15,
+		deliveryDetails: {
+			deliveryOption: "Pick-up",
+			date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
+			time: moment(),
+			fullAddress: "",
+			baranggay: "",
+			city: "",
+			province: "",
+			postcode: "",
+			paymentMethod: null,
+			selectedVoucher: null,
+			logistic: null,
+		},
+	};
+};
 
 export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.LOGIN_START]: authLoading,
@@ -127,6 +149,10 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.GET_USER_START]: authLoading,
 	[AuthActionTypes.GET_USER_SUCCESS]: loadUser,
 	[AuthActionTypes.GET_USER_FAIL]: authFail,
+
+	[AuthActionTypes.ADD_ORDER_START]: authLoading,
+	[AuthActionTypes.ADD_ORDER_SUCCESS]: orderSuccess,
+	[AuthActionTypes.ADD_ORDER_FAIL]: authFail,
 
 	[AuthActionTypes.SET_DELIVERY_FEE]: setDeliveryFee,
 	[AuthActionTypes.SET_DISCOUNT]: setDiscount,
