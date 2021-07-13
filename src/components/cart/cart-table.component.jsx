@@ -42,7 +42,7 @@ const CartTable = ({ data }) => {
 
 				{data?.map((d) => {
 					return (
-						<View key={d?._id} style={styles.row} key={data?._id}>
+						<View key={d?._id} style={styles.row}>
 							<View
 								style={{
 									...styles.cell,

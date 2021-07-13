@@ -5,7 +5,6 @@ import styled from "styled-components/native";
 import { theme } from "../../infra/theme";
 import { Spacer } from "../spacer/spacer.component";
 import currencyFormat from "../../utils/currencyFormat";
-import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import moment from "moment";
 const CardContainer = styled(Card)`
@@ -37,7 +36,6 @@ const dateCompareIfOnSale = (date1, date2) => {
 export const ProductCard = ({ product }) => {
 	const navigation = useNavigation();
 	const route = useRoute();
-	
 
 	return (
 		<TouchableOpacity
@@ -62,7 +60,7 @@ export const ProductCard = ({ product }) => {
 						}}
 						style={{
 							height: "100%",
-							width: null,
+							width: "100%",
 							flex: 1,
 							borderTopLeftRadius: 12,
 							borderTopRightRadius: 12,
@@ -71,11 +69,11 @@ export const ProductCard = ({ product }) => {
 				</CardItem>
 				<ProductContentContainer>
 					<CardItem>
-						<Spacer position="bottom" size="large" />
+						<Spacer position="bottom" size="medium" />
 						<View>
 							<Text
 								style={{
-									fontSize: theme?.fontSizes.body,
+									fontSize: theme?.fontSizes.button,
 									fontWeight: "bold",
 									color: "#555",
 								}}
@@ -86,11 +84,11 @@ export const ProductCard = ({ product }) => {
 					</CardItem>
 					{product?.product_type === "Variable" ? (
 						<CardItem>
-							<Spacer position="bottom" size="large" />
+							<Spacer position="bottom" size="medium" />
 
 							<Text
 								style={{
-									fontSize: theme?.fontSizes.body,
+									fontSize: theme?.fontSizes.button,
 									color: theme.colors.brand.orange,
 								}}
 							>
@@ -135,7 +133,7 @@ export const ProductCard = ({ product }) => {
 						</CardItem>
 					) : (
 						<CardItem>
-							<Spacer position="bottom" size="large" />
+							<Spacer position="bottom" size="medium" />
 
 							<Text
 								style={{
@@ -147,17 +145,21 @@ export const ProductCard = ({ product }) => {
 							</Text>
 						</CardItem>
 					)}
-					<View style={{ paddingLeft: 15 }}>
-						<View>
-							<Text
-								style={{
-									fontSize: theme?.fontSizes.caption,
-									color: theme.colors.brand.grey,
-								}}
-							>
-								{product?.merchant?.name}
-							</Text>
-						</View>
+					<View
+						style={{
+							paddingLeft: 15,
+							paddingRight: "20%",
+							paddingBottom: 10,
+						}}
+					>
+						<Text
+							style={{
+								fontSize: theme?.fontSizes.caption,
+								color: theme.colors.brand.grey,
+							}}
+						>
+							{product?.merchant?.name}
+						</Text>
 					</View>
 
 					{product?.product_type === "Simple" && (

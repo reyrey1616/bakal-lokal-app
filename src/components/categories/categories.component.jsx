@@ -22,7 +22,6 @@ export const CategoryItem = () => {
 		<CategoryItemContainer
 			style={{
 				paddingRight: 15,
-				elevation: 5,
 				shadowColor: "#333",
 				shadowOffset: { width: 0, height: 1 },
 				shadowOpacity: 0.5,

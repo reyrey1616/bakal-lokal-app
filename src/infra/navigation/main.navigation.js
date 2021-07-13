@@ -18,7 +18,12 @@ import { selectCurrentUser } from "../../services/auth/auth.selectors";
 import { useDispatch, useSelector } from "react-redux";
 import setAuthToken from "../../utils/setAuthToken";
 import { asyncStoreGet } from "../../services/utils";
-import { Alert } from "react-native";
+import { View } from "react-native";
+import { SafeArea } from "../../components/utils/safe-area.component";
+import { Text } from "../../components/typography/text.component";
+import { colors } from "../theme/colors";
+import { Spacer } from "../../components/spacer/spacer.component";
+
 export const navigationRef = React.createRef();
 
 export function openDrawer(routeName, params) {
@@ -26,6 +31,30 @@ export function openDrawer(routeName, params) {
 }
 
 const MainStackNavigator = createStackNavigator();
+
+const SampleScreen = () => (
+	<SafeArea>
+		<View>
+			<Spacer position="bottom" size="medium" />
+			<Text
+				variant="title"
+				style={{
+					color: colors.brand.black,
+				}}
+			>
+				Welcome to
+			</Text>
+			<Text
+				variant="title"
+				style={{
+					color: colors.brand.orange,
+				}}
+			>
+				BAKAL LOKAL
+			</Text>
+		</View>
+	</SafeArea>
+);
 
 const MainNavigator = () => {
 	const dispatch = useDispatch();

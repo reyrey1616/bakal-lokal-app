@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, View, Image } from "react-native";
+import {
+	Alert,
+	Modal,
+	StyleSheet,
+	Text,
+	View,
+	Image,
+	TouchableHighlight,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import { colors } from "../../infra/theme/colors";
@@ -39,10 +47,13 @@ const Variations = ({ onSelectVariation, variations, productImage }) => {
 						{/* Variant Buttons */}
 						<View style={styles.variationsContainer}>
 							{variations &&
-								variations?.map((v) => {
+								variations?.map((v, id) => {
 									return (
-										<View style={styles.variationView}>
-											<TouchableOpacity
+										<View
+											style={styles.variationView}
+											key={id}
+										>
+											<TouchableHighlight
 												style={{
 													...styles.variation,
 													backgroundColor:
@@ -68,7 +79,7 @@ const Variations = ({ onSelectVariation, variations, productImage }) => {
 												>
 													{`${v?.name}`}
 												</Text>
-											</TouchableOpacity>
+											</TouchableHighlight>
 										</View>
 									);
 								})}

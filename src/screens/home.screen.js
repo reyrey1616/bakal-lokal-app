@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
 		<SafeArea>
 			<HeaderWithSearch
 				openDrawer={() => {
-					navigation.dispatch()
+					navigation.dispatch();
 				}}
 			/>
 

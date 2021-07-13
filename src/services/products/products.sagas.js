@@ -20,7 +20,7 @@ import ProductActionTypes from "./products.types";
 function* getProductsAsync() {
 	try {
 		const request = yield axios.get(
-			"/products/?adminApproval=Approved&postStatus=Published&limit=20"
+			"/products/?adminApproval=Approved&postStatus=Published&limit=10"
 		);
 		let response = yield request?.data?.data;
 		response.forEach((m) => {

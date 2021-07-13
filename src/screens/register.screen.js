@@ -21,17 +21,29 @@ import { colors } from "../infra/theme/colors";
 import CustomDatePicker from "../components/utils/date-picker.component";
 import { useDispatch, connect } from "react-redux";
 import { registerStart } from "../services/auth/auth.actions";
+import moment from "moment";
+import { AntDesign } from "@expo/vector-icons";
 
 const RegistrationScreen = ({ navigation, register }) => {
 	const dispatch = useDispatch();
+	// const [form, setForm] = useState({
+	// 	fname: "Rey",
+	// 	lname: "Guidoriagao",
+	// 	contactNumber: "09182254329",
+	// 	email: "dabboyrey@gmail.com",
+	// 	password: "1111111111",
+	// 	bdate: moment(new Date(Date.now())).format("YYYY-MM-DD"),
+	// 	gender: "Male",
+	// });
+
 	const [form, setForm] = useState({
-		fname: "Rey",
-		lname: "Guidoriagao",
-		contactNumber: "09182254329",
-		email: "dabboyrey@gmail.com",
-		password: "1111111111",
-		bdate: "",
-		gender: "Male",
+		fname: "",
+		lname: "",
+		contactNumber: "",
+		email: "",
+		password: "",
+		bdate: moment(new Date(Date.now())).format("YYYY-MM-DD"),
+		gender: "",
 	});
 
 	const onSubmit = (data) => {
@@ -51,7 +63,6 @@ const RegistrationScreen = ({ navigation, register }) => {
 		} else if (data?.password === "") {
 			Alert.alert("Bakal Lokal", "Please input password!");
 		} else {
-			Alert.alert("Submitting");
 			dispatch(
 				register(data, () => {
 					Alert.alert(
@@ -78,34 +89,32 @@ const RegistrationScreen = ({ navigation, register }) => {
 					}}
 				>
 					<View>
-						<View>
-							<Header>
-								<Left>
-									<Button transparent>
-										<Icon
-											onPress={() => {
-												navigation.navigate("Login");
-											}}
-											name="arrow-back"
-											style={{
-												color: colors.brand.orange,
-											}}
-										/>
-									</Button>
-								</Left>
-								<Body>
-									<Title
+						<Header style={{ backgroundColor: "white" }}>
+							<Left>
+								<Button transparent>
+									<Icon
+										onPress={() => {
+											navigation.navigate("Login");
+										}}
+										name="arrow-back"
 										style={{
 											color: colors.brand.orange,
 										}}
-									>
-										Register
-									</Title>
-								</Body>
+									/>
+								</Button>
+							</Left>
+							<Body>
+								<Title
+									style={{
+										color: colors.brand.orange,
+									}}
+								>
+									Register
+								</Title>
+							</Body>
 
-								<Right />
-							</Header>
-						</View>
+							<Right />
+						</Header>
 						<Spacer position="bottom" size="small" />
 
 						<View
@@ -227,8 +236,9 @@ const RegistrationScreen = ({ navigation, register }) => {
 										Birthday
 									</Label>
 
-									<Item regular>
+									<Item>
 										{/* Birthday */}
+
 										<CustomDatePicker
 											onSelectDate={(date) => {
 												setForm({
@@ -236,6 +246,18 @@ const RegistrationScreen = ({ navigation, register }) => {
 													bdate: date,
 												});
 											}}
+											value={moment(form?.date).format(
+												"YYYY-MM-DD"
+											)}
+											mode="date"
+											title="Birthdate"
+											icon={
+												<AntDesign
+													name="calendar"
+													color={colors.brand.orange}
+													size={18}
+												/>
+											}
 										/>
 									</Item>
 								</View>
@@ -251,10 +273,18 @@ const RegistrationScreen = ({ navigation, register }) => {
 
 									<Item regular>
 										{/* gender input */}
+
 										<Picker
+											style={{
+												width: "100%",
+												height: 40,
+											}}
+											iosHeader="Gender"
+											Header="Gender"
 											mode="dropdown"
-											iosHeader="Select Gender"
-											style={{ width: "100%" }}
+											textStyle={{ color: "grey" }}
+											placeholder="Select gender"
+											headerBackButtonText="Gender"
 											selectedValue={form?.gender}
 											onValueChange={(val) => {
 												setForm({

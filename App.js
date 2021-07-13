@@ -4,7 +4,7 @@ import { ThemeProvider } from "styled-components/native";
 // import { StyleProvider } from "native-base";
 // import getTheme from "./native-base-theme/components";
 // import material from "./native-base-theme/variables/material";
-
+import { StatusBar } from "react-native";
 import {
 	useFonts as useCabin,
 	Cabin_400Regular,
@@ -20,9 +20,11 @@ import MainNavigator from "./src/infra/navigation/main.navigation";
 import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./src/services/store";
+import { init } from "emailjs-com";
 
-// axios.defaults.baseURL = "https://192.168.208.1:5000/api/v1/";
+// axios.defaults.baseURL = "http://localhost:5000/api/v1/";
 axios.defaults.baseURL = "https://bakal-lokal.xyz/api/v1/";
+init("user_BgbYodHJVW1sBGMlZrluD");
 
 export default function App() {
 	const [cabinLoaded] = useCabin({
@@ -38,11 +40,16 @@ export default function App() {
 
 	return (
 		<SafeArea>
+			<ExpoStatusBar
+				style="auto"
+				animated={true}
+				backgroundColor="white"
+			/>
+
 			<Provider store={store}>
 				<ThemeProvider theme={theme}>
 					<MainNavigator />
 				</ThemeProvider>
-				<ExpoStatusBar style="auto" />
 			</Provider>
 		</SafeArea>
 	);

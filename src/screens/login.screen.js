@@ -20,43 +20,42 @@ import { colors } from "../infra/theme/colors";
 import SectionTitle from "../components/utils/title.component";
 import { useDispatch } from "react-redux";
 import { loginStart } from "../services/auth/auth.actions";
-import { theme } from "../infra/theme";
 import { connect } from "react-redux";
 import {
 	selectCurrentUser,
 	selectAuthentication,
 } from "../services/auth/auth.selectors";
 import { createStructuredSelector } from "reselect";
-
-const LoginScreen = ({ navigation, currentUser, isAuthenticated }) => {
+import { fontSizes } from "../infra/theme/fonts";
+import { useNavigation } from "@react-navigation/native";
+const LoginScreen = ({ currentUser, isAuthenticated }) => {
 	const dispatch = useDispatch();
+	// const [form, setForm] = useState({
+	// 	email: "guidoriagaorey16@gmail.com",
+	// 	password: "12345678",
+	// });
+	const navigation = useNavigation();
 	const [form, setForm] = useState({
-		email: "guidoriagaorey16@gmail.com",
-		password: "12345678",
+		email: "",
+		password: "",
 	});
 
 	useEffect(() => {
-		console.log(isAuthenticated);
-
-		if (currentUser) {
-			navigation.navigate("Menu");
+		if (currentUser && isAuthenticated) {
+			navigation.navigate("Home");
 		}
 	}, [currentUser]);
 
 	const onSubmit = (data) => {
-		navigation.navigate("Menu");
-
 		if (data?.email === "") {
 			Alert.alert("Bakal Lokal", "Please input email!");
 		} else if (data?.password === "") {
 			Alert.alert("Bakal Lokal", "Please input password!");
 		} else {
-			navigation.navigate("Menu");
-
 			dispatch(
 				loginStart(data, (token) => {
-					navigation.navigate("Menu");
 					Alert.alert("Bakal Lokal", "Login Success");
+					navigation.navigate("Home");
 				})
 			);
 		}
@@ -73,34 +72,32 @@ const LoginScreen = ({ navigation, currentUser, isAuthenticated }) => {
 				source={require("../assets/design/background.png")}
 			>
 				<View>
-					<View>
-						<Header style={{ backgroundColor: "white" }}>
-							<Left>
-								<Button transparent>
-									<Icon
-										onPress={() => {
-											navigation.navigate("Menu");
-										}}
-										name="arrow-back"
-										style={{
-											color: colors.brand.orange,
-										}}
-									/>
-								</Button>
-							</Left>
-							<Body>
-								<Title
+					<Header style={{ backgroundColor: "white" }}>
+						<Left>
+							<Button transparent>
+								<Icon
+									onPress={() => {
+										navigation.navigate("Home");
+									}}
+									name="arrow-back"
 									style={{
 										color: colors.brand.orange,
 									}}
-								>
-									User Login
-								</Title>
-							</Body>
+								/>
+							</Button>
+						</Left>
+						<Body>
+							<Title
+								style={{
+									color: colors.brand.orange,
+								}}
+							>
+								User Login
+							</Title>
+						</Body>
 
-							<Right />
-						</Header>
-					</View>
+						<Right />
+					</Header>
 					<Spacer position="bottom" size="small" />
 					<View
 						style={{
@@ -117,14 +114,13 @@ const LoginScreen = ({ navigation, currentUser, isAuthenticated }) => {
 							source={require("../assets/logo/main-logo-transparent.png")}
 							style={{ width: 70, height: 70 }}
 						/>
-						<View>
+						<View style={{ padding: 15 }}>
 							<Spacer position="bottom" size="medium" />
 							<Text
 								variant="title"
 								style={{
 									color: colors.brand.black,
-									fontWeight: "bold",
-									fontSize: theme?.fontSizes?.h4,
+									fontSize: fontSizes.h5,
 								}}
 							>
 								Welcome to
@@ -133,8 +129,7 @@ const LoginScreen = ({ navigation, currentUser, isAuthenticated }) => {
 								variant="title"
 								style={{
 									color: colors.brand.orange,
-									fontWeight: "bold",
-									fontSize: theme?.fontSizes?.h4,
+									fontSize: fontSizes.h5,
 								}}
 							>
 								BAKAL LOKAL

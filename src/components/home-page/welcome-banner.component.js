@@ -18,7 +18,7 @@ const WelcomeBanner = () => {
 					color: "white",
 					textAlign: "center",
 					fontSize: theme.fontSizes.h5,
-					fontWeight: 600,
+					fontWeight: "bold",
 				}}
 				variant="body"
 			>

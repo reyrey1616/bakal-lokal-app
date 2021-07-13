@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { CartTotals } from "../components/cart/cart-totals.component";
 import { colors } from "../infra/theme/colors";
 import ButtonTypes from "../components/utils/buttons.component";
-import { Form, Picker, Label, Content, Spinner } from "native-base";
+import { Form, Picker, Label, Spinner, Item } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import CustomDatePicker from "../components/utils/date-picker.component";
 import moment from "moment";
@@ -82,32 +82,26 @@ const DeliveryScreen = ({ route }) => {
 							marginTop: 5,
 						}}
 					>
-						<View>
-							<Label
-								style={{
-									padding: 5,
-									paddingBottom: 5,
-								}}
-							>
-								Delivery method
-							</Label>
+						<Label
+							style={{
+								padding: 5,
+								paddingBottom: 5,
+							}}
+						>
+							Delivery method
+						</Label>
+						<Item picker>
 							<Picker
-								mode="dropdown"
-								iosIcon={
-									<AntDesign
-										name="caretdown"
-										size={12}
-										color={colors.brand.orange}
-									/>
-								}
-								placeholder="Select delivery option"
-								placeholderStyle={{ color: "#bfc6ea" }}
-								placeholderIconColor="#007aff"
 								style={{
 									width: "100%",
-									borderBottomWidth: 1,
-									borderBottomColor: colors.brand.dirtywhite,
+									height: 40,
 								}}
+								iosHeader="Delivery Method"
+								Header="Delivery Method"
+								mode="dropdown"
+								textStyle={{ color: "grey" }}
+								placeholder="Select delivery method"
+								headerBackButtonText="Delivery Method"
 								selectedValue={form?.deliveryOption}
 								onValueChange={(value) => {
 									dispatch(
@@ -124,7 +118,7 @@ const DeliveryScreen = ({ route }) => {
 								/>
 								<Picker.Item label="Pick-up" value="Pick-up" />
 							</Picker>
-						</View>
+						</Item>
 						<View style={{ marginTop: 5 }}>
 							<Label
 								style={{
@@ -222,8 +216,6 @@ const DeliveryScreen = ({ route }) => {
 					width: "100%",
 					padding: 10,
 					backgroundColor: "white",
-					position: "fixed",
-					bottom: 0,
 				}}
 			>
 				<Button

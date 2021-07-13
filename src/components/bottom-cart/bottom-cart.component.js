@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Alert, View } from "react-native";
+import {
+	Alert,
+	TouchableHighlight,
+	TouchableOpacity,
+	View,
+} from "react-native";
 import { Input, Item } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import ButtonTypes from "../utils/buttons.component";
@@ -44,24 +49,22 @@ export const BottomCart = ({ onValueChange, onAddToCart, disabled }) => {
 					height: 50,
 				}}
 			>
-				<AntDesign
-					name="minus"
-					size={22}
-					color="black"
-					onPress={() => quantityChange("minus")}
-				/>
+				<TouchableOpacity onPress={() => quantityChange("minus")}>
+					<AntDesign name="minus" size={25} color="black" />
+				</TouchableOpacity>
 				<Input
 					value={quantity}
 					defaultValue={`${quantity}`}
 					disabled
 					style={{ textAlign: "center" }}
 				/>
-				<AntDesign
-					name="plus"
-					size={22}
-					color={colors.brand.orange}
-					onPress={() => quantityChange("add")}
-				/>
+				<TouchableOpacity onPress={() => quantityChange("add")}>
+					<AntDesign
+						name="plus"
+						size={25}
+						color={colors.brand.orange}
+					/>
+				</TouchableOpacity>
 			</Item>
 			<ButtonTypes.PrimaryButton
 				disabled={disabled}

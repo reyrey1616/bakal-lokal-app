@@ -9,7 +9,7 @@ export const SectionTitle = ({ text1, text2, variant = "title" }) => {
 				variant={variant}
 				style={{
 					color: colors.brand.orange,
-					fontSize: fontSizes.h5,
+					fontSize: 24,
 					fontWeight: "bold",
 				}}
 			>
@@ -19,7 +19,7 @@ export const SectionTitle = ({ text1, text2, variant = "title" }) => {
 				variant={variant}
 				style={{
 					color: colors.brand.black,
-					fontSize: fontSizes.h5,
+					fontSize: 24,
 					fontWeight: "bold",
 				}}
 			>

@@ -16,6 +16,7 @@ import { Alert } from "react-native";
 import AuthActionTypes from "./auth.types";
 import updateCartItem from "../../utils/updateCartItems";
 import { asyncStoreRemove, asyncStoreSave } from "../utils";
+import { verificationEmail } from "../../utils/sendMail";
 
 function* signInAsync({ payload, callback }) {
 	try {
@@ -54,65 +55,49 @@ function* signInAsync({ payload, callback }) {
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
 		if (errorResponse) {
+			console.log(errorResponse);
 			yield put(loginFail(errorResponse));
 
-			if (
-				errorResponse.startsWith(
-					"We sent you an email to verify your email address"
-				)
-			) {
-				Alert.alert(
-					"We sent you an email to verify your email address, Please verify your email first to Login your account"
-				);
-			} else {
-				Alert.alert(errorResponse);
-			}
+			Alert.alert("Bakal Lokal", errorResponse);
 		}
 	}
 }
 
 function* signUpAsync({ payload, callback }) {
 	try {
-		// const { fname, mname, lname, email } = payload;
-		// payload.isVerified = true;
-		console.log(payload);
-
-		const request = yield axios.post(
-			"http://172.24.80.1:5000/api/v1/customers",
-			payload
-		);
+		const request = yield axios.post("/customers", payload);
 		const response = yield request.data;
+		console.log;
 		if (response.success === true) {
-			const id = response.otherResp[0];
-			if (id) {
-				// verificationEmail({
-				// 	to_name: `${fname} ${
-				// 		mname === undefined ? "" : mname
-				// 	} ${lname}`,
-				// 	email,
-				// 	verification_link: `<a href = "https://bakal-lokal.com/customer-verification/${id}">Confirm Your Email</a>`,
-				// });
-			} else {
-				throw Error;
-			}
+			yield put(registerSuccess(response.data));
+			callback(response.data);
 		} else {
 			throw Error;
 		}
-
-		yield put(registerSuccess());
-		callback();
 	} catch (error) {
+		console.log(error);
 		if (error.response && error.response.data.error) {
 			const errorResponse = error.response.data.error;
 			yield put(registerFail(errorResponse));
+			// fireAlert(errorResponse, "error");
 			if (errorResponse === "Duplicate value entered") {
-				Alert.alert("Email already exists, Please try another email.");
+				Alert.alert(
+					"Bakal Lokal",
+					"Email already exists, Please try another email."
+				);
 			} else {
-				Alert.alert("Error on signing up. Please try again later!");
+				Alert.alert(
+					"Bakal Lokal",
+
+					"Error on signing up. Please try again later!"
+				);
 			}
 		} else {
 			yield put(registerFail(error.message));
-			Alert.alert("Error on signing up. Please try again later!");
+			Alert.alert(
+				"Bakal Lokal",
+				"Error on signing up. Please try again later!"
+			);
 		}
 	}
 }

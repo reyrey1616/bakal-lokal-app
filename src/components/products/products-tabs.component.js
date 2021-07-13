@@ -35,13 +35,17 @@ export const ProductTabs = ({ navigation }) => {
 		<Container style={{ backgroundColor: colors.brand.dirtywhite }}>
 			<PageHeader title="Products" />
 
-			<Tabs>
+			<Tabs backgroundColor="white" tabBarBackgroundColor="white">
 				<Tab
 					heading="All products"
 					activeTextStyle={{ color: colors.brand.orange }}
 					activeTabStyle={{
 						borderColor: colors.brand.orange,
 						borderWidth: 0,
+						backgroundColor: "white",
+					}}
+					tabStyle={{
+						backgroundColor: "white",
 					}}
 				>
 					<ProductsContainer
@@ -55,6 +59,10 @@ export const ProductTabs = ({ navigation }) => {
 					activeTabStyle={{
 						borderColor: colors.brand.orange,
 						borderWidth: 0,
+						backgroundColor: "white",
+					}}
+					tabStyle={{
+						backgroundColor: "white",
 					}}
 				>
 					<ProductsContainer
@@ -68,6 +76,10 @@ export const ProductTabs = ({ navigation }) => {
 					activeTabStyle={{
 						borderColor: colors.brand.orange,
 						borderWidth: 0,
+						backgroundColor: "white",
+					}}
+					tabStyle={{
+						backgroundColor: "white",
 					}}
 				>
 					<ProductsContainer

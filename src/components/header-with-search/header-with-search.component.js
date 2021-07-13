@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, Alert } from "react-native";
 import { Header, Body, Item, Input } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 import { colors } from "../../infra/theme/colors";
@@ -7,6 +7,12 @@ import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components";
 import { openDrawer } from "../../infra/navigation/main.navigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { asyncStoreGet } from "../../services/utils";
+import {
+	selectAuthentication,
+	selectCurrentUser,
+} from "../../services/auth/auth.selectors";
+import { useSelector } from "react-redux";
 const HeaderContainer = styled(Header)`
 	background: #fff;
 	elevation: 5;
@@ -20,13 +26,15 @@ const HeaderContainer = styled(Header)`
 const HeaderWithSearch = () => {
 	const navigation = useNavigation();
 	const route = useRoute();
+	const isAuthenticated = useSelector(selectAuthentication);
+	const currentUser = useSelector(selectCurrentUser);
 	return (
 		<HeaderContainer>
 			<Grid
 				style={{
 					display: "flex",
 					flexDirection: "row",
-					alignItems: "center !important",
+					alignItems: "center",
 				}}
 			>
 				<Col size={15}>
@@ -57,10 +65,19 @@ const HeaderWithSearch = () => {
 				</Col>
 				<TouchableOpacity
 					style={{ padding: 10, paddingTop: 15 }}
-					onPress={() => {
-						navigation.navigate("Cart", {
-							previousScreen: route?.name,
-						});
+					onPress={async () => {
+						const token = await asyncStoreGet("token");
+						if (isAuthenticated && currentUser && token) {
+							navigation.navigate("Cart", {
+								previousScreen: route?.name,
+							});
+						} else {
+							Alert.alert(
+								"Bakal Lokal",
+								"Please login your account to view your cart"
+							);
+							navigation.navigate("Login");
+						}
 					}}
 				>
 					<Image

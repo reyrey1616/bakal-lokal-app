@@ -27,7 +27,7 @@ const PrimaryButtonText = styled(Text)`
 `;
 
 const SecondaryButtonText = styled(Text)`
-	color: ${(props) => props.theme.colors.brand.orange} !important;
+	color: ${(props) => props.theme.colors.brand.orange};
 	text-align: center;
 `;
 

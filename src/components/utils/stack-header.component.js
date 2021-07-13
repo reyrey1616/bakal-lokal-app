@@ -1,10 +1,17 @@
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { asyncStoreGet } from "../../services/utils";
+import {
+	selectAuthentication,
+	selectCurrentUser,
+} from "../../services/auth/auth.selectors";
+import { useSelector } from "react-redux";
 export const StackHeader = ({ previousScreen }) => {
 	const navigation = useNavigation();
+	const isAuthenticated = useSelector(selectAuthentication);
+	const currentUser = useSelector(selectCurrentUser);
 
 	return (
 		<View
@@ -18,6 +25,7 @@ export const StackHeader = ({ previousScreen }) => {
 				alignItems: "center",
 				paddingLeft: 10,
 				paddingRight: 10,
+				backgroundColor: "rgba(0,0,0.3)",
 			}}
 		>
 			<AntDesign
@@ -30,8 +38,17 @@ export const StackHeader = ({ previousScreen }) => {
 			/>
 			<TouchableOpacity
 				style={{ padding: 10, paddingTop: 15 }}
-				onPress={() => {
-					navigation.navigate("Cart");
+				onPress={async () => {
+					const token = await asyncStoreGet("token");
+					if (isAuthenticated && currentUser && token) {
+						navigation.navigate("Cart");
+					} else {
+						Alert.alert(
+							"Bakal Lokal",
+							"Please login your account to view your cart"
+						);
+						navigation.navigate("Login");
+					}
 				}}
 			>
 				<Image
