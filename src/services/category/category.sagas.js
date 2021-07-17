@@ -6,10 +6,9 @@ import CategoriesActionTypes from "./category.types";
 
 function* getCategoriesAsync() {
 	try {
-		const request = yield axios.get("/categories");
+		const request = yield axios.get("/categories/advanced");
 		let response = yield request?.data?.data;
-		const filteredData = response.filter((d) => d.status === true);
-		yield put(getCategoriesSuccess(filteredData));
+		yield put(getCategoriesSuccess(response));
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
 

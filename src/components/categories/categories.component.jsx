@@ -1,9 +1,11 @@
 import React from "react";
-import { ScrollView, View, Image } from "react-native";
-import { Text } from "../typography/text.component";
+import { ScrollView, View, Image, Dimensions, Text } from "react-native";
+// import { Text } from "../typography/text.component";
 import styled from "styled-components";
 import { Spacer } from "../spacer/spacer.component";
 import SectionTitle from "../utils/title.component";
+import { useSelector } from "react-redux";
+import { selectCategories } from "../../services/category/category.selectors";
 
 const HorizontalScrollView = styled(ScrollView)`
 	width: 100%;
@@ -11,13 +13,33 @@ const HorizontalScrollView = styled(ScrollView)`
 
 const CategoryItemContainer = styled(View)`
 	border-radius: 8px;
+	width: 120;
 `;
 
 const CategoryItemImageContainer = styled(Image)`
 	border-radius: 8px;
 `;
 
-export const CategoryItem = () => {
+export const CategoriesList = () => {
+	const categories = useSelector(selectCategories);
+
+	console.log(categories);
+	return (
+		<View style={{ padding: 15 }}>
+			<SectionTitle text1="Product" text2="categories" />
+			<Spacer position="bottom" size="large" />
+
+			<HorizontalScrollView horizontal>
+				{categories &&
+					categories?.map((cat) => {
+						return <CategoryItem category={cat} key={cat?._id} />;
+					})}
+			</HorizontalScrollView>
+		</View>
+	);
+};
+
+export const CategoryItem = ({ category }) => {
 	return (
 		<CategoryItemContainer
 			style={{
@@ -29,30 +51,13 @@ export const CategoryItem = () => {
 			}}
 		>
 			<CategoryItemImageContainer
-				source={require("../../assets/design/background.png")}
+				source={{
+					uri: `https://bakal-lokal.xyz/categories/${category?.image}`,
+				}}
 				style={{ width: 100, height: 100 }}
 			/>
 			<Spacer position="bottom" size="medium" />
-			<Text variant="label"> Shop</Text>
+			<Text style={{ flex: 1, flexWrap: "wrap" }}>{category?.name} </Text>
 		</CategoryItemContainer>
-	);
-};
-
-export const CategoriesList = () => {
-	return (
-		<View style={{ padding: 15 }}>
-			<SectionTitle text1="Product" text2="categories" />
-			<Spacer position="bottom" size="large" />
-
-			<HorizontalScrollView horizontal>
-				<CategoryItem />
-				<CategoryItem />
-				<CategoryItem />
-				<CategoryItem />
-				<CategoryItem />
-				<CategoryItem />
-				<CategoryItem />
-			</HorizontalScrollView>
-		</View>
 	);
 };

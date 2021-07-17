@@ -4,13 +4,17 @@ import HeaderWithSearch from "../components/header-with-search/header-with-searc
 import { ProductTabs } from "../components/products/products-tabs.component";
 import { useDispatch } from "react-redux";
 import { getProductsStart } from "../services/products/products.actions";
-
 const ProductsScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getProductsStart());
-	}, []);
+		const unsubscribe = navigation.addListener("focus", () => {
+			dispatch(getProductsStart());
+		});
+
+		return unsubscribe;
+	}, [navigation]);
+
 	return (
 		<SafeArea>
 			<HeaderWithSearch
