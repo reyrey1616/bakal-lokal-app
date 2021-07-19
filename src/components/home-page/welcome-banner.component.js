@@ -11,6 +11,7 @@ const WelcomeBanner = () => {
 				display: "flex",
 				alignItems: "center",
 				padding: 15,
+				zIndex: 1,
 			}}
 		>
 			<Text

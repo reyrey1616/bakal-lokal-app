@@ -1,6 +1,5 @@
 import ProductActionTypes from "./products.types";
 import { createReducer } from "../utils";
-import { Alert } from "react-native";
 
 const INITIAL_STATE = {
 	products: [],
@@ -8,6 +7,7 @@ const INITIAL_STATE = {
 	currentProduct: null,
 	error: null,
 	loading: false,
+	searchResult: [],
 };
 
 const productsLoading = (state) => {
@@ -52,6 +52,15 @@ const getProductsByMerchant = (state, action) => {
 	};
 };
 
+const searchProduct = (state, action) => {
+	return {
+		...state,
+		loading: false,
+		searchResult: action.payload,
+		error: null,
+	};
+};
+
 export default createReducer(INITIAL_STATE, {
 	[ProductActionTypes.GET_PRODUCTS_START]: productsLoading,
 	[ProductActionTypes.GET_PRODUCTS_SUCCESS]: getProducts,
@@ -64,4 +73,8 @@ export default createReducer(INITIAL_STATE, {
 	[ProductActionTypes.GET_PRODUCTS_BY_MERCHANT_START]: productsLoading,
 	[ProductActionTypes.GET_PRODUCTS_BY_MERCHANT_SUCCESS]: getProductsByMerchant,
 	[ProductActionTypes.GET_PRODUCTS_BY_MERCHANT_FAIL]: productsFail,
+
+	[ProductActionTypes.SEARCH_PRODUCT_START]: productsLoading,
+	[ProductActionTypes.SEARCH_PRODUCT_SUCCESS]: searchProduct,
+	[ProductActionTypes.SEARCH_PRODUCT_FAIL]: productsFail,
 });

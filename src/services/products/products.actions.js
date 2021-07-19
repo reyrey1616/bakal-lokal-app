@@ -58,3 +58,19 @@ export const getProductsByMerchantFail = (err) => {
 		payload: err,
 	};
 };
+
+// SEARCH PRODUCT
+export const searchProductStart = (payload) => ({
+	type: ProductActionTypes.SEARCH_PRODUCT_START,
+	payload,
+});
+// SEARCH PRODUCT
+export const searchProductSuccess = (payload) => ({
+	type: ProductActionTypes.SEARCH_PRODUCT_SUCCESS,
+	payload,
+});
+// SEARCH PRODUCT
+export const searchProductFail = (payload) => ({
+	type: ProductActionTypes.SEARCH_PRODUCT_FAIL,
+	payload,
+});

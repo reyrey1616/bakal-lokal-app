@@ -13,6 +13,8 @@ import {
 	getProductsOnSaleFail,
 	getProductsByMerchantSuccess,
 	getProductsByMerchantFail,
+	searchProductSuccess,
+	searchProductFail,
 } from "./products.actions";
 import { Alert } from "react-native";
 import ProductActionTypes from "./products.types";
