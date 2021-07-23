@@ -30,7 +30,9 @@ const HomeScreen = ({ navigation }) => {
 				}}
 			/>
 
-			<ScrollViewContainer contentContainerStyle={{ flexGrow: 1 }}>
+			<ScrollViewContainer
+				contentContainerStyle={{ flexGrow: 1, zIndex: 1 }}
+			>
 				<WelcomeBanner />
 				<ShopAllProducts />
 				<Shops />
