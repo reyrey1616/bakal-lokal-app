@@ -1,6 +1,7 @@
 import AuthActionTypes from "./auth.types";
 import { createReducer } from "../utils";
 import moment from "moment";
+import { Alert } from "react-native";
 const INITIAL_STATE = {
 	user: null,
 	error: null,
@@ -90,10 +91,13 @@ const setDeliveryFee = (state, action) => {
 	};
 };
 
-const setDiscount = (state, action) => {
+const setVoucher = (state, action) => {
+	const voucher = action?.payload;
+	console.log(voucher?.discount);
 	return {
 		...state,
-		dicount: action.payload,
+		discount: voucher?.discount,
+		voucher,
 	};
 };
 
@@ -116,6 +120,7 @@ const orderSuccess = (state, action) => {
 		loading: false,
 		deliveryFee: 0,
 		discount: 0,
+		voucher: null,
 		transactionFee: 15,
 		deliveryDetails: {
 			deliveryOption: "Pick-up",
@@ -155,7 +160,7 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.ADD_ORDER_FAIL]: authFail,
 
 	[AuthActionTypes.SET_DELIVERY_FEE]: setDeliveryFee,
-	[AuthActionTypes.SET_DISCOUNT]: setDiscount,
+	[AuthActionTypes.SET_VOUCHER]: setVoucher,
 	[AuthActionTypes.SET_TRANSACTION_FEE]: setTransactionFee,
 	[AuthActionTypes.SET_DELIVERY_DETAILS]: setDeliveryDetails,
 });

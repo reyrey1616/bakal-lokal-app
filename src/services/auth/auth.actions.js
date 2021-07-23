@@ -90,9 +90,9 @@ export const setDeliveryFee = (payload) => {
 	};
 };
 
-export const setDiscount = (payload) => {
+export const setStoreVoucher = (payload) => {
 	return {
-		type: AuthActionTypes.SET_DISCOUNT,
+		type: AuthActionTypes.SET_VOUCHER,
 		payload,
 	};
 };

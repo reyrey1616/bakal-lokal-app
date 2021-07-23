@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "../typography/text.component";
 import currencyFormat from "../../utils/currencyFormat";
 import styled from "styled-components";
@@ -9,8 +9,10 @@ import {
 	selectCurrentUser,
 	selectDeliveryFee,
 	selectDiscount,
+	selectVoucher,
 	selectTransactionFee,
 } from "../../services/auth/auth.selectors";
+import VoucherModal from "../vouchers/voucher-modal.component";
 
 const Flex = styled(View)`
 	flex-direction: row;
@@ -25,6 +27,7 @@ export const CartTotals = () => {
 	const _deliveryFee = useSelector(selectDeliveryFee);
 	const _discount = useSelector(selectDiscount);
 	const _transactionFee = useSelector(selectTransactionFee);
+	const _voucher = useSelector(selectVoucher);
 
 	const [data, setData] = useState({
 		subTotal: 0,
@@ -32,6 +35,7 @@ export const CartTotals = () => {
 		transactionFee: 15,
 		grandTotal: 0,
 		discount: 0,
+		voucher: null,
 	});
 
 	useEffect(() => {
@@ -40,20 +44,14 @@ export const CartTotals = () => {
 		}, 0);
 
 		const grandTotal =
-			subTotal +
-			data?.transactionFee +
-			data?.deliveryFee -
-			data?.discount;
+			subTotal + _transactionFee + _deliveryFee - _discount;
 
 		setData({
 			...data,
 			subTotal,
 			grandTotal,
-			deliveryFee: _deliveryFee,
-			discount: _discount,
-			transactionFee: _transactionFee,
 		});
-	}, [currentUser]);
+	}, [currentUser, _voucher]);
 	return (
 		<View
 			style={{
@@ -77,29 +75,22 @@ export const CartTotals = () => {
 				</Flex>
 				<Flex>
 					<Text variant="body">Delivery Fee</Text>
-					<Text> {currencyFormat(data && data?.deliveryFee)}</Text>
+					<Text> {currencyFormat(_deliveryFee)}</Text>
 				</Flex>
 				<Flex>
 					<Text variant="body">Order fee</Text>
-					<Text> {currencyFormat(data && data?.transactionFee)}</Text>
+					<Text> {currencyFormat(_transactionFee)}</Text>
 				</Flex>
-				{data && data.withCoupon ? (
+				{_voucher ? (
 					<Flex>
 						<Text variant="body">Discount</Text>
-						<Text> {currencyFormat(data && data?.discount)}</Text>
+						<Text> {currencyFormat(_discount)}</Text>
 					</Flex>
 				) : (
 					<Flex>
-						<TouchableOpacity>
-							<Text
-								variant="body"
-								style={{ color: colors.brand.orange }}
-							>
-								Apply Coupon
-							</Text>
-						</TouchableOpacity>
+						<VoucherModal />
 
-						<Text> {currencyFormat(data && data?.discount)}</Text>
+						<Text> {currencyFormat(_discount)}</Text>
 					</Flex>
 				)}
 			</View>

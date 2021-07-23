@@ -29,6 +29,11 @@ export const selectDiscount = createSelector(
 	[authSelector],
 	(auth) => auth.discount
 );
+
+export const selectVoucher = createSelector(
+	[authSelector],
+	(auth) => auth.voucher
+);
 export const selectTransactionFee = createSelector(
 	[authSelector],
 	(auth) => auth.transactionFee
