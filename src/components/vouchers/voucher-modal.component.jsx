@@ -9,11 +9,11 @@ import { Text } from "../typography/text.component";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setStoreVoucher } from "../../services/auth/auth.actions";
-const VoucherModal = ({ onAddVoucher }) => {
+const VoucherModal = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [voucher, setVoucher] = useState(null);
 	const [isExisting, setIsExisting] = useState(false);
-	const [searchString, setSearchString] = useState("PL HUB WALK-IN");
+	const [searchString, setSearchString] = useState("");
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 

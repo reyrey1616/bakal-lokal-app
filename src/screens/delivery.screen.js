@@ -198,12 +198,36 @@ const DeliveryScreen = ({ route }) => {
 						loading ? (
 							<Spinner color="orange" />
 						) : (
-							<DeliveryAddressForm
-								form={form}
-								setForm={(data) => {
-									onSetForm(data);
-								}}
-							/>
+							<>
+								<DeliveryAddressForm
+									form={form}
+									setForm={(data) => {
+										onSetForm(data);
+									}}
+								/>
+								<View
+									style={{
+										flexDirection: "row",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<Button
+										style={{ padding: 10, margin: 10 }}
+										rounded
+										warning
+										onPress={() => {
+											navigation.navigate("Map", {
+												previousScreen: route?.name,
+											});
+										}}
+									>
+										<ButtonTypes.PrimaryButtonText>
+											Choose Delivery Location on Map
+										</ButtonTypes.PrimaryButtonText>
+									</Button>
+								</View>
+							</>
 						)
 					) : (
 						<PickupLocation />

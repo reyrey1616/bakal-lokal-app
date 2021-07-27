@@ -14,8 +14,8 @@ import DeliveryScreen from "../../screens/delivery.screen";
 import CheckoutScreen from "../../screens/checkout.screen";
 import { DrawerActions } from "@react-navigation/native";
 import { getUserStart } from "../../services/auth/auth.actions";
-import { selectCurrentUser } from "../../services/auth/auth.selectors";
-import { useDispatch, useSelector } from "react-redux";
+import MapScreen from "../../screens/map.screen";
+import { useDispatch } from "react-redux";
 import setAuthToken from "../../utils/setAuthToken";
 import { asyncStoreGet } from "../../services/utils";
 import { View } from "react-native";
@@ -76,7 +76,7 @@ const MainNavigator = () => {
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"
-				initialRouteName="Menu"
+				initialRouteName="Delivery"
 				screenOptions={{
 					...TransitionPresets.ModalPresentationIOS,
 				}}
@@ -106,6 +106,7 @@ const MainNavigator = () => {
 					name="Checkout"
 					component={CheckoutScreen}
 				/>
+				<MainStackNavigator.Screen name="Map" component={MapScreen} />
 			</MainStackNavigator.Navigator>
 		</NavigationContainer>
 	);
