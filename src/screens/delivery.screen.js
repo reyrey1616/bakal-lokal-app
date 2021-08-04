@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Alert } from "react-native";
 import { Button } from "native-base";
 import BLHeader from "../components/header/header.component";
 import styled from "styled-components";
@@ -20,6 +20,7 @@ import {
 	selectCurrentUser,
 } from "../services/auth/auth.selectors";
 import { useSelector, useDispatch } from "react-redux";
+import { getDistance } from "geolib";
 import { setDeliveryDetails } from "../services/auth/auth.actions";
 
 const ScrollViewContainer = styled(ScrollView)`
@@ -36,7 +37,6 @@ const DeliveryScreen = ({ route }) => {
 	const loading = useSelector(selectAuthLoading);
 
 	useEffect(() => {
-		console.log(user);
 		dispatch(
 			setDeliveryDetails({
 				...form,
@@ -48,11 +48,31 @@ const DeliveryScreen = ({ route }) => {
 				postcode: user?.postcode,
 			})
 		);
-	}, []);
+
+		const lat = user?.lat;
+		const lng = user?.lng;
+
+		if (lat && lng) {
+			const dis = calculateDistance({
+				latitude: deliveryMarker?.latitude,
+				longitude: deliveryMarker?.longitude,
+			});
+		} else {
+			alert("Please set your delivery location.");
+		}
+	}, [user, form]);
 
 	useEffect(() => {
 		console.log(form);
 	}, [form]);
+
+	const calculateDistance = (to) => {
+		var dis = getDistance(
+			{ latitude: 10.7177168, longitude: 122.5598794 },
+			{ latitude: to?.latitude, longitude: to?.longitude }
+		);
+		return dis / 1000;
+	};
 
 	const onSetForm = (data) => {
 		dispatch(setDeliveryDetails(data));

@@ -84,8 +84,8 @@ const VoucherModal = () => {
 									}}
 								/>
 							</Item>
-							{searchString && loading === false && isExisting && (
-								<Label
+							{searchString && loading === false && isExisting ? (
+								<Text
 									style={{
 										textAlign: "center",
 										marginTop: 10,
@@ -93,10 +93,12 @@ const VoucherModal = () => {
 									}}
 								>
 									Coupon available!
-								</Label>
-							)}
+								</Text>
+							) : null}
 
-							{searchString && loading === false && !isExisting && (
+							{searchString &&
+							loading === false &&
+							!isExisting ? (
 								<Label
 									style={{
 										textAlign: "center",
@@ -106,9 +108,9 @@ const VoucherModal = () => {
 								>
 									Coupon not exist!
 								</Label>
-							)}
+							) : null}
 
-							{searchString && loading === true && (
+							{searchString && loading === true ? (
 								<Label
 									style={{
 										textAlign: "center",
@@ -118,7 +120,7 @@ const VoucherModal = () => {
 								>
 									Searching...
 								</Label>
-							)}
+							) : null}
 						</Form>
 						<View style={styles.optionContainer}>
 							<Button

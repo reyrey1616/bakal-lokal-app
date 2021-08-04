@@ -76,7 +76,7 @@ const MainNavigator = () => {
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"
-				initialRouteName="Delivery"
+				initialRouteName="Login"
 				screenOptions={{
 					...TransitionPresets.ModalPresentationIOS,
 				}}

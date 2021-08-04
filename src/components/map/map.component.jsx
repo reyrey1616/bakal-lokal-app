@@ -6,19 +6,40 @@ import ButtonTypes from "../utils/buttons.component";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Alert } from "react-native";
 import * as Location from "expo-location";
-const Map = () => {
+import { useDispatch } from "react-redux";
+import { setDeliveryLocation } from "../../services/auth/auth.actions";
+import { getDistance } from "geolib";
+import { useNavigation } from "@react-navigation/native";
+
+const Map = ({ user, previousScreen }) => {
+	const dispatch = useDispatch();
+	const navigation = useNavigation();
+
 	const [deliveryMarker, setDeliveryMarker] = useState({
 		latitude: 10.6987864,
 		longitude: 122.5485763,
 	});
 
+	const [distance, setDistance] = useState(0);
+
 	const [location, setLocation] = useState({
 		latitude: 10.6987864,
 		longitude: 122.5485763,
 	});
-	const [errorMsg, setErrorMsg] = useState(null);
 
 	useEffect(() => {
+		if (user?.lat && user?.lng) {
+			setDeliveryMarker({
+				latitude: user?.lat,
+				longitude: user?.lng,
+			});
+		} else {
+			setDeliveryMarker({
+				latitude: 10.7177168,
+				longitude: 122.5598794,
+			});
+		}
+
 		(async () => {
 			let { status } = await Location.requestForegroundPermissionsAsync();
 			if (status !== "granted") {
@@ -33,6 +54,23 @@ const Map = () => {
 			setLocation(location?.coords);
 		})();
 	}, []);
+
+	useEffect(() => {
+		const dis = calculateDistance({
+			latitude: deliveryMarker?.latitude,
+			longitude: deliveryMarker?.longitude,
+		});
+
+		setDistance(dis);
+	}, [deliveryMarker]);
+
+	const calculateDistance = (to) => {
+		var dis = getDistance(
+			{ latitude: 10.7177168, longitude: 122.5598794 },
+			{ latitude: to?.latitude, longitude: to?.longitude }
+		);
+		return dis / 1000;
+	};
 
 	return (
 		<>
@@ -53,7 +91,6 @@ const Map = () => {
 					draggable
 					coordinate={deliveryMarker}
 					onDragEnd={(e) => {
-						console.log(e.nativeEvent.coordinate);
 						setDeliveryMarker(e.nativeEvent.coordinate);
 					}}
 					title={"Delivery Location"}
@@ -112,13 +149,44 @@ const Map = () => {
 							to update the location.)
 						</Text>
 					</View>
+
+					<View
+						style={{
+							marginTop: 15,
+						}}
+					>
+						<Text variant="title">
+							{Math.ceil(distance)}KM from Bakal Lokal Hub
+						</Text>
+					</View>
 				</View>
 
 				<Button
 					block
 					warning
 					onPress={() => {
-						deliveryOptionSubmit();
+						if (
+							deliveryMarker?.latitude &&
+							deliveryMarker?.longitude &&
+							distance
+						) {
+							if (previousScreen === "Delivery") {
+								dispatch(
+									setDeliveryLocation({
+										lat: deliveryMarker?.latitude,
+										lng: deliveryMarker?.longitude,
+										distance,
+									})
+								);
+
+								navigation.navigate(`${previousScreen}`);
+							}
+						} else {
+							Alert.alert(
+								"Bakal Lokal",
+								"Please set your location."
+							);
+						}
 					}}
 				>
 					<ButtonTypes.PrimaryButtonText>

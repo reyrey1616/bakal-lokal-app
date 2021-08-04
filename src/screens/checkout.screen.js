@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
 import { Alert, ScrollView, View } from "react-native";
 import { Button } from "native-base";
@@ -54,6 +54,10 @@ const CheckoutScreen = ({ route }) => {
 	const discount = useSelector(selectDiscount);
 	const transactionFee = useSelector(selectTransactionFee);
 	const user = useSelector(selectCurrentUser);
+
+	useEffect(() => {
+		console.log(deliveryDetails);
+	}, []);
 
 	const onSelect = (val) => {
 		dispatch(

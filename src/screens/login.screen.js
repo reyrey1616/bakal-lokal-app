@@ -42,7 +42,7 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 
 	useEffect(() => {
 		if (currentUser && isAuthenticated) {
-			navigation.navigate("Home");
+			navigation.navigate("Menu");
 		}
 	}, [currentUser]);
 
@@ -55,7 +55,7 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 			dispatch(
 				loginStart(data, (token) => {
 					Alert.alert("Bakal Lokal", "Login Success");
-					navigation.navigate("Home");
+					navigation.navigate("Menu");
 				})
 			);
 		}
@@ -77,7 +77,7 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 							<Button transparent>
 								<Icon
 									onPress={() => {
-										navigation.navigate("Home");
+										navigation.navigate("Menu");
 									}}
 									name="arrow-back"
 									style={{

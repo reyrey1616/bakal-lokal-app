@@ -1,17 +1,17 @@
 import React from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
-import { ScrollView, View } from "react-native";
-import { Button } from "native-base";
+import { Alert, ScrollView } from "react-native";
+import { Spinner } from "native-base";
 import BLHeader from "../components/header/header.component";
-import CartTable from "../components/cart/cart-table.component";
 import styled from "styled-components";
-import { CartTotals } from "../components/cart/cart-totals.component";
 import { colors } from "../infra/theme/colors";
-import ButtonTypes from "../components/utils/buttons.component";
-import { useNavigation, useRoute } from "@react-navigation/core";
-import { selectCurrentUser } from "../services/auth/auth.selectors";
-import { useSelector } from "react-redux";
+import {
+	selectCurrentUser,
+	selectAuthLoading,
+} from "../services/auth/auth.selectors";
+import { useSelector, useDispatch } from "react-redux";
 import Map from "../components/map/map.component";
+import { useNavigation } from "@react-navigation/native";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -19,6 +19,14 @@ const ScrollViewContainer = styled(ScrollView)`
 
 const MapScreen = ({ route }) => {
 	const { previousScreen } = route?.params;
+	const navigation = useNavigation();
+	const user = useSelector(selectCurrentUser);
+	const loading = useSelector(selectAuthLoading);
+
+	if (!user) {
+		Alert.alert("Bakal Lokal", "Not authorized to access this page.");
+		navigation.navigate("Home");
+	}
 
 	return (
 		<SafeArea>
@@ -34,7 +42,12 @@ const MapScreen = ({ route }) => {
 					title="Delivery Location"
 					previousScreen={previousScreen}
 				/>
-				<Map />
+
+				{loading ? (
+					<Spinner color="orange" />
+				) : (
+					<Map user={user && user} previousScreen={previousScreen} />
+				)}
 			</ScrollViewContainer>
 		</SafeArea>
 	);

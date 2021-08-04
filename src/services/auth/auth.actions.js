@@ -133,3 +133,10 @@ export const addOrderFail = (payload) => {
 		payload,
 	};
 };
+
+export const setDeliveryLocation = (payload) => {
+	return {
+		type: AuthActionTypes.SET_DELIVERY_LOCATION,
+		payload,
+	};
+};

@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		position: "relative",
 		zIndex: 99,
+		backgroundColor: "white",
 	},
 	container: {
 		position: "relative",

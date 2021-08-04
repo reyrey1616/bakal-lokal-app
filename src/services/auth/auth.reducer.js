@@ -1,7 +1,6 @@
 import AuthActionTypes from "./auth.types";
 import { createReducer } from "../utils";
 import moment from "moment";
-import { Alert } from "react-native";
 const INITIAL_STATE = {
 	user: null,
 	error: null,
@@ -24,6 +23,9 @@ const INITIAL_STATE = {
 		paymentMethod: null,
 		selectedVoucher: null,
 		logistic: null,
+		lat: null,
+		lng: null,
+		distance: null,
 	},
 };
 
@@ -64,6 +66,7 @@ const register = (state) => {
 };
 
 const loadUser = (state, action) => {
+	console.log(action.payload);
 	return {
 		...state,
 		loading: false,
@@ -114,6 +117,18 @@ const setDeliveryDetails = (state, action) => {
 		deliveryDetails: action.payload,
 	};
 };
+
+const setDeliveryLocation = (state, action) => {
+	const { lat, lng, distance } = action.payload;
+
+	return {
+		...state,
+		loading: false,
+		// user: { ...state.user, lat, lng, distance },
+		deliveryDetails: { ...state?.deliveryDetails, lat, lng, distance },
+	};
+};
+
 const orderSuccess = (state, action) => {
 	return {
 		...state,
@@ -134,6 +149,9 @@ const orderSuccess = (state, action) => {
 			paymentMethod: null,
 			selectedVoucher: null,
 			logistic: null,
+			lat: null,
+			lng: null,
+			distance: null,
 		},
 	};
 };
@@ -163,4 +181,5 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.SET_VOUCHER]: setVoucher,
 	[AuthActionTypes.SET_TRANSACTION_FEE]: setTransactionFee,
 	[AuthActionTypes.SET_DELIVERY_DETAILS]: setDeliveryDetails,
+	[AuthActionTypes.SET_DELIVERY_LOCATION]: setDeliveryLocation,
 });
