@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Alert } from "react-native";
 import { Button } from "native-base";
 import BLHeader from "../components/header/header.component";
 import CartTable from "../components/cart/cart-table.component";
@@ -49,6 +49,15 @@ const CartScreen = ({ route }) => {
 						block
 						warning
 						onPress={() => {
+							console.log(currentUser);
+
+							if (currentUser?.cartItems?.length <= 0) {
+								Alert.alert(
+									"Please add item to your bayong to proceed."
+								);
+								return;
+							}
+
 							navigation.navigate("Delivery", {
 								previousScreen: page?.name,
 							});

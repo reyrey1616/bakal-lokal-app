@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
 import { Alert, ScrollView, View } from "react-native";
-import { Button } from "native-base";
+import { Button, Spinner, Content } from "native-base";
 import BLHeader from "../components/header/header.component";
 import styled from "styled-components";
 import { CartTotals } from "../components/cart/cart-totals.component";
@@ -16,9 +16,13 @@ import {
 	selectTransactionFee,
 	selectCurrentUser,
 } from "../services/auth/auth.selectors";
-import { setDeliveryDetails } from "../services/auth/auth.actions";
+import {
+	setDeliveryDetails,
+	setDeliveryFee,
+} from "../services/auth/auth.actions";
 import { useSelector, useDispatch } from "react-redux";
 import { addOrderStart } from "../services/auth/auth.actions";
+import axios from "axios";
 
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
@@ -39,10 +43,10 @@ const userData = {
 	postcode: "5000",
 };
 
-const paymentMethods = [
-	{ id: 1, name: "Gcash", content: "Lorem ipsum dolor sit amet" },
-	{ id: 2, name: "Bank transfer", content: "Lorem ipsum dolor sit amet" },
-];
+// const paymentMethods = [
+// 	{ id: 1, name: "Gcash", content: "Lorem ipsum dolor sit amet" },
+// 	{ id: 2, name: "Bank transfer", content: "Lorem ipsum dolor sit amet" },
+// ];
 
 const CheckoutScreen = ({ route }) => {
 	const { previousScreen } = route?.params;
@@ -55,11 +59,51 @@ const CheckoutScreen = ({ route }) => {
 	const transactionFee = useSelector(selectTransactionFee);
 	const user = useSelector(selectCurrentUser);
 
+	const [paymentMethodLoading, setPaymentMethodLoading] = useState(false);
+	const [paymentMethods, setPaymentMethods] = useState([]);
+
+	const getPaymentMethods = async () => {
+		try {
+			setPaymentMethodLoading(true);
+
+			const req = await axios.get("/payment-methods");
+
+			const response = await req?.data;
+
+			if (response?.success) {
+				setPaymentMethods(
+					response?.data?.filter((d) => d?.status === "Active")
+				);
+				setPaymentMethodLoading(false);
+			} else {
+				throw Error;
+			}
+		} catch (err) {
+			setPaymentMethodLoading(false);
+		}
+	};
+
 	useEffect(() => {
-		console.log(deliveryDetails);
+		getPaymentMethods();
 	}, []);
 
 	const onSelect = (val) => {
+		let deliveryFee = 0;
+
+		if (val === "Cash on Pick-up") {
+			deliveryFee = 0;
+		} else if (val === "GCASH") {
+			deliveryFee = 0;
+		} else if (val === "Direct Bank Transfer") {
+			deliveryFee = 0;
+		} else if (val === "Cash on Delivery") {
+			if (deliveryDetails?.logistic === "Lihog") {
+				const excessDistance = dataFromForm.distance - 3;
+				deliveryFee = 49 + excessDistance * 9;
+			}
+		}
+
+		setDeliveryFee(deliveryFee);
 		dispatch(
 			setDeliveryDetails({
 				...deliveryDetails,
@@ -204,6 +248,7 @@ const CheckoutScreen = ({ route }) => {
 	};
 	return (
 		<SafeArea>
+			<BLHeader title="Payment summary" previousScreen={previousScreen} />
 			<ScrollViewContainer
 				contentContainerStyle={{
 					flex: 1,
@@ -213,48 +258,51 @@ const CheckoutScreen = ({ route }) => {
 				}}
 			>
 				<View style={{ width: "100%" }}>
-					<BLHeader
-						title="Payment summary"
-						previousScreen={previousScreen}
-					/>
-					{paymentMethods?.map((data) => {
-						return (
-							<PaymentMethodItem
-								key={data?.id}
-								selected={
-									deliveryDetails?.paymentMethod ===
-									data?.name
-										? true
-										: false
-								}
-								name={data?.name}
-								content={data?.content}
-								onSelect={onSelect}
-							/>
-						);
-					})}
+					{paymentMethodLoading ? (
+						<Content>
+							<Spinner color="orange" />
+						</Content>
+					) : (
+						paymentMethods?.map((data) => {
+							return (
+								<PaymentMethodItem
+									key={data?.id}
+									selected={
+										deliveryDetails?.paymentMethod ===
+										data?.name
+											? true
+											: false
+									}
+									name={data?.name}
+									content={data?.instruction}
+									onSelect={onSelect}
+								/>
+							);
+						})
+					)}
 					<CartTotals userData={userData} />
 				</View>
-				<View
-					style={{
-						width: "100%",
-						padding: 10,
-						backgroundColor: "white",
+			</ScrollViewContainer>
+
+			<View
+				style={{
+					width: "100%",
+					padding: 10,
+					backgroundColor: "white",
+				}}
+			>
+				<Button
+					block
+					warning
+					onPress={() => {
+						handleCheckout();
 					}}
 				>
-					<Button
-						block
-						warning
-						onPress={() => {
-							handleCheckout();
-						}}
-					>
-						<ButtonTypes.PrimaryButtonText>
-							Proceed to checkout
-						</ButtonTypes.PrimaryButtonText>
-					</Button>
-				</View>
-			</ScrollViewContainer>
+					<ButtonTypes.PrimaryButtonText>
+						Proceed to checkout
+					</ButtonTypes.PrimaryButtonText>
+				</Button>
+			</View>
 		</SafeArea>
 	);
 };

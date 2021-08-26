@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
-import { ScrollView, View, Alert } from "react-native";
+import { ScrollView, View, Alert, Text } from "react-native";
 import { Button } from "native-base";
 import BLHeader from "../components/header/header.component";
 import styled from "styled-components";
@@ -36,6 +36,11 @@ const DeliveryScreen = ({ route }) => {
 	const user = useSelector(selectCurrentUser);
 	const loading = useSelector(selectAuthLoading);
 
+	const [deliveryMarker, setDeliveryMarker] = useState({
+		latitude: 10.6987864,
+		longitude: 122.5485763,
+	});
+
 	useEffect(() => {
 		dispatch(
 			setDeliveryDetails({
@@ -48,22 +53,34 @@ const DeliveryScreen = ({ route }) => {
 				postcode: user?.postcode,
 			})
 		);
-
-		const lat = user?.lat;
-		const lng = user?.lng;
-
-		if (lat && lng) {
-			const dis = calculateDistance({
-				latitude: deliveryMarker?.latitude,
-				longitude: deliveryMarker?.longitude,
-			});
-		} else {
-			alert("Please set your delivery location.");
-		}
-	}, [user, form]);
+	}, [user]);
 
 	useEffect(() => {
+		// console.log(user);
+		// console.log(form);
 		console.log(form);
+		if (form?.deliveryOption === "Delivery") {
+			const lat = user?.lat;
+			const lng = user?.lng;
+
+			if (lat && lng) {
+				const dis = calculateDistance({
+					latitude: lat,
+					longitude: lng,
+				});
+
+				dispatch(
+					setDeliveryDetails({
+						...form,
+						distance: Math.ceil(dis),
+						lat,
+						lng,
+					})
+				);
+			} else {
+				alert("Please set your delivery location.");
+			}
+		}
 	}, [form]);
 
 	const calculateDistance = (to) => {
@@ -79,10 +96,23 @@ const DeliveryScreen = ({ route }) => {
 	};
 
 	const deliveryOptionSubmit = () => {
-		navigation.navigate("Checkout", {
-			previousScreen: page?.name,
-			orderInfo: form,
-		});
+		if (form?.deliveryOption === "Delivery") {
+			if (form?.lat && form?.lng && form?.distance) {
+				navigation.navigate("Checkout", {
+					previousScreen: page?.name,
+					orderInfo: form,
+				});
+			} else {
+				alert("Please set your delivery location.");
+
+				return;
+			}
+		} else {
+			navigation.navigate("Checkout", {
+				previousScreen: page?.name,
+				orderInfo: form,
+			});
+		}
 	};
 	return (
 		<SafeArea>
@@ -158,14 +188,12 @@ const DeliveryScreen = ({ route }) => {
 								<View style={{ width: "50%" }}>
 									<CustomDatePicker
 										onSelectDate={(date) => {
-											console.log(date);
 											dispatch(
 												setDeliveryDetails({
 													...form,
 													date,
 												})
 											);
-											console.log(form);
 										}}
 										value={moment(form?.date).format(
 											"YYYY-MM-DD"
@@ -184,7 +212,6 @@ const DeliveryScreen = ({ route }) => {
 								<View style={{ width: "50%" }}>
 									<CustomDatePicker
 										onSelectDate={(time) => {
-											console.log(time);
 											dispatch(
 												setDeliveryDetails({
 													...form,
@@ -220,16 +247,18 @@ const DeliveryScreen = ({ route }) => {
 						) : (
 							<>
 								<DeliveryAddressForm
-									form={form}
+									form={user}
 									setForm={(data) => {
 										onSetForm(data);
 									}}
 								/>
+
 								<View
 									style={{
 										flexDirection: "row",
 										alignItems: "center",
 										justifyContent: "center",
+										width: "100%",
 									}}
 								>
 									<Button
