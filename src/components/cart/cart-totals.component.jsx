@@ -51,7 +51,7 @@ export const CartTotals = () => {
 			subTotal,
 			grandTotal,
 		});
-	}, [currentUser, _voucher]);
+	}, [currentUser, _voucher, _deliveryFee]);
 	return (
 		<View
 			style={{

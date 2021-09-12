@@ -11,6 +11,8 @@ import {
 	updateCartFail,
 	addOrderSuccess,
 	addOrderFail,
+	updateCustomerInfoSuccess,
+	updateCustomerInfoFail,
 } from "./auth.actions";
 import { Alert } from "react-native";
 import AuthActionTypes from "./auth.types";
@@ -179,17 +181,16 @@ function* addOrderAsync({ payload, callback }) {
 			billing_baranggay,
 			lat,
 			lng,
-			email,
-			fullName,
+			// email,
+			// fullName,
 			deliveryOption,
 			contactNumber,
 			// merchants,
 			// orderDetailsContent,
 			pickupDate,
 			pickupTime,
-			logistic,
 		} = payload;
-
+		alert(deliveryFee);
 		const orderReq = yield axios.post(`/orders/${customer}`, {
 			pickupDate,
 			pickupTime,
@@ -212,9 +213,10 @@ function* addOrderAsync({ payload, callback }) {
 			lat,
 			lng,
 			contactNumber,
+
 			// merchants,
 			// orderDetailsContent,
-			logistic,
+			logistic: "Lihog",
 			orderDate: new Date(Date.now()),
 		});
 
@@ -253,6 +255,99 @@ function* addOrderAsync({ payload, callback }) {
 	}
 }
 
+function* updateCustomerInfo({ payload, callback }) {
+	try {
+		console.log(payload);
+		let resp;
+		if (payload.actionType === "checkout") {
+			const {
+				fname,
+				mname,
+				lname,
+				contactNumber,
+				email,
+				billing_baranggay,
+				billing_fullAddress,
+				billing_city,
+				billing_postcode,
+				billing_municipality,
+				billing_province,
+				lat,
+				lng,
+			} = payload;
+
+			resp = yield axios.put(`/customers`, {
+				fname,
+				mname,
+				lname,
+				contactNumber,
+				email,
+				billing_fullAddress,
+				billing_city,
+				billing_postcode,
+				billing_municipality,
+				billing_province,
+				billing_baranggay,
+				lat,
+				lng,
+				fullAddress: billing_fullAddress,
+				baranggay: billing_baranggay,
+				postcode: billing_postcode,
+				city: billing_city,
+				municipality: billing_municipality,
+				province: billing_province,
+
+				cartItems: [],
+			});
+		} else if (payload.actionType === "profile") {
+			const formData = new FormData();
+			formData.append("image", payload.image);
+			formData.append("fname", payload.fname);
+			formData.append("mname", payload.mname);
+			formData.append("contactNumber", payload.contactNumber);
+			formData.append("gender", payload.gender);
+			formData.append("bdate", payload.bdate);
+			resp = yield axios.put(`/customers/update-with-image`, formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			});
+		} else {
+			resp = yield axios.put(`/customers`, {
+				billing_fullAddress: payload.billing_fullAddress,
+				billing_baranggay: payload.billing_baranggay,
+				billing_postcode: payload.billing_postcode,
+				billing_city: payload.billing_city,
+				billing_municipality: payload.billing_municipality,
+				billing_province: payload.billing_province,
+				fullAddress: payload.billing_fullAddress,
+				baranggay: payload.billing_baranggay,
+				city: payload.billing_city,
+				municipality: payload.billing_municipality,
+				province: payload.billing_province,
+				lat: payload.lat,
+				lng: payload.lng,
+			});
+		}
+		const data = yield resp.data.data;
+
+		yield put(updateCustomerInfoSuccess(data));
+		callback();
+	} catch (error) {
+		if (error.response && error.response.data.error) {
+			const errorResponse = error.response.data.error;
+			yield put(updateCustomerInfoFail(errorResponse));
+			fireAlert("Bakal Lokal", errorResponse);
+		} else {
+			yield put(updateCustomerInfoFail(error.message));
+			Alert.alert(
+				"Bakal Lokal",
+				"Error executing action. Please try again later!"
+			);
+		}
+	}
+}
+
 function* addOrderStart() {
 	yield takeLatest(AuthActionTypes.ADD_ORDER_START, addOrderAsync);
 }
@@ -273,6 +368,13 @@ function* loadUserStart() {
 	yield takeLatest(AuthActionTypes.GET_USER_START, loadUserAsync);
 }
 
+function* updateCustomerStart() {
+	yield takeLatest(
+		AuthActionTypes.UPDATE_CUSTOMER_INFO_START,
+		updateCustomerInfo
+	);
+}
+
 export default function* AuthSagas() {
 	yield all([
 		call(loginStart),
@@ -280,5 +382,6 @@ export default function* AuthSagas() {
 		call(registerStart),
 		call(updateCartStart),
 		call(addOrderStart),
+		call(updateCustomerStart),
 	]);
 }

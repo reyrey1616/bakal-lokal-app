@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Item, Label, Input } from "native-base";
 const DeliveryAddressForm = ({ setForm, form }) => {
-	console.log(form);
 	return (
 		<View
 			style={{

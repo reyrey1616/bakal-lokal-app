@@ -15,14 +15,32 @@ import {
 	selectDiscount,
 	selectTransactionFee,
 	selectCurrentUser,
+	selectAuthState,
 } from "../services/auth/auth.selectors";
 import {
 	setDeliveryDetails,
 	setDeliveryFee,
 } from "../services/auth/auth.actions";
 import { useSelector, useDispatch } from "react-redux";
-import { addOrderStart } from "../services/auth/auth.actions";
+import {
+	addOrderStart,
+	updateCustomerInfoStart,
+} from "../services/auth/auth.actions";
 import axios from "axios";
+
+const updateCouponUsage = async (coupon) => {
+	if (!coupon) return;
+
+	try {
+		const request = await axios.put(`/coupons/use/${coupon}`);
+		const response = await request.data;
+		if (response?.success === false) {
+			throw Error;
+		}
+	} catch (error) {
+		Alert.alert("Bakal Lokal", "Error updating voucher's usage!");
+	}
+};
 
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
@@ -58,7 +76,7 @@ const CheckoutScreen = ({ route }) => {
 	const discount = useSelector(selectDiscount);
 	const transactionFee = useSelector(selectTransactionFee);
 	const user = useSelector(selectCurrentUser);
-
+	const authState = useSelector(selectAuthState);
 	const [paymentMethodLoading, setPaymentMethodLoading] = useState(false);
 	const [paymentMethods, setPaymentMethods] = useState([]);
 
@@ -84,6 +102,7 @@ const CheckoutScreen = ({ route }) => {
 	};
 
 	useEffect(() => {
+		console.log(authState);
 		getPaymentMethods();
 	}, []);
 
@@ -98,12 +117,15 @@ const CheckoutScreen = ({ route }) => {
 			deliveryFee = 0;
 		} else if (val === "Cash on Delivery") {
 			if (deliveryDetails?.logistic === "Lihog") {
-				const excessDistance = dataFromForm.distance - 3;
+				const excessDistance = Math.ceil(deliveryDetails?.distance) - 3;
 				deliveryFee = 49 + excessDistance * 9;
 			}
 		}
 
-		setDeliveryFee(deliveryFee);
+		if (deliveryDetails?.deliveryOption !== "Pick-up") {
+			dispatch(setDeliveryFee(deliveryFee));
+		}
+
 		dispatch(
 			setDeliveryDetails({
 				...deliveryDetails,
@@ -116,7 +138,6 @@ const CheckoutScreen = ({ route }) => {
 		const {
 			paymentMethod,
 			deliveryOption,
-			logistic,
 			selectedVoucher,
 		} = deliveryDetails;
 
@@ -124,8 +145,6 @@ const CheckoutScreen = ({ route }) => {
 			pickupTime: deliveryDetails?.time,
 			pickupDate: deliveryDetails?.date,
 		};
-
-		console.log(pickUpDateTime);
 
 		const subTotal = user?.cartItems?.reduce((acc, item) => {
 			return item?.subTotal + acc;
@@ -205,8 +224,8 @@ const CheckoutScreen = ({ route }) => {
 				billing_postcode: deliveryDetails?.postcode,
 				billing_baranggay: deliveryDetails?.baranggay,
 				billing_destination: "Visayas",
-				lat: 0,
-				lng: 0,
+				lat: deliveryDetails?.lat,
+				lng: deliveryDetails?.lng,
 				email: user?.email,
 				contactNumber: user?.contactNumber,
 				fullName: user?.fname + " " + user?.mname + " " + user?.lname,
@@ -224,28 +243,42 @@ const CheckoutScreen = ({ route }) => {
 				addOrderStart({
 					payload: newOrder,
 					callback: async () => {
-						Alert.alert("Order Successfully!");
-						// const customerInfo = {
-						// 	...deliveryAddressData,
-						// 	actionType: "checkout",
-						// };
-						// if (selectedVoucher) {
-						// 	await updateCouponUsage(selectedVoucher);
-						// }
-						// updateCustomer({
-						// 	payload: customerInfo,
-						// 	callback: async () => {
-						// 		Alert.alert("Order Successfully!");
-						// 		setTimeout(() => {
-						// 			navigation.navigate("Products");
-						// 		}, 1500);
-						// 	},
-						// });
+						const customerInfo = {
+							email: user?.email,
+							fname: user?.fname,
+							mname: user?.mname,
+							contactNumber: user?.contactNumber,
+							billing_baranggay: deliveryDetails?.baranggay,
+							billing_fullAddress: deliveryDetails?.fullAddress,
+							billing_city: deliveryDetails?.city,
+							billing_postcode: deliveryDetails?.postcode,
+							billing_province: deliveryDetails?.province,
+							lat: deliveryDetails?.lat,
+							lng: deliveryDetails?.lng,
+							actionType: "checkout",
+						};
+
+						console.log(selectedVoucher);
+						if (selectedVoucher) {
+							await updateCouponUsage(selectedVoucher);
+						}
+						dispatch(
+							updateCustomerInfoStart({
+								payload: customerInfo,
+								callback: async () => {
+									Alert.alert("Order Successfully Placed!");
+									setTimeout(() => {
+										navigation.navigate("Products");
+									}, 1500);
+								},
+							})
+						);
 					},
 				})
 			);
 		}
 	};
+
 	return (
 		<SafeArea>
 			<BLHeader title="Payment summary" previousScreen={previousScreen} />
@@ -266,7 +299,7 @@ const CheckoutScreen = ({ route }) => {
 						paymentMethods?.map((data) => {
 							return (
 								<PaymentMethodItem
-									key={data?.id}
+									key={data?._id}
 									selected={
 										deliveryDetails?.paymentMethod ===
 										data?.name

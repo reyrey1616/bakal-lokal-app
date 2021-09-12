@@ -9,7 +9,7 @@ import {
 	selectCurrentUser,
 	selectAuthLoading,
 } from "../services/auth/auth.selectors";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Map from "../components/map/map.component";
 import { useNavigation } from "@react-navigation/native";
 const ScrollViewContainer = styled(ScrollView)`

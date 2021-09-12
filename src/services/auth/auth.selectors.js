@@ -2,6 +2,8 @@ import { createSelector } from "reselect";
 
 const authSelector = (state) => state.auth;
 
+export const selectAuthState = createSelector([authSelector], (auth) => auth);
+
 export const selectAuthLoading = createSelector(
 	[authSelector],
 	(auth) => auth.loading

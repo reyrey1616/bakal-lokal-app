@@ -165,6 +165,8 @@ const Map = ({ user, previousScreen }) => {
 					block
 					warning
 					onPress={() => {
+
+						
 						if (
 							deliveryMarker?.latitude &&
 							deliveryMarker?.longitude &&

@@ -182,4 +182,8 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.SET_TRANSACTION_FEE]: setTransactionFee,
 	[AuthActionTypes.SET_DELIVERY_DETAILS]: setDeliveryDetails,
 	[AuthActionTypes.SET_DELIVERY_LOCATION]: setDeliveryLocation,
+
+	[AuthActionTypes.UPDATE_CUSTOMER_INFO_START]: authLoading,
+	[AuthActionTypes.UPDATE_CUSTOMER_INFO_SUCCESS]: updateUser,
+	[AuthActionTypes.UPDATE_CUSTOMER_INFO_FAIL]: authFail,
 });

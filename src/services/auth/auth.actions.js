@@ -140,3 +140,26 @@ export const setDeliveryLocation = (payload) => {
 		payload,
 	};
 };
+
+// UPDATE CUSTOMER INFO
+export const updateCustomerInfoStart = ({ payload, callback = () => {} }) => {
+	return {
+		type: AuthActionTypes.UPDATE_CUSTOMER_INFO_START,
+		payload,
+		callback,
+	};
+};
+
+export const updateCustomerInfoSuccess = (payload) => {
+	return {
+		type: AuthActionTypes.UPDATE_CUSTOMER_INFO_SUCCESS,
+		payload,
+	};
+};
+
+export const updateCustomerInfoFail = (payload) => {
+	return {
+		type: AuthActionTypes.UPDATE_CUSTOMER_INFO_FAIL,
+		payload,
+	};
+};

@@ -35,6 +35,13 @@ const DeliveryScreen = ({ route }) => {
 	const form = useSelector(selectDeliveryDetails);
 	const user = useSelector(selectCurrentUser);
 	const loading = useSelector(selectAuthLoading);
+	const [deliveryAddress, setDeliveryAddress] = useState({
+		fullAddress: "",
+		baranggay: "",
+		city: "",
+		province: "",
+		postcode: "",
+	});
 
 	const [deliveryMarker, setDeliveryMarker] = useState({
 		latitude: 10.6987864,
@@ -42,46 +49,43 @@ const DeliveryScreen = ({ route }) => {
 	});
 
 	useEffect(() => {
-		dispatch(
-			setDeliveryDetails({
-				...form,
-				baranggay: user?.baranggay,
-				fullAddress: user?.fullAddress,
-				city: user?.city,
-				baranggay: user?.baranggay,
-				province: user?.province,
-				postcode: user?.postcode,
-			})
-		);
+		setDeliveryAddress({
+			baranggay: user?.baranggay,
+			fullAddress: user?.fullAddress,
+			city: user?.city,
+			baranggay: user?.baranggay,
+			province: user?.province,
+			postcode: user?.postcode,
+		});
 	}, [user]);
 
-	useEffect(() => {
-		// console.log(user);
-		// console.log(form);
-		console.log(form);
-		if (form?.deliveryOption === "Delivery") {
-			const lat = user?.lat;
-			const lng = user?.lng;
+	// useEffect(() => {
+	// 	// console.log(user);
+	// 	// console.log(form);
+	// 	console.log(form);
+	// 	if (form?.deliveryOption === "Delivery") {
+	// 		const lat = form?.lat;
+	// 		const lng = form?.lng;
 
-			if (lat && lng) {
-				const dis = calculateDistance({
-					latitude: lat,
-					longitude: lng,
-				});
+	// 		if (lat && lng) {
+	// 			const dis = calculateDistance({
+	// 				latitude: lat,
+	// 				longitude: lng,
+	// 			});
 
-				dispatch(
-					setDeliveryDetails({
-						...form,
-						distance: Math.ceil(dis),
-						lat,
-						lng,
-					})
-				);
-			} else {
-				alert("Please set your delivery location.");
-			}
-		}
-	}, [form]);
+	// 			dispatch(
+	// 				setDeliveryDetails({
+	// 					...form,
+	// 					distance: Math.ceil(dis),
+	// 					lat,
+	// 					lng,
+	// 				})
+	// 			);
+	// 		} else {
+	// 			alert("Please set your delivery location.");
+	// 		}
+	// 	}
+	// }, [form]);
 
 	const calculateDistance = (to) => {
 		var dis = getDistance(
@@ -92,20 +96,36 @@ const DeliveryScreen = ({ route }) => {
 	};
 
 	const onSetForm = (data) => {
-		dispatch(setDeliveryDetails(data));
+		console.log(data);
+		setDeliveryAddress(data);
 	};
 
 	const deliveryOptionSubmit = () => {
 		if (form?.deliveryOption === "Delivery") {
-			if (form?.lat && form?.lng && form?.distance) {
-				navigation.navigate("Checkout", {
-					previousScreen: page?.name,
-					orderInfo: form,
-				});
+			if (deliveryAddress?.fullAddress === "") {
+				alert("Please set your address line");
+			} else if (deliveryAddress?.baranggay === "") {
+				alert("Please set your baranggay");
+			} else if (deliveryAddress?.city === "") {
+				alert("Please set your city");
+			} else if (deliveryAddress?.province === "") {
+				alert("Please set your province");
+			} else if (deliveryAddress?.postcode === "") {
+				alert("Please set your postcode");
 			} else {
-				alert("Please set your delivery location.");
+				if (form?.lat && form?.lng && form?.distance) {
+					navigation.navigate("Checkout", {
+						previousScreen: page?.name,
+						orderInfo: form,
+					});
+					dispatch(
+						setDeliveryDetails({ ...form, ...deliveryAddress })
+					);
+				} else {
+					alert("Please set your delivery location.");
 
-				return;
+					return;
+				}
 			}
 		} else {
 			navigation.navigate("Checkout", {
@@ -247,8 +267,9 @@ const DeliveryScreen = ({ route }) => {
 						) : (
 							<>
 								<DeliveryAddressForm
-									form={user}
+									form={deliveryAddress}
 									setForm={(data) => {
+										console.log(data);
 										onSetForm(data);
 									}}
 								/>

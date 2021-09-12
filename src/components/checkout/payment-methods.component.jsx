@@ -6,11 +6,11 @@ import {
 	CollapseHeader,
 	CollapseBody,
 } from "accordion-collapse-react-native";
-import { CheckBox } from "native-base";
 import { colors } from "../../infra/theme/colors";
 import styled from "styled-components";
 import { Text } from "../typography/text.component";
 import { AntDesign } from "@expo/vector-icons";
+import RenderHtml from "react-native-render-html";
 
 const CollapseItem = styled(Collapse)`
 	padding: 15px;
@@ -50,7 +50,7 @@ const PaymentMethodItem = ({ name, content, selected, onSelect }) => {
 					</Text>
 				</CollapseHeader>
 				<CollapseBody style={{ padding: 10 }}>
-					<Text>{content}</Text>
+					<RenderHtml source={{ html: content }} />
 				</CollapseBody>
 			</CollapseItem>
 		</TouchableHighlight>
