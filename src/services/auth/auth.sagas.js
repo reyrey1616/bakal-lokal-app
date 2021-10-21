@@ -34,8 +34,6 @@ function* signInAsync({ payload, callback }) {
 
 		loginResponse = yield loginRequest.data;
 
-		console.log(loginResponse);
-
 		if (!loginRequest.token && loginResponse.error) {
 			if (loginResponse.error === "Email not found") {
 				Alert.alert("Email does not exists!");

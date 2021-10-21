@@ -258,7 +258,7 @@ const CheckoutScreen = ({ route }) => {
 							actionType: "checkout",
 						};
 
-						console.log(selectedVoucher);
+					
 						if (selectedVoucher) {
 							await updateCouponUsage(selectedVoucher);
 						}

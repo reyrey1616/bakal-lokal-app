@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	createStackNavigator,
 	TransitionPresets,
@@ -15,7 +15,7 @@ import CheckoutScreen from "../../screens/checkout.screen";
 import { DrawerActions } from "@react-navigation/native";
 import { getUserStart } from "../../services/auth/auth.actions";
 import MapScreen from "../../screens/map.screen";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import setAuthToken from "../../utils/setAuthToken";
 import { asyncStoreGet } from "../../services/utils";
 import { View } from "react-native";
@@ -23,6 +23,8 @@ import { SafeArea } from "../../components/utils/safe-area.component";
 import { Text } from "../../components/typography/text.component";
 import { colors } from "../theme/colors";
 import { Spacer } from "../../components/spacer/spacer.component";
+import { selectAuthLoading } from "../../services/auth/auth.selectors";
+import { Spinner, Content } from "native-base";
 
 export const navigationRef = React.createRef();
 
@@ -58,6 +60,9 @@ const SampleScreen = () => (
 
 const MainNavigator = () => {
 	const dispatch = useDispatch();
+	const authLoading = useSelector(selectAuthLoading);
+
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
 		const fetchUser = async () => {
@@ -67,12 +72,24 @@ const MainNavigator = () => {
 				setAuthToken(token);
 				dispatch(getUserStart());
 			}
+
+			console.log(authLoading);
 		};
 
 		fetchUser();
 	}, [dispatch]);
 
-	return (
+	useEffect(() => {
+		if (authLoading) {
+			setIsLoaded(true);
+		}
+	}, [authLoading]);
+
+	return !isLoaded ? (
+		<Content>
+			<Spinner color="orange" />
+		</Content>
+	) : (
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"

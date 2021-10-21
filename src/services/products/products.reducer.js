@@ -29,7 +29,7 @@ const getSaleProducts = (state, action) => {
 	return {
 		...state,
 		loading: false,
-		saleProducts: action.payload,
+		onSaleProducts: action.payload,
 		error: action.payload,
 	};
 };

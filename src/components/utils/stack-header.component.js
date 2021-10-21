@@ -8,6 +8,7 @@ import {
 	selectCurrentUser,
 } from "../../services/auth/auth.selectors";
 import { useSelector } from "react-redux";
+import { Container, Header, Content, Button, Icon } from "native-base";
 export const StackHeader = ({ previousScreen }) => {
 	const navigation = useNavigation();
 	const isAuthenticated = useSelector(selectAuthentication);
@@ -23,19 +24,23 @@ export const StackHeader = ({ previousScreen }) => {
 				justifyContent: "space-between",
 				width: "100%",
 				alignItems: "center",
-				paddingLeft: 10,
+				paddingLeft: 0,
+				paddingTop: 0,
 				paddingRight: 10,
 				backgroundColor: "rgba(0,0,0.3)",
 			}}
 		>
-			<AntDesign
-				name="arrowleft"
-				size={24}
-				color="white"
-				onPress={() => {
-					navigation.navigate(`${previousScreen}`);
-				}}
-			/>
+			<Button warning style={{ padding: 10 }}>
+				<AntDesign
+					name="arrowleft"
+					size={24}
+					color="white"
+					onPress={() => {
+						navigation.navigate(`${previousScreen}`);
+					}}
+				/>
+			</Button>
+
 			<TouchableOpacity
 				style={{ padding: 10, paddingTop: 15 }}
 				onPress={async () => {

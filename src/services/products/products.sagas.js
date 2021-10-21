@@ -51,8 +51,6 @@ function* getProductsByMerchantAsync({ merchantId }) {
 			m.categoryArray = m.categories.map((c) => c.slug);
 		});
 
-		console.log(response);
-
 		yield put(getProductsByMerchantSuccess(response));
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
@@ -86,6 +84,7 @@ function* getOnSaleProductsAsync() {
 		}
 	}
 }
+
 function* getProductsStart() {
 	yield takeLatest(ProductActionTypes.GET_PRODUCTS_START, getProductsAsync);
 }
@@ -107,7 +106,7 @@ function* getProductsByMerchant() {
 export default function* AuthSagas() {
 	yield all([
 		call(getProductsStart),
-		call(getProductsOnSaleStart),
 		call(getProductsByMerchant),
+		call(getProductsOnSaleStart),
 	]);
 }
