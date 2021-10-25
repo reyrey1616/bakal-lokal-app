@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { SafeArea } from "../components/utils/safe-area.component";
 import HeaderWithSearch from "../components/header-with-search/header-with-search.component";
@@ -13,15 +13,25 @@ import {
 	selectMerchantLoading,
 } from "../services/merchants/merchants.selectors";
 import { Spinner, Content } from "native-base";
+import { filter } from "domutils";
 const ShopsScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
 
 	const loading = useSelector(selectMerchantLoading);
 	const merchants = useSelector(selectMerchants);
+	const [textString, setTextString] = useState("");
 
 	useEffect(() => {
 		dispatch(getMerchantsStart());
 	}, [dispatch]);
+
+	const onFilterMerchant = () => {
+		const filtered = merchants?.filter((m) => {
+			return m.name.toLowerCase().includes(textString?.toLowerCase());
+		});
+
+		return filtered;
+	};
 
 	return (
 		<SafeArea>
@@ -32,7 +42,7 @@ const ShopsScreen = ({ navigation }) => {
 					}}
 				/>
 				<PageHeader title="Merchants" />
-				<ShopsWithSearch />
+				<ShopsWithSearch onTextSearch={(val) => setTextString(val)} />
 
 				{loading ? (
 					<Content>
@@ -41,7 +51,7 @@ const ShopsScreen = ({ navigation }) => {
 				) : (
 					<MerchantsContainer
 						navigation={navigation}
-						merchants={merchants}
+						merchants={onFilterMerchant()}
 					/>
 				)}
 			</View>

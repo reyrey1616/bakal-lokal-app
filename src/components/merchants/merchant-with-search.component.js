@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Item, Picker, Input } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { colors } from "../../infra/theme/colors";
-export const ShopsWithSearch = () => {
+export const ShopsWithSearch = ({ onTextSearch }) => {
 	return (
 		<View
 			style={{
@@ -24,6 +24,9 @@ export const ShopsWithSearch = () => {
 				<Input
 					placeholder="Search merchant"
 					placeholderTextColor="#bfc6ea"
+					onChangeText={(val) => {
+						onTextSearch(val);
+					}}
 				/>
 			</Item>
 			{/* 
