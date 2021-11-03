@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, Image, Dimensions, Text } from "react-native";
+import { ScrollView, View, Image, Text } from "react-native";
 // import { Text } from "../typography/text.component";
 import styled from "styled-components";
 import { Spacer } from "../spacer/spacer.component";
@@ -23,7 +23,6 @@ const CategoryItemImageContainer = styled(Image)`
 export const CategoriesList = () => {
 	const categories = useSelector(selectCategories);
 
-	console.log(categories);
 	return (
 		<View style={{ padding: 15 }}>
 			<SectionTitle text1="Product" text2="categories" />

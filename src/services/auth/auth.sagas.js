@@ -55,7 +55,6 @@ function* signInAsync({ payload, callback }) {
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
 		if (errorResponse) {
-			console.log(errorResponse);
 			yield put(loginFail(errorResponse));
 
 			Alert.alert("Bakal Lokal", errorResponse);
@@ -67,7 +66,6 @@ function* signUpAsync({ payload, callback }) {
 	try {
 		const request = yield axios.post("/customers", payload);
 		const response = yield request.data;
-		console.log;
 		if (response.success === true) {
 			yield put(registerSuccess(response.data));
 			callback(response.data);
@@ -75,7 +73,6 @@ function* signUpAsync({ payload, callback }) {
 			throw Error;
 		}
 	} catch (error) {
-		console.log(error);
 		if (error.response && error.response.data.error) {
 			const errorResponse = error.response.data.error;
 			yield put(registerFail(errorResponse));
@@ -188,7 +185,6 @@ function* addOrderAsync({ payload, callback }) {
 			pickupDate,
 			pickupTime,
 		} = payload;
-		alert(deliveryFee);
 		const orderReq = yield axios.post(`/orders/${customer}`, {
 			pickupDate,
 			pickupTime,
@@ -299,7 +295,7 @@ function* updateCustomerInfo({ payload, callback }) {
 			});
 		} else if (payload.actionType === "profile") {
 			const formData = new FormData();
-			formData.append("image", payload.image);
+			// formData.append("image", payload?.image);
 			formData.append("fname", payload.fname);
 			formData.append("mname", payload.mname);
 			formData.append("contactNumber", payload.contactNumber);

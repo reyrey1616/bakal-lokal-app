@@ -13,24 +13,52 @@ import {
 	selectMerchantLoading,
 } from "../services/merchants/merchants.selectors";
 import { Spinner, Content } from "native-base";
-import { filter } from "domutils";
 const ShopsScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
 
 	const loading = useSelector(selectMerchantLoading);
 	const merchants = useSelector(selectMerchants);
-	const [textString, setTextString] = useState("");
+	const [merchantsToDisplay, setMerchantsToDisplay] = useState([]);
+	const [selectedCategory, setSelectedCategory] = useState("");
 
 	useEffect(() => {
 		dispatch(getMerchantsStart());
 	}, [dispatch]);
 
-	const onFilterMerchant = () => {
+	useEffect(() => {
+		setMerchantsToDisplay(merchants && merchants);
+	}, [loading]);
+
+	const onFilterMerchant = (val) => {
+		if (!val) return;
+
+		if (val === "") {
+			setMerchantsToDisplay(merchants && merchants);
+		}
+
+		let filtered = merchants?.filter((m) => {
+			return m.name.toLowerCase().includes(val?.toLowerCase());
+		});
+		setSelectedCategory("");
+		setMerchantsToDisplay(filtered);
+	};
+
+	const selectCategory = (val) => {
+		if (!val) return;
+
+		if (val === "" || val === null || val === undefined) {
+			setMerchantsToDisplay(merchants && merchants);
+		}
+		setSelectedCategory(val);
 		const filtered = merchants?.filter((m) => {
-			return m.name.toLowerCase().includes(textString?.toLowerCase());
+			const isExistingOnCategories = m?.categories?.find(
+				(c) => c?.name === val
+			);
+
+			return isExistingOnCategories;
 		});
 
-		return filtered;
+		setMerchantsToDisplay(filtered);
 	};
 
 	return (
@@ -42,17 +70,27 @@ const ShopsScreen = ({ navigation }) => {
 					}}
 				/>
 				<PageHeader title="Merchants" />
-				<ShopsWithSearch onTextSearch={(val) => setTextString(val)} />
 
 				{loading ? (
 					<Content>
 						<Spinner color="orange" />
 					</Content>
 				) : (
-					<MerchantsContainer
-						navigation={navigation}
-						merchants={onFilterMerchant()}
-					/>
+					<>
+						<ShopsWithSearch
+							onTextSearch={(val) => onFilterMerchant(val)}
+							onSelectCategory={(val) => selectCategory(val)}
+							selectedCategory={selectedCategory}
+						/>
+						<MerchantsContainer
+							navigation={navigation}
+							merchants={
+								merchants &&
+								merchantsToDisplay &&
+								merchantsToDisplay
+							}
+						/>
+					</>
 				)}
 			</View>
 		</SafeArea>

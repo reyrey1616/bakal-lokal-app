@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import ButtonTypes from "./buttons.component";
-import { AntDesign } from "@expo/vector-icons";
-import { colors } from "../../infra/theme/colors";
 import { Item } from "native-base";
-import moement from "moment";
 
 const CustomDatePicker = ({ onSelectDate, value, mode, title, icon }) => {
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -33,6 +29,7 @@ const CustomDatePicker = ({ onSelectDate, value, mode, title, icon }) => {
 					alignItems: "center",
 					paddingTop: 10,
 					paddingBottom: 10,
+					width: "100%",
 				}}
 			>
 				<Text

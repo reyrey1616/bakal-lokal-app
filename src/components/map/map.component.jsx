@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setDeliveryLocation } from "../../services/auth/auth.actions";
 import { getDistance } from "geolib";
 import { useNavigation } from "@react-navigation/native";
+import BLLogo from "../../assets/logo/bl-basket.png";
 
 const Map = ({ user, previousScreen }) => {
 	const dispatch = useDispatch();
@@ -97,10 +98,13 @@ const Map = ({ user, previousScreen }) => {
 				/>
 
 				<Marker
-					coordinate={location}
-					title={"Current Location"}
-					pinColor="blue"
-				/>
+					coordinate={{
+						latitude: 10.72319,
+						longitude: 122.5546544,
+					}}
+					title={"Bakal Lokal Hub"}
+					pinColor="orange"
+				></Marker>
 			</MapView>
 			<View
 				style={{
@@ -122,10 +126,10 @@ const Map = ({ user, previousScreen }) => {
 								width: 20,
 								height: 20,
 								borderRadius: 5,
-								backgroundColor: "blue",
+								backgroundColor: "orange",
 							}}
 						/>
-						<Text variant="caption"> - Current Location </Text>
+						<Text variant="caption"> - Bakal Lokal Hub </Text>
 					</View>
 
 					<View
@@ -165,8 +169,6 @@ const Map = ({ user, previousScreen }) => {
 					block
 					warning
 					onPress={() => {
-
-						
 						if (
 							deliveryMarker?.latitude &&
 							deliveryMarker?.longitude &&

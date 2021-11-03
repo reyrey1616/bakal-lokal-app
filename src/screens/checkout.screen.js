@@ -237,8 +237,6 @@ const CheckoutScreen = ({ route }) => {
 				// 	.merchants,
 			};
 
-			console.log(newOrder);
-
 			dispatch(
 				addOrderStart({
 					payload: newOrder,
@@ -258,7 +256,6 @@ const CheckoutScreen = ({ route }) => {
 							actionType: "checkout",
 						};
 
-					
 						if (selectedVoucher) {
 							await updateCouponUsage(selectedVoucher);
 						}

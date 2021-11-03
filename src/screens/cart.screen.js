@@ -49,8 +49,6 @@ const CartScreen = ({ route }) => {
 						block
 						warning
 						onPress={() => {
-							console.log(currentUser);
-
 							if (currentUser?.cartItems?.length <= 0) {
 								Alert.alert(
 									"Please add item to your bayong to proceed."

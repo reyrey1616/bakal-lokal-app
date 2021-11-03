@@ -3,7 +3,16 @@ import { View } from "react-native";
 import { Item, Picker, Input } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { colors } from "../../infra/theme/colors";
-export const ShopsWithSearch = ({ onTextSearch }) => {
+import { selectCategories } from "../../services/category/category.selectors";
+import { useSelector } from "react-redux";
+
+export const ShopsWithSearch = ({
+	onTextSearch,
+	onSelectCategory,
+	selectedCategory,
+}) => {
+	const categories = useSelector(selectCategories);
+
 	return (
 		<View
 			style={{
@@ -49,11 +58,19 @@ export const ShopsWithSearch = ({ onTextSearch }) => {
 					mode="dropdown"
 					textStyle={{ color: "grey" }}
 					placeholder="Select category"
-					headerBackButtonText="Category"
+					headerBackButtonText="Cancel"
+					selectedValue={selectedCategory}
+					onValueChange={(val) => onSelectCategory(val)}
 				>
-					<Picker.Item label="Food and Beverage" value="key0" />
-					<Picker.Item label="Fresh" value="key1" />
-					<Picker.Item label="Lifestyle" value="key2" />
+					{categories?.map((c) => {
+						return (
+							<Picker.Item
+								key={c?._id}
+								label={c?.name}
+								value={c?.name}
+							/>
+						);
+					})}
 				</Picker>
 			</Item>
 		</View>
