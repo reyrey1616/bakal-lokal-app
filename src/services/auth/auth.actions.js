@@ -164,3 +164,24 @@ export const updateCustomerInfoFail = (payload) => {
 		payload,
 	};
 };
+
+export const getAllOrderStart = (customerId) => {
+	return {
+		type: AuthActionTypes.GET_ORDER_START,
+		customer: customerId,
+	};
+};
+
+export const getAllOrderSuccess = (payload) => {
+	return {
+		type: AuthActionTypes.GET_ORDER_SUCCESS,
+		payload,
+	};
+};
+
+export const getAllOrderFail = (payload) => {
+	return {
+		type: AuthActionTypes.GET_ORDER_FAIL,
+		payload,
+	};
+};

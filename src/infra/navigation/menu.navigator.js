@@ -13,6 +13,7 @@ import { BottomNavigator } from "./bottom-navigation";
 import { theme } from "../theme";
 import LoginScreen from "../../screens/login.screen";
 import UserAccountScreen from "../../screens/customer-account.screen";
+import CustomerOrdersScreen from "../../screens/customer-orders.screens";
 const Drawer = createDrawerNavigator();
 
 const SampleScreen = () => (
@@ -79,7 +80,7 @@ const DrawerMenuNavigator = () => (
 				),
 			}}
 			name="Orders"
-			component={SampleScreen}
+			component={CustomerOrdersScreen}
 		/>
 
 		<Drawer.Screen

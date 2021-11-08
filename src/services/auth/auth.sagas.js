@@ -13,6 +13,8 @@ import {
 	addOrderFail,
 	updateCustomerInfoSuccess,
 	updateCustomerInfoFail,
+	getAllOrderFail,
+	getAllOrderSuccess,
 } from "./auth.actions";
 import { Alert } from "react-native";
 import AuthActionTypes from "./auth.types";
@@ -342,6 +344,28 @@ function* updateCustomerInfo({ payload, callback }) {
 	}
 }
 
+function* getAllOrdersAsync({ customer }) {
+	try {
+		let orderReq;
+		orderReq = yield axios.get(`/orders/${customer}/all-orders`);
+		const orderRes = orderReq.data.data;
+
+		yield put(getAllOrderSuccess(orderRes));
+	} catch (error) {
+		if (error.response && error.response.data.error) {
+			const errorResponse = error.response.data.error;
+			yield put(getAllOrderFail(errorResponse));
+			Alert.alert("Bakal Lokal", errorResponse);
+		} else {
+			yield put(getAllOrderFail(error.message));
+			Alert.alert(
+				"Bakal Lokal",
+				"Error executing action. Please try again later!"
+			);
+		}
+	}
+}
+
 function* addOrderStart() {
 	yield takeLatest(AuthActionTypes.ADD_ORDER_START, addOrderAsync);
 }
@@ -368,6 +392,9 @@ function* updateCustomerStart() {
 		updateCustomerInfo
 	);
 }
+function* getAllOrdersStart() {
+	yield takeLatest(AuthActionTypes.GET_ORDER_START, getAllOrdersAsync);
+}
 
 export default function* AuthSagas() {
 	yield all([
@@ -377,5 +404,6 @@ export default function* AuthSagas() {
 		call(updateCartStart),
 		call(addOrderStart),
 		call(updateCustomerStart),
+		call(getAllOrdersStart),
 	]);
 }

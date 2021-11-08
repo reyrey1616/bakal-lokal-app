@@ -11,6 +11,7 @@ const INITIAL_STATE = {
 	deliveryFee: 0,
 	discount: 0,
 	transactionFee: 15,
+	orders: [],
 	deliveryDetails: {
 		deliveryOption: "Pick-up",
 		date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
@@ -156,6 +157,10 @@ const orderSuccess = (state, action) => {
 	};
 };
 
+const getOrders = (state, action) => {
+	return { ...state, loading: false, orders: action.payload };
+};
+
 export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.LOGIN_START]: authLoading,
 	[AuthActionTypes.LOGIN_SUCCESS]: login,
@@ -186,4 +191,8 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.UPDATE_CUSTOMER_INFO_START]: authLoading,
 	[AuthActionTypes.UPDATE_CUSTOMER_INFO_SUCCESS]: updateUser,
 	[AuthActionTypes.UPDATE_CUSTOMER_INFO_FAIL]: authFail,
+
+	[AuthActionTypes.GET_ORDER_START]: authLoading,
+	[AuthActionTypes.GET_ORDER_SUCCESS]: getOrders,
+	[AuthActionTypes.GET_ORDER_FAIL]: authFail,
 });

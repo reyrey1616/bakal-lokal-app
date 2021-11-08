@@ -45,3 +45,8 @@ export const selectDeliveryDetails = createSelector(
 	[authSelector],
 	(auth) => auth.deliveryDetails
 );
+
+export const selectOrders = createSelector(
+	[authSelector],
+	(auth) => auth.orders
+);
