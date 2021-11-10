@@ -303,37 +303,38 @@ function* updateCustomerInfo({ payload, callback }) {
 			formData.append("contactNumber", payload.contactNumber);
 			formData.append("gender", payload.gender);
 			formData.append("bdate", payload.bdate);
-			resp = yield axios.put(`/customers/update-with-image`, formData, {
+			resp = yield axios.put(`/customers/`, formData, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
 			});
-		} else {
+		} else if (payload?.actionType === "billing_address") {
 			resp = yield axios.put(`/customers`, {
-				billing_fullAddress: payload.billing_fullAddress,
-				billing_baranggay: payload.billing_baranggay,
-				billing_postcode: payload.billing_postcode,
-				billing_city: payload.billing_city,
-				billing_municipality: payload.billing_municipality,
-				billing_province: payload.billing_province,
-				fullAddress: payload.billing_fullAddress,
-				baranggay: payload.billing_baranggay,
-				city: payload.billing_city,
-				municipality: payload.billing_municipality,
-				province: payload.billing_province,
-				lat: payload.lat,
-				lng: payload.lng,
+				billing_fullAddress: payload?.fullAddress,
+				billing_baranggay: payload?.baranggay,
+				billing_postcode: payload?.postcode,
+				billing_city: payload?.city,
+				billing_province: payload?.province,
+				fullAddress: payload?.fullAddress,
+				baranggay: payload?.baranggay,
+				city: payload?.city,
+				province: payload?.province,
+				postcode: payload?.postcode,
+				// lat: payload.lat,
+				// lng: payload.lng,
 			});
 		}
-		const data = yield resp.data.data;
+		const data = yield resp?.data?.data;
 
 		yield put(updateCustomerInfoSuccess(data));
 		callback();
 	} catch (error) {
+		// const errorResponse = error.response.data.error;
+		// console.log(errorResponse);
 		if (error.response && error.response.data.error) {
 			const errorResponse = error.response.data.error;
 			yield put(updateCustomerInfoFail(errorResponse));
-			fireAlert("Bakal Lokal", errorResponse);
+			Alert.alert("Bakal Lokal", errorResponse);
 		} else {
 			yield put(updateCustomerInfoFail(error.message));
 			Alert.alert(

@@ -14,6 +14,7 @@ import { theme } from "../theme";
 import LoginScreen from "../../screens/login.screen";
 import UserAccountScreen from "../../screens/customer-account.screen";
 import CustomerOrdersScreen from "../../screens/customer-orders.screens";
+import BillingAddressScreen from "../../screens/billing-address.screens";
 const Drawer = createDrawerNavigator();
 
 const SampleScreen = () => (
@@ -97,7 +98,7 @@ const DrawerMenuNavigator = () => (
 				),
 			}}
 			name="Billing"
-			component={SampleScreen}
+			component={BillingAddressScreen}
 		/>
 
 		<Drawer.Screen
