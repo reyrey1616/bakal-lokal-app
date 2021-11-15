@@ -57,7 +57,7 @@ const DeliveryScreen = ({ route }) => {
 			province: user?.province,
 			postcode: user?.postcode,
 		});
-	}, [user]);
+	}, [user, loading]);
 
 	// useEffect(() => {
 	// 	// console.log(user);
@@ -262,7 +262,7 @@ const DeliveryScreen = ({ route }) => {
 					{/* Delivery Address */}
 
 					{form?.deliveryOption === "Delivery" ? (
-						loading ? (
+						loading && !user ? (
 							<Spinner color="orange" />
 						) : (
 							<>
@@ -320,7 +320,7 @@ const DeliveryScreen = ({ route }) => {
 					}}
 				>
 					<ButtonTypes.PrimaryButtonText>
-						Proceed to billing
+						Proceed to checkout
 					</ButtonTypes.PrimaryButtonText>
 				</Button>
 			</View>

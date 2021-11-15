@@ -23,9 +23,12 @@ import { SafeArea } from "../../components/utils/safe-area.component";
 import { Text } from "../../components/typography/text.component";
 import { colors } from "../theme/colors";
 import { Spacer } from "../../components/spacer/spacer.component";
-import { selectAuthLoading } from "../../services/auth/auth.selectors";
+import {
+	selectAuthLoading,
+	selectCurrentUser,
+} from "../../services/auth/auth.selectors";
 import { Spinner, Content } from "native-base";
-
+import OrderDetailsScreen from "../../screens/order-details.screen";
 export const navigationRef = React.createRef();
 
 export function openDrawer(routeName, params) {
@@ -63,6 +66,8 @@ const MainNavigator = () => {
 	const authLoading = useSelector(selectAuthLoading);
 
 	const [isLoaded, setIsLoaded] = useState(false);
+	const currentUser = useSelector(selectCurrentUser);
+	const [initialScreenName, setInitialScreenName] = useState("Login");
 
 	useEffect(() => {
 		const fetchUser = async () => {
@@ -72,8 +77,6 @@ const MainNavigator = () => {
 				setAuthToken(token);
 				dispatch(getUserStart());
 			}
-
-			console.log(authLoading);
 		};
 
 		fetchUser();
@@ -83,17 +86,38 @@ const MainNavigator = () => {
 		if (authLoading) {
 			setIsLoaded(true);
 		}
-	}, [authLoading]);
 
-	return !isLoaded ? (
-		<Content>
-			<Spinner color="orange" />
-		</Content>
-	) : (
+		if (!authLoading) {
+			if (currentUser) {
+				setInitialScreenName("Menu");
+			} else {
+				setInitialScreenName("Login");
+			}
+		}
+	}, [authLoading, currentUser]);
+
+	if (authLoading && !currentUser) {
+		return (
+			authLoading && (
+				<View
+					style={{
+						flex: 1,
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+					}}
+				>
+					<Spinner color="orange" />
+				</View>
+			)
+		);
+	}
+
+	return (
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"
-				initialRouteName="Login"
+				initialRouteName={initialScreenName}
 				screenOptions={{
 					...TransitionPresets.ModalPresentationIOS,
 				}}
@@ -105,6 +129,10 @@ const MainNavigator = () => {
 				<MainStackNavigator.Screen
 					name="ProductDetails"
 					component={ProductDetailsScreen}
+				/>
+				<MainStackNavigator.Screen
+					name="OrderDetails"
+					component={OrderDetailsScreen}
 				/>
 				<MainStackNavigator.Screen
 					name="Registration Form"

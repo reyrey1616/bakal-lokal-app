@@ -33,6 +33,8 @@ const AuthActionTypes = {
 	GET_ORDER_START: "GET_ORDER_START",
 	GET_ORDER_SUCCESS: "GET_ORDER_SUCCESS",
 	GET_ORDER_FAIL: "GET_ORDER_FAIL",
+
+	LOGOUT: "LOGOUT",
 };
 
 export default AuthActionTypes;

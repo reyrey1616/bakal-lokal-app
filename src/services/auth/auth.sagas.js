@@ -45,6 +45,7 @@ function* signInAsync({ payload, callback }) {
 
 			return;
 		} else if (loginResponse.token) {
+			console.log(loginResponse);
 			yield put(
 				loginSuccess({
 					token: loginResponse?.token,
@@ -56,6 +57,7 @@ function* signInAsync({ payload, callback }) {
 		}
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
+		console.log(errorResponse);
 		if (errorResponse) {
 			yield put(loginFail(errorResponse));
 
@@ -116,6 +118,7 @@ function* loadUserAsync({ callback }) {
 		}
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
+		console.log(errorResponse);
 		if (errorResponse) {
 			yield put(getUserFail(errorResponse));
 
@@ -320,8 +323,6 @@ function* updateCustomerInfo({ payload, callback }) {
 				city: payload?.city,
 				province: payload?.province,
 				postcode: payload?.postcode,
-				// lat: payload.lat,
-				// lng: payload.lng,
 			});
 		}
 		const data = yield resp?.data?.data;

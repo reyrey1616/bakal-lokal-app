@@ -19,7 +19,7 @@ import { Text } from "../components/typography/text.component";
 import { colors } from "../infra/theme/colors";
 import SectionTitle from "../components/utils/title.component";
 import { useDispatch } from "react-redux";
-import { loginStart } from "../services/auth/auth.actions";
+import { loginStart, getUserStart } from "../services/auth/auth.actions";
 import { connect } from "react-redux";
 import {
 	selectCurrentUser,
@@ -28,6 +28,9 @@ import {
 import { createStructuredSelector } from "reselect";
 import { fontSizes } from "../infra/theme/fonts";
 import { useNavigation } from "@react-navigation/native";
+import { asyncStoreSave } from "../services/utils";
+import setAuthToken from "../utils/setAuthToken";
+
 const LoginScreen = ({ currentUser, isAuthenticated }) => {
 	const dispatch = useDispatch();
 	// const [form, setForm] = useState({
@@ -36,8 +39,8 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 	// });
 	const navigation = useNavigation();
 	const [form, setForm] = useState({
-		email: "",
-		password: "",
+		email: "guidoriagaorey16@gmail.com",
+		password: "12345678",
 	});
 
 	useEffect(() => {
@@ -53,9 +56,14 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 			Alert.alert("Bakal Lokal", "Please input password!");
 		} else {
 			dispatch(
-				loginStart(data, (token) => {
-					Alert.alert("Bakal Lokal", "Login Success");
-					navigation.navigate("Menu");
+				loginStart(data, async (token) => {
+					setAuthToken(token);
+					dispatch(
+						getUserStart((data) => {
+							Alert.alert("Bakal Lokal", "Login Success");
+							navigation.navigate("Menu");
+						})
+					);
 				})
 			);
 		}

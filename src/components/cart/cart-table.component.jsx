@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import currencyFormat from "../../utils/currencyFormat";
 import { updateCartStart } from "../../services/auth/auth.actions";
 import { useDispatch } from "react-redux";
-const CartTable = ({ data }) => {
+const CartTable = ({ data, readOnly }) => {
 	const dispatch = useDispatch();
 	return (
 		<View style={styles.container}>
@@ -96,12 +96,14 @@ const CartTable = ({ data }) => {
 										);
 									}}
 								>
-									<AntDesign
-										name="closecircle"
-										size={18}
-										style={{ paddingLeft: 5 }}
-										color={colors.brand.orange}
-									/>
+									{!readOnly && (
+										<AntDesign
+											name="closecircle"
+											size={18}
+											style={{ paddingLeft: 5 }}
+											color={colors.brand.orange}
+										/>
+									)}
 								</TouchableOpacity>
 							</View>
 						</View>

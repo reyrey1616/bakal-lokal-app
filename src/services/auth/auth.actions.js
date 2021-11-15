@@ -41,9 +41,10 @@ export const registerFail = (err) => {
 	};
 };
 
-export const getUserStart = () => {
+export const getUserStart = (callback) => {
 	return {
 		type: AuthActionTypes.GET_USER_START,
+		callback,
 	};
 };
 export const getUserSuccess = (payload) => {
@@ -183,5 +184,11 @@ export const getAllOrderFail = (payload) => {
 	return {
 		type: AuthActionTypes.GET_ORDER_FAIL,
 		payload,
+	};
+};
+
+export const logout = () => {
+	return {
+		type: AuthActionTypes.LOGOUT,
 	};
 };

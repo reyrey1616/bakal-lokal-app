@@ -6,14 +6,15 @@ import { Spinner } from "native-base";
 import BLHeader from "../components/header/header.component";
 import styled from "styled-components";
 import { colors } from "../infra/theme/colors";
-import { selectCurrentUser } from "../services/auth/auth.selectors";
+import {
+	selectCurrentUser,
+	selectOrdersLoading,
+	selectOrders,
+} from "../services/auth/auth.selectors";
 import OrdersTable from "../components/orders/orders-table.component";
 import { OrderSearch } from "../components/orders/order-search.component";
 import { getAllOrderStart } from "../services/auth/auth.actions";
-import {
-	selectAuthLoading,
-	selectOrders,
-} from "../services/auth/auth.selectors";
+
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -27,7 +28,7 @@ const CustomerOrdersScreen = ({ route }) => {
 	const currentUser = useSelector(selectCurrentUser);
 	const [selectedSortField, setSelectedSortField] = useState("");
 	const [searchText, setSearchText] = useState("");
-	const loading = useSelector(selectAuthLoading);
+	const loading = useSelector(selectOrdersLoading);
 	const orders = useSelector(selectOrders);
 	const [ordersState, setOrderState] = useState([]);
 	const dispatch = useDispatch();
@@ -53,7 +54,6 @@ const CustomerOrdersScreen = ({ route }) => {
 	}, [orders]);
 
 	const onSort = (val) => {
-		console.log(val);
 		setSelectedSortField(val);
 
 		ordersState?.sort((a, b) =>
@@ -71,8 +71,6 @@ const CustomerOrdersScreen = ({ route }) => {
 		if (!val) return;
 
 		let filtered = ordersState?.filter((data) => {
-			console.log(data?.orderNumber);
-			console.log(data?.customer);
 			return data?.orderNumber.toString().includes(val?.toLowerCase());
 		});
 		setOrderState(filtered);
@@ -85,7 +83,7 @@ const CustomerOrdersScreen = ({ route }) => {
 			{loading ? (
 				<Spinner color="orange" />
 			) : (
-				<View style={{ flex: 1, backgroundColor: "red" }}>
+				<View style={{ flex: 1, backgroundColor: "white" }}>
 					<ScrollViewContainer
 						contentContainerStyle={{
 							flexGrow: 1,

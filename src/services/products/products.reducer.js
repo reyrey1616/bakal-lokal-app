@@ -3,6 +3,7 @@ import { createReducer } from "../utils";
 
 const INITIAL_STATE = {
 	products: [],
+	newArrivalProducts: [],
 	onSaleProducts: [],
 	currentProduct: null,
 	error: null,
@@ -43,6 +44,15 @@ const getProducts = (state, action) => {
 	};
 };
 
+const getNewArrivalProducts = (state, action) => {
+	return {
+		...state,
+		loading: false,
+		newArrivalProducts: action.payload,
+		error: null,
+	};
+};
+
 const getProductsByMerchant = (state, action) => {
 	return {
 		...state,
@@ -65,6 +75,10 @@ export default createReducer(INITIAL_STATE, {
 	[ProductActionTypes.GET_PRODUCTS_START]: productsLoading,
 	[ProductActionTypes.GET_PRODUCTS_SUCCESS]: getProducts,
 	[ProductActionTypes.GET_PRODUCTS_FAIL]: productsFail,
+
+	[ProductActionTypes.GET_NEW_PRODUCTS_START]: productsLoading,
+	[ProductActionTypes.GET_NEW_PRODUCTS_SUCCESS]: getNewArrivalProducts,
+	[ProductActionTypes.GET_NEW_PRODUCTS_FAIL]: productsFail,
 
 	[ProductActionTypes.GET_SALE_PRODUCTS_START]: productsLoading,
 	[ProductActionTypes.GET_SALE_PRODUCTS_SUCCESS]: getSaleProducts,

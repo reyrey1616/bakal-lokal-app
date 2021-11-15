@@ -23,7 +23,6 @@ const ProductDetailsScreen = ({ navigation, route }) => {
 	return (
 		<SafeArea>
 			<StackHeader previousScreen={previousScreen} />
-			<Carousel data={[...images]} />
 			<Carousel
 				data={[
 					`https://bakal-lokal.xyz/products/${product?.profileImage}`,

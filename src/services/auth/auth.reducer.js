@@ -12,6 +12,7 @@ const INITIAL_STATE = {
 	discount: 0,
 	transactionFee: 15,
 	orders: [],
+	ordersLoading: false,
 	deliveryDetails: {
 		deliveryOption: "Pick-up",
 		date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
@@ -55,6 +56,39 @@ const login = (state, action) => {
 		token: action.payload?.token,
 		error: null,
 		isAuthenticated: true,
+	};
+};
+
+const logout = (state) => {
+	return {
+		...state,
+		user: null,
+		error: null,
+		loading: false,
+		token: null,
+		isAuthenticated: false,
+		isLoaded: false,
+		deliveryFee: 0,
+		discount: 0,
+		transactionFee: 15,
+		orders: [],
+		ordersLoading: false,
+		deliveryDetails: {
+			deliveryOption: "Pick-up",
+			date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
+			time: moment(),
+			fullAddress: "",
+			baranggay: "",
+			city: "",
+			province: "",
+			postcode: "",
+			paymentMethod: "Cash on Delivery",
+			selectedVoucher: null,
+			logistic: "Lihog",
+			lat: null,
+			lng: null,
+			distance: null,
+		},
 	};
 };
 
@@ -134,6 +168,7 @@ const orderSuccess = (state, action) => {
 	return {
 		...state,
 		loading: false,
+		ordersLoading: false,
 		deliveryFee: 0,
 		discount: 0,
 		voucher: null,
@@ -158,7 +193,12 @@ const orderSuccess = (state, action) => {
 };
 
 const getOrders = (state, action) => {
-	return { ...state, loading: false, orders: action.payload };
+	return {
+		...state,
+		ordersLoading: false,
+		loading: false,
+		orders: action.payload,
+	};
 };
 
 export default createReducer(INITIAL_STATE, {
@@ -195,4 +235,6 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.GET_ORDER_START]: authLoading,
 	[AuthActionTypes.GET_ORDER_SUCCESS]: getOrders,
 	[AuthActionTypes.GET_ORDER_FAIL]: authFail,
+
+	[AuthActionTypes.LOGOUT]: logout,
 });

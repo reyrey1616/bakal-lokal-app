@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Image,
 	TouchableOpacity,
@@ -27,6 +27,10 @@ const HeaderWithSearch = () => {
 	const route = useRoute();
 	const isAuthenticated = useSelector(selectAuthentication);
 	const currentUser = useSelector(selectCurrentUser);
+
+	useEffect(() => {
+		console.log(currentUser);
+	}, [currentUser]);
 
 	const [searchString, setSearchString] = useState("");
 	// const searchResult = filterData(searchString);
@@ -137,7 +141,9 @@ const HeaderWithSearch = () => {
 				style={{ padding: 10, paddingTop: 15 }}
 				onPress={async () => {
 					const token = await asyncStoreGet("token");
-					if (isAuthenticated && currentUser && token) {
+
+					console.log(token, isAuthenticated, currentUser);
+					if (isAuthenticated && token) {
 						navigation.navigate("Cart", {
 							previousScreen: route?.name,
 						});

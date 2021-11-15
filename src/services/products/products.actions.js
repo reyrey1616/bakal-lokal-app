@@ -20,6 +20,25 @@ export const getProductsFail = (err) => {
 	};
 };
 
+export const getNewArrivalProductsStart = () => {
+	return {
+		type: ProductActionTypes.GET_NEW_PRODUCTS_START,
+	};
+};
+export const getNewArrivalProductsSuccess = (payload) => {
+	return {
+		type: ProductActionTypes.GET_NEW_PRODUCTS_SUCCESS,
+		payload,
+	};
+};
+
+export const getNewArrivalProductsFail = (err) => {
+	return {
+		type: ProductActionTypes.GET_NEW_PRODUCTS_FAIL,
+		payload: err,
+	};
+};
+
 export const getProductsOnSaleStart = () => {
 	return {
 		type: ProductActionTypes.GET_SALE_PRODUCTS_START,

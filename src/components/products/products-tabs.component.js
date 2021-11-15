@@ -4,7 +4,10 @@ import { ProductsContainer } from "./products-container.component";
 import { colors } from "../../infra/theme/colors";
 import { PageHeader } from "../utils/page-header.component";
 import { useSelector } from "react-redux";
-import { selectPublicProducts } from "../../services/products/products.selectors";
+import {
+	selectPublicProducts,
+	selectNewArrivalProducts,
+} from "../../services/products/products.selectors";
 // export const products = [
 // 	{
 // 		id: 1,
@@ -29,6 +32,7 @@ import { selectPublicProducts } from "../../services/products/products.selectors
 // ];
 export const ProductTabs = ({ navigation }) => {
 	const products = useSelector(selectPublicProducts);
+	const newArrivalProducts = useSelector(selectNewArrivalProducts);
 
 	console.log(products?.length);
 	return (
@@ -49,7 +53,7 @@ export const ProductTabs = ({ navigation }) => {
 					}}
 				>
 					<ProductsContainer
-						products={products}
+						products={products && products}
 						navigation={navigation}
 					/>
 				</Tab>
@@ -66,7 +70,7 @@ export const ProductTabs = ({ navigation }) => {
 					}}
 				>
 					<ProductsContainer
-						products={products}
+						products={newArrivalProducts && newArrivalProducts}
 						navigation={navigation}
 					/>
 				</Tab>

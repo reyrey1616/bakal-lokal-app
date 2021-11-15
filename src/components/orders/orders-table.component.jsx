@@ -10,11 +10,14 @@ import { colors } from "../../infra/theme/colors";
 import currencyFormat from "../../utils/currencyFormat";
 import moment from "moment";
 import styled from "styled-components";
+import { useNavigation, useRoute } from "@react-navigation/native";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
 `;
 const OrdersTable = ({ data }) => {
+	const navigation = useNavigation();
+	const route = useRoute();
 	return (
 		<View style={styles.container}>
 			<View style={styles.table}>
@@ -72,7 +75,16 @@ const OrdersTable = ({ data }) => {
 
 				{data?.map((d) => {
 					return (
-						<TouchableOpacity key={d?._id} style={styles.row}>
+						<TouchableOpacity
+							key={d?._id}
+							style={styles.row}
+							onPress={() => {
+								navigation.navigate("OrderDetails", {
+									orderId: d?._id,
+									previousScreen: route?.name,
+								});
+							}}
+						>
 							<View
 								style={{
 									...styles.cell,

@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import { setDeliveryLocation } from "../../services/auth/auth.actions";
 import { getDistance } from "geolib";
 import { useNavigation } from "@react-navigation/native";
-import BLLogo from "../../assets/logo/bl-basket.png";
 
 const Map = ({ user, previousScreen }) => {
 	const dispatch = useDispatch();
@@ -31,8 +30,8 @@ const Map = ({ user, previousScreen }) => {
 	useEffect(() => {
 		if (user?.lat && user?.lng) {
 			setDeliveryMarker({
-				latitude: user?.lat,
-				longitude: user?.lng,
+				latitude: parseFloat(user?.lat),
+				longitude: parseFloat(user?.lng),
 			});
 		} else {
 			setDeliveryMarker({
@@ -58,8 +57,8 @@ const Map = ({ user, previousScreen }) => {
 
 	useEffect(() => {
 		const dis = calculateDistance({
-			latitude: deliveryMarker?.latitude,
-			longitude: deliveryMarker?.longitude,
+			latitude: parseFloat(deliveryMarker?.latitude),
+			longitude: parseFloat(deliveryMarker?.longitude),
 		});
 
 		setDistance(dis);
@@ -104,7 +103,7 @@ const Map = ({ user, previousScreen }) => {
 					}}
 					title={"Bakal Lokal Hub"}
 					pinColor="orange"
-				></Marker>
+				/>
 			</MapView>
 			<View
 				style={{
@@ -148,7 +147,6 @@ const Map = ({ user, previousScreen }) => {
 							}}
 						/>
 						<Text variant="caption">
-							{" "}
 							- Delivery Location (Long press and drag the marker
 							to update the location.)
 						</Text>

@@ -22,8 +22,14 @@ export const selectPublicProducts = createSelector(
 export const selectPublicSaleProducts = createSelector(
 	[productsSelector],
 	(prod) => {
-		console.log(prod);
 		return shuffle(prod.onSaleProducts);
+	}
+);
+
+export const selectNewArrivalProducts = createSelector(
+	[productsSelector],
+	(prod) => {
+		return prod.newArrivalProducts;
 	}
 );
 

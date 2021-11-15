@@ -329,7 +329,7 @@ const CheckoutScreen = ({ route }) => {
 					}}
 				>
 					<ButtonTypes.PrimaryButtonText>
-						Proceed to checkout
+						Checkout
 					</ButtonTypes.PrimaryButtonText>
 				</Button>
 			</View>

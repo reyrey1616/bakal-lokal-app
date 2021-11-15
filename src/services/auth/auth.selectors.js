@@ -50,3 +50,8 @@ export const selectOrders = createSelector(
 	[authSelector],
 	(auth) => auth.orders
 );
+
+export const selectOrdersLoading = createSelector(
+	[authSelector],
+	(auth) => auth.ordersLoading
+);

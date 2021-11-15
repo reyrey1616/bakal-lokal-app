@@ -13,6 +13,7 @@ import {
 	useFonts as useMontserrat,
 	Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
+
 import { theme } from "./src/infra/theme/";
 import { SafeArea } from "./src/components/utils/safe-area.component";
 // import MenuNavigator from "./src/infra/navigation/menu.navigator";
@@ -21,12 +22,26 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./src/services/store";
 import { init } from "emailjs-com";
+import * as Font from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
 
 // axios.defaults.baseURL = "http://localhost:5000/api/v1/";
 axios.defaults.baseURL = "https://bakal-lokal.xyz/api/v1/";
 init("user_BgbYodHJVW1sBGMlZrluD");
 
 export default function App() {
+	useEffect(() => {
+		const loadFont = async () => {
+			await Font.loadAsync({
+				Roboto: require("native-base/Fonts/Roboto.ttf"),
+				Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+				...Ionicons.font,
+			});
+		};
+
+		loadFont();
+	}, []);
+
 	const [cabinLoaded] = useCabin({
 		Cabin_400Regular,
 	});
