@@ -8,12 +8,12 @@ import {
 	Image,
 	TouchableHighlight,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Spacer } from "../spacer/spacer.component";
 import { AntDesign } from "@expo/vector-icons";
 import { colors } from "../../infra/theme/colors";
 import { Button } from "native-base";
 import ButtonTypes from "../utils/buttons.component";
-const Variations = ({ onSelectVariation, variations, productImage }) => {
+const Variations = ({ onSelectVariation, variations, productImage, text }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [variant, setVariant] = useState(null);
 
@@ -126,11 +126,9 @@ const Variations = ({ onSelectVariation, variations, productImage }) => {
 			<View
 				style={{
 					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "space-around",
 				}}
 			>
-				<TouchableOpacity onPress={() => setModalVisible(true)}>
+				{/* <TouchableOpacity onPress={() => setModalVisible(true)}>
 					<Text
 						style={{
 							color: colors.brand.grey,
@@ -139,7 +137,22 @@ const Variations = ({ onSelectVariation, variations, productImage }) => {
 						Choose variation{" "}
 						<AntDesign name="right" color={colors.brand.orange} />
 					</Text>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
+
+				<ButtonTypes.PrimaryButton
+					style={{
+						paddingTop: 10,
+						paddingBottom: 10,
+						height: 50,
+					}}
+					onPress={() => setModalVisible(true)}
+				>
+					<ButtonTypes.PrimaryButtonText>
+						{text}
+					</ButtonTypes.PrimaryButtonText>
+					<Spacer position="right" size="medium" />
+					<AntDesign name="right" color={"white"} />
+				</ButtonTypes.PrimaryButton>
 			</View>
 		</View>
 	);
@@ -147,8 +160,9 @@ const Variations = ({ onSelectVariation, variations, productImage }) => {
 
 const styles = StyleSheet.create({
 	centeredView: {
-		justifyContent: "center",
+		flexDirection: "row",
 		alignItems: "center",
+		justifyContent: "flex-end",
 	},
 	modalView: {
 		margin: 20,

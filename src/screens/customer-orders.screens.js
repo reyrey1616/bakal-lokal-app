@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeArea } from "../components/utils/safe-area.component";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Alert } from "react-native";
 import { Spinner } from "native-base";
 import BLHeader from "../components/header/header.component";
 import styled from "styled-components";
@@ -14,7 +14,7 @@ import {
 import OrdersTable from "../components/orders/orders-table.component";
 import { OrderSearch } from "../components/orders/order-search.component";
 import { getAllOrderStart } from "../services/auth/auth.actions";
-
+import { useNavigation } from "@react-navigation/core";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -33,6 +33,12 @@ const CustomerOrdersScreen = ({ route }) => {
 	const [ordersState, setOrderState] = useState([]);
 	const dispatch = useDispatch();
 
+	const navigation = useNavigation();
+
+	if (loading) {
+		return <Spinner color="orange" />;
+	}
+
 	function compare(a, b, field) {
 		if (a[field] < b[field]) {
 			return -1;
@@ -46,11 +52,16 @@ const CustomerOrdersScreen = ({ route }) => {
 	useEffect(() => {
 		if (currentUser) {
 			dispatch(getAllOrderStart(currentUser?._id));
+		} else {
+			Alert.alert("Bakal Lokal", "You need to login first!");
+			navigation.navigate("Login");
 		}
 	}, []);
 
 	useEffect(() => {
-		setOrderState(orders);
+		if (currentUser) {
+			setOrderState(orders);
+		}
 	}, [orders]);
 
 	const onSort = (val) => {

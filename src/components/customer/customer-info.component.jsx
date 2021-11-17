@@ -292,8 +292,8 @@ export const CustomerInfo = ({ currentUser }) => {
 												value="Female"
 											/>
 											<Picker.Item
-												label="Others"
-												value="Others"
+												label="LGBTQIA+"
+												value="LGBTQIA+"
 											/>
 										</Picker>
 									</Item>

@@ -1,6 +1,6 @@
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { View, Image, TouchableOpacity, Alert } from "react-native";
+import { View, Image, TouchableOpacity, Alert, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { asyncStoreGet } from "../../services/utils";
 import {
@@ -8,7 +8,7 @@ import {
 	selectCurrentUser,
 } from "../../services/auth/auth.selectors";
 import { useSelector } from "react-redux";
-import { Container, Header, Content, Button, Icon } from "native-base";
+import { Badge, Button, Icon } from "native-base";
 export const StackHeader = ({ previousScreen }) => {
 	const navigation = useNavigation();
 	const isAuthenticated = useSelector(selectAuthentication);
@@ -56,6 +56,25 @@ export const StackHeader = ({ previousScreen }) => {
 					}
 				}}
 			>
+				{currentUser && currentUser?.cartItems?.length > 0 && (
+					<Badge
+						style={{
+							position: "absolute",
+							top: 10,
+							right: 6,
+							zIndex: 999,
+							// width: 20,
+							// height: 20,
+							// display: "flex",
+							// justifyContent: "center",
+							// alignItems: "center",
+						}}
+					>
+						<Text style={{ color: "white", fontSize: 10 }}>
+							{currentUser?.cartItems?.length}
+						</Text>
+					</Badge>
+				)}
 				<Image
 					source={require("../../assets/logo/bl-basket.png")}
 					style={{

@@ -20,11 +20,17 @@ const ShopDetailsScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch();
 	const products = useSelector(selectPublicProducts);
 
+	console.log(previousScreen);
+
 	useEffect(() => {
 		dispatch(getProductsByMerchantStart(merchant?.id));
 	}, [dispatch]);
 
-	console.log(products);
+	if (!merchant) {
+		Alert.alert("Bakal Lokal", "Shop not found!");
+
+		return;
+	}
 
 	return (
 		<SafeArea style={{ position: "relative" }}>
@@ -33,7 +39,7 @@ const ShopDetailsScreen = ({ navigation, route }) => {
 					flexGrow: 1,
 				}}
 			>
-				<StackHeader previousScreen={previousScreen} />
+				<StackHeader previousScreen={"Shops"} />
 				<Carousel
 					data={[
 						`https://bakal-lokal.xyz/merchants/${merchant?.logo}`,

@@ -1,5 +1,10 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import {
+	ImageBackground,
+	StyleSheet,
+	View,
+	TouchableOpacity,
+} from "react-native";
 import Buttons from "../utils/buttons.component";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
@@ -8,7 +13,12 @@ export const ShopAllProducts = () => {
 	const navigation = useNavigation();
 
 	return (
-		<View style={styles.products}>
+		<TouchableOpacity
+			style={styles.products}
+			onPress={() => {
+				navigation.navigate("Products");
+			}}
+		>
 			<ImageBackground
 				imageStyle={{ borderRadius: 10 }}
 				source={require("../../assets/design/background.png")}
@@ -26,7 +36,7 @@ export const ShopAllProducts = () => {
 					<FontAwesome5 name="angle-right" size={15} color="orange" />
 				</Buttons.SecondaryButton>
 			</ImageBackground>
-		</View>
+		</TouchableOpacity>
 	);
 };
 
@@ -34,7 +44,12 @@ export const Shops = () => {
 	const navigation = useNavigation();
 
 	return (
-		<View style={styles.shops}>
+		<TouchableOpacity
+			style={styles.shops}
+			onPress={() => {
+				navigation.navigate("Shops");
+			}}
+		>
 			<ImageBackground
 				imageStyle={{ borderRadius: 10 }}
 				source={require("../../assets/design/background.png")}
@@ -52,7 +67,7 @@ export const Shops = () => {
 					<FontAwesome5 name="angle-right" size={15} color="white" />
 				</Buttons.PrimaryButton>
 			</ImageBackground>
-		</View>
+		</TouchableOpacity>
 	);
 };
 

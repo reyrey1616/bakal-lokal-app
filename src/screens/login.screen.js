@@ -211,19 +211,6 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 					}}
 				>
 					<Spacer position="bottom" size="large" />
-					<ButtonTypes.PrimaryButton
-						style={{
-							width: "47%",
-						}}
-						onPress={() => {
-							onSubmit(form);
-						}}
-					>
-						<ButtonTypes.PrimaryButtonText>
-							Login
-						</ButtonTypes.PrimaryButtonText>
-					</ButtonTypes.PrimaryButton>
-					<Spacer position="bottom" size="large" />
 					<Button
 						bordered
 						warning
@@ -240,6 +227,20 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 							Sign up
 						</ButtonTypes.SecondaryButtonText>
 					</Button>
+					<Spacer position="bottom" size="large" />
+
+					<ButtonTypes.PrimaryButton
+						style={{
+							width: "47%",
+						}}
+						onPress={() => {
+							onSubmit(form);
+						}}
+					>
+						<ButtonTypes.PrimaryButtonText>
+							Login
+						</ButtonTypes.PrimaryButtonText>
+					</ButtonTypes.PrimaryButton>
 				</View>
 			</ImageBackground>
 		</SafeArea>

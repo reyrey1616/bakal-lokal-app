@@ -55,3 +55,13 @@ export const selectOrdersLoading = createSelector(
 	[authSelector],
 	(auth) => auth.ordersLoading
 );
+
+export const selectLoginLoading = createSelector(
+	[authSelector],
+	(auth) => auth.userLoginLoading
+);
+
+export const selectCartItems = createSelector(
+	[authSelector],
+	(auth) => auth.cartItems
+);

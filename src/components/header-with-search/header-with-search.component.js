@@ -7,10 +7,9 @@ import {
 	View,
 	Text,
 } from "react-native";
-import { Header, Body, Left, ListItem, Thumbnail } from "native-base";
+import { Badge, Body, Left, ListItem, Thumbnail } from "native-base";
 import { colors } from "../../infra/theme/colors";
 import { Ionicons } from "@expo/vector-icons";
-import styled from "styled-components";
 import { openDrawer } from "../../infra/navigation/main.navigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { asyncStoreGet } from "../../services/utils";
@@ -29,7 +28,7 @@ const HeaderWithSearch = () => {
 	const currentUser = useSelector(selectCurrentUser);
 
 	useEffect(() => {
-		console.log(currentUser);
+		console.log(currentUser?.cartItems?.length);
 	}, [currentUser]);
 
 	const [searchString, setSearchString] = useState("");
@@ -138,11 +137,10 @@ const HeaderWithSearch = () => {
 				</View>
 			</View>
 			<TouchableOpacity
-				style={{ padding: 10, paddingTop: 15 }}
+				style={{ padding: 10, paddingTop: 15, position: "relative" }}
 				onPress={async () => {
 					const token = await asyncStoreGet("token");
 
-					console.log(token, isAuthenticated, currentUser);
 					if (isAuthenticated && token) {
 						navigation.navigate("Cart", {
 							previousScreen: route?.name,
@@ -156,6 +154,25 @@ const HeaderWithSearch = () => {
 					}
 				}}
 			>
+				{currentUser && currentUser?.cartItems?.length > 0 && (
+					<Badge
+						style={{
+							position: "absolute",
+							top: 10,
+							right: 6,
+							zIndex: 999,
+							// width: 20,
+							// height: 20,
+							// display: "flex",
+							// justifyContent: "center",
+							// alignItems: "center",
+						}}
+					>
+						<Text style={{ color: "white", fontSize: 10 }}>
+							{currentUser?.cartItems?.length}
+						</Text>
+					</Badge>
+				)}
 				<Image
 					source={require("../../assets/logo/bl-basket.png")}
 					style={{

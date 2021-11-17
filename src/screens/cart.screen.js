@@ -9,7 +9,10 @@ import { CartTotals } from "../components/cart/cart-totals.component";
 import { colors } from "../infra/theme/colors";
 import ButtonTypes from "../components/utils/buttons.component";
 import { useNavigation, useRoute } from "@react-navigation/core";
-import { selectCurrentUser } from "../services/auth/auth.selectors";
+import {
+	selectCurrentUser,
+	selectCartItems,
+} from "../services/auth/auth.selectors";
 import { useSelector } from "react-redux";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
@@ -22,6 +25,7 @@ const CartScreen = ({ route }) => {
 	const navigation = useNavigation();
 
 	const currentUser = useSelector(selectCurrentUser);
+	const cartItems = useSelector(selectCartItems);
 
 	return (
 		<SafeArea>
@@ -35,7 +39,7 @@ const CartScreen = ({ route }) => {
 			>
 				<View style={{ width: "100%" }}>
 					<BLHeader title="Bayong" previousScreen={previousScreen} />
-					<CartTable data={currentUser && currentUser?.cartItems} />
+					<CartTable data={currentUser && cartItems} />
 					<CartTotals data={{}} />
 				</View>
 				<View

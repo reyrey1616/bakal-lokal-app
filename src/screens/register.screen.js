@@ -120,7 +120,7 @@ const RegistrationScreen = ({ navigation, register }) => {
 						<View
 							style={{
 								backgroundColor: "white",
-								padding: 5,
+								padding: 10,
 								marginTop: 5,
 							}}
 						>
@@ -218,78 +218,86 @@ const RegistrationScreen = ({ navigation, register }) => {
 								</Item>
 							</View>
 
-							{/* Birthday and Gender */}
 							<View
 								style={{
+									width: "100%",
 									flexDirection: "row",
+									justifyContent: "space-around",
 								}}
 							>
 								<View
-									style={{ width: "48%", marginRight: "4%" }}
+									style={{
+										padding: 10,
+										paddingLeft: 0,
+
+										width: "50%",
+									}}
 								>
 									<Label
 										style={{
 											padding: 5,
-											paddingBottom: 10,
+											paddingBottom: 5,
 										}}
 									>
 										Birthday
 									</Label>
-
-									<Item>
-										{/* Birthday */}
-
-										<CustomDatePicker
-											onSelectDate={(date) => {
-												setForm({
-													...form,
-													bdate: date,
-												});
-											}}
-											value={moment(form?.date).format(
-												"YYYY-MM-DD"
-											)}
-											mode="date"
-											title="Birthdate"
-											icon={
-												<AntDesign
-													name="calendar"
-													color={colors.brand.orange}
-													size={18}
-												/>
-											}
-										/>
-									</Item>
+									<CustomDatePicker
+										onSelectDate={(date) => {
+											console.log(date);
+											setForm({
+												...form,
+												bdate: moment(date).format(
+													"YYYY-MM-DD"
+												),
+											});
+										}}
+										value={moment(form?.bdate).format(
+											"YYYY-MM-DD"
+										)}
+										mode="date"
+										title="Choose date"
+										icon={
+											<AntDesign
+												name="calendar"
+												color={colors.brand.orange}
+												size={18}
+											/>
+										}
+									/>
 								</View>
-								<View style={{ width: "48%" }}>
+								<View
+									style={{
+										padding: 10,
+										paddingLeft: 0,
+										width: "50%",
+									}}
+								>
 									<Label
 										style={{
 											padding: 5,
-											paddingBottom: 10,
+											paddingBottom: 5,
 										}}
 									>
 										Gender
 									</Label>
-
-									<Item regular>
-										{/* gender input */}
-
+									<Item picker>
 										<Picker
 											style={{
 												width: "100%",
 												height: 40,
+												marginBottom: -2,
 											}}
 											iosHeader="Gender"
 											Header="Gender"
 											mode="dropdown"
 											textStyle={{ color: "grey" }}
 											placeholder="Select gender"
-											headerBackButtonText="Gender"
+											headerBackButtonText="Back"
 											selectedValue={form?.gender}
-											onValueChange={(val) => {
+											onValueChange={(value) => {
 												setForm({
 													...form,
-													gender: val,
+													gender: value,
 												});
 											}}
 										>

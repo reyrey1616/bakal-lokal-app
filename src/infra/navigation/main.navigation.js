@@ -18,7 +18,7 @@ import MapScreen from "../../screens/map.screen";
 import { useDispatch, useSelector } from "react-redux";
 import setAuthToken from "../../utils/setAuthToken";
 import { asyncStoreGet } from "../../services/utils";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { SafeArea } from "../../components/utils/safe-area.component";
 import { Text } from "../../components/typography/text.component";
 import { colors } from "../theme/colors";
@@ -26,8 +26,9 @@ import { Spacer } from "../../components/spacer/spacer.component";
 import {
 	selectAuthLoading,
 	selectCurrentUser,
+	selectLoginLoading,
 } from "../../services/auth/auth.selectors";
-import { Spinner, Content } from "native-base";
+import { Spinner } from "native-base";
 import OrderDetailsScreen from "../../screens/order-details.screen";
 export const navigationRef = React.createRef();
 
@@ -65,14 +66,14 @@ const MainNavigator = () => {
 	const dispatch = useDispatch();
 	const authLoading = useSelector(selectAuthLoading);
 
-	const [isLoaded, setIsLoaded] = useState(false);
 	const currentUser = useSelector(selectCurrentUser);
+	const userLoginLoading = useSelector(selectLoginLoading);
+
 	const [initialScreenName, setInitialScreenName] = useState("Login");
 
 	useEffect(() => {
 		const fetchUser = async () => {
 			const token = await asyncStoreGet("token");
-			console.log(token);
 			if (token) {
 				setAuthToken(token);
 				dispatch(getUserStart());
@@ -82,42 +83,39 @@ const MainNavigator = () => {
 		fetchUser();
 	}, [dispatch]);
 
-	useEffect(() => {
-		if (authLoading) {
-			setIsLoaded(true);
-		}
+	// useEffect(() => {
+	// 	Alert.alert(userLoginLoading);
+	// 	if (!userLoginLoading) {
+	// 		if (currentUser) {
+	// 			setInitialScreenName("Menu");
+	// 		} else {
+	// 			setInitialScreenName("Login");
+	// 		}
+	// 	}
+	// }, [userLoginLoading]);
 
-		if (!authLoading) {
-			if (currentUser) {
-				setInitialScreenName("Menu");
-			} else {
-				setInitialScreenName("Login");
-			}
-		}
-	}, [authLoading, currentUser]);
-
-	if (authLoading && !currentUser) {
-		return (
-			authLoading && (
-				<View
-					style={{
-						flex: 1,
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-					}}
-				>
-					<Spinner color="orange" />
-				</View>
-			)
-		);
-	}
+	// if (authLoading && !currentUser && userLoginLoading) {
+	// 	return (
+	// 		authLoading && (
+	// 			<View
+	// 				style={{
+	// 					flex: 1,
+	// 					display: "flex",
+	// 					justifyContent: "center",
+	// 					alignItems: "center",
+	// 				}}
+	// 			>
+	// 				<Spinner color="orange" />
+	// 			</View>
+	// 		)
+	// 	);
+	// }
 
 	return (
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"
-				initialRouteName={initialScreenName}
+				initialRouteName={"Login"}
 				screenOptions={{
 					...TransitionPresets.ModalPresentationIOS,
 				}}

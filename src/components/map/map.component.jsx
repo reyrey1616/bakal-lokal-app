@@ -16,15 +16,15 @@ const Map = ({ user, previousScreen }) => {
 	const navigation = useNavigation();
 
 	const [deliveryMarker, setDeliveryMarker] = useState({
-		latitude: 10.6987864,
-		longitude: 122.5485763,
+		latitude: parseFloat(10.6987864),
+		longitude: parseFloat(122.5485763),
 	});
 
 	const [distance, setDistance] = useState(0);
 
 	const [location, setLocation] = useState({
-		latitude: 10.6987864,
-		longitude: 122.5485763,
+		latitude: parseFloat(10.6987864),
+		longitude: parseFloat(122.5485763),
 	});
 
 	useEffect(() => {
@@ -35,8 +35,8 @@ const Map = ({ user, previousScreen }) => {
 			});
 		} else {
 			setDeliveryMarker({
-				latitude: 10.7177168,
-				longitude: 122.5598794,
+				latitude: parseFloat(10.7177168),
+				longitude: parseFloat(122.5598794),
 			});
 		}
 
@@ -79,10 +79,10 @@ const Map = ({ user, previousScreen }) => {
 				style={{ flex: 1 }}
 				zoomEnabled
 				initialRegion={{
-					latitude: 10.6987864,
-					longitude: 122.5485763,
-					latitudeDelta: 0.0922,
-					longitudeDelta: 0.0421,
+					latitude: parseFloat(10.6987864),
+					longitude: parseFloat(122.5485763),
+					latitudeDelta: parseFloat(0.0922),
+					longitudeDelta: parseFloat(0.0421),
 				}}
 				scrollEnabled
 			>
@@ -98,8 +98,8 @@ const Map = ({ user, previousScreen }) => {
 
 				<Marker
 					coordinate={{
-						latitude: 10.72319,
-						longitude: 122.5546544,
+						latitude: parseFloat(10.72319),
+						longitude: parseFloat(122.5546544),
 					}}
 					title={"Bakal Lokal Hub"}
 					pinColor="orange"

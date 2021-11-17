@@ -1,6 +1,7 @@
 import AuthActionTypes from "./auth.types";
 import { createReducer } from "../utils";
 import moment from "moment";
+import { Alert } from "react-native";
 const INITIAL_STATE = {
 	user: null,
 	error: null,
@@ -13,6 +14,8 @@ const INITIAL_STATE = {
 	transactionFee: 15,
 	orders: [],
 	ordersLoading: false,
+	userLoginLoading: false,
+
 	deliveryDetails: {
 		deliveryOption: "Pick-up",
 		date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
@@ -51,6 +54,7 @@ const authFail = (state, action) => {
 const login = (state, action) => {
 	return {
 		...state,
+		userLoginLoading: false,
 		loading: false,
 		user: action.payload?.user,
 		token: action.payload?.token,
@@ -73,6 +77,9 @@ const logout = (state) => {
 		transactionFee: 15,
 		orders: [],
 		ordersLoading: false,
+		userLoginLoading: false,
+		cartItems: [],
+
 		deliveryDetails: {
 			deliveryOption: "Pick-up",
 			date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
@@ -101,23 +108,37 @@ const register = (state) => {
 };
 
 const loadUser = (state, action) => {
+	console.log(state.userLoginLoading);
+	return {
+		...state,
+		loading: false,
+		isAuthenticated: true,
+		user: action.payload,
+		cartItems: action?.payload?.cartItems,
+		token: action.payload?.token,
+		isLoaded: true,
+		userLoginLoading: false,
+	};
+};
+
+const updateUser = (state, action) => {
+	console.log(action);
+	return {
+		...state,
+		loading: false,
+		isAuthenticated: true,
+		user: action.payload,
+		isLoaded: true,
+	};
+};
+
+const updateCart = (state, action) => {
 	console.log(action.payload);
 	return {
 		...state,
 		loading: false,
 		isAuthenticated: true,
-		user: action.payload,
-		token: action.payload?.token,
-		isLoaded: true,
-	};
-};
-
-const updateUser = (state, action) => {
-	return {
-		...state,
-		loading: false,
-		isAuthenticated: true,
-		user: action.payload,
+		cartItems: action?.payload?.cartItems,
 		isLoaded: true,
 	};
 };
@@ -173,6 +194,7 @@ const orderSuccess = (state, action) => {
 		discount: 0,
 		voucher: null,
 		transactionFee: 15,
+		userLoginLoading: false,
 		deliveryDetails: {
 			deliveryOption: "Pick-up",
 			date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
@@ -207,7 +229,7 @@ export default createReducer(INITIAL_STATE, {
 	[AuthActionTypes.LOGIN_FAIL]: authFail,
 
 	[AuthActionTypes.UPDATE_CART_START]: authLoading,
-	[AuthActionTypes.UPDATE_CART_SUCCESS]: updateUser,
+	[AuthActionTypes.UPDATE_CART_SUCCESS]: updateCart,
 	[AuthActionTypes.UPDATE_CART_FAIL]: authFail,
 
 	[AuthActionTypes.REGISTER_START]: authLoading,

@@ -9,7 +9,7 @@ import Variations from "./product-variations.component";
 import moment from "moment";
 import getPrice from "../../utils/getPrice";
 import { BottomCart } from "../bottom-cart/bottom-cart.component";
-
+import { useRoute } from "@react-navigation/core";
 import { updateCartStart } from "../../services/auth/auth.actions";
 import { useDispatch } from "react-redux";
 const SectionView = styled(View)`
@@ -19,6 +19,7 @@ const SectionView = styled(View)`
 	padding-left: 20;
 	padding-right: 12;
 	background: white;
+
 	width: 100%;
 `;
 
@@ -52,6 +53,8 @@ const dateCompareIfOnSale = (date1, date2) => {
 export const ProductDetails = ({ product, navigation }) => {
 	const [variant, setVariant] = useState(null);
 	const dispatch = useDispatch();
+	const route = useRoute();
+
 	const onSelectVariation = (variant) => {
 		setVariant(variant);
 	};
@@ -198,6 +201,7 @@ export const ProductDetails = ({ product, navigation }) => {
 							style={{
 								flexDirection: "row",
 								justifyContent: "space-between",
+								width: "100%",
 							}}
 						>
 							<Text
@@ -210,6 +214,11 @@ export const ProductDetails = ({ product, navigation }) => {
 							</Text>
 							{/* Variations */}
 							<Variations
+								text={
+									variant
+										? "Change variation"
+										: "Choose variation"
+								}
 								onSelectVariation={onSelectVariation}
 								variations={product?.variations}
 								productImage={`https://bakal-lokal.xyz/products/${product?.profileImage}`}
@@ -323,7 +332,11 @@ export const ProductDetails = ({ product, navigation }) => {
 						<TouchableOpacity
 							onPress={() => {
 								navigation.navigate("Shops", {
-									merchant: product?.merchant,
+									screen: "ShopDetails",
+									params: {
+										merchant: product?.merchant,
+										previousScreen: route?.name,
+									},
 								});
 							}}
 						>
