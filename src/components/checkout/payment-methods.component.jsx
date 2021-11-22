@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TouchableHighlight, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import {
 	Collapse,
 	CollapseHeader,
@@ -22,13 +22,10 @@ const CollapseItem = styled(Collapse)`
 
 const PaymentMethodItem = ({ name, content, selected, onSelect }) => {
 	return (
-		<TouchableHighlight
+		<View
 			style={{
 				width: "100%",
 				backgroundColor: colors.brand.dirtywhite,
-			}}
-			onPress={() => {
-				onSelect(name);
 			}}
 		>
 			<CollapseItem selected={selected}>
@@ -39,7 +36,13 @@ const PaymentMethodItem = ({ name, content, selected, onSelect }) => {
 						alignItems: "center",
 					}}
 				>
-					<Text variant="title">{name} </Text>
+					<TouchableOpacity
+						onPress={() => {
+							onSelect(name);
+						}}
+					>
+						<Text variant="title">{name} </Text>
+					</TouchableOpacity>
 					<Text variant="caption">
 						View details{" "}
 						<AntDesign
@@ -53,7 +56,7 @@ const PaymentMethodItem = ({ name, content, selected, onSelect }) => {
 					<RenderHtml source={{ html: content }} />
 				</CollapseBody>
 			</CollapseItem>
-		</TouchableHighlight>
+		</View>
 	);
 };
 

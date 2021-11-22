@@ -16,6 +16,7 @@ import { asyncStoreGet } from "../../services/utils";
 import {
 	selectAuthentication,
 	selectCurrentUser,
+	selectCartItems,
 } from "../../services/auth/auth.selectors";
 import { useSelector } from "react-redux";
 import Autocomplete from "react-native-autocomplete-input";
@@ -26,10 +27,11 @@ const HeaderWithSearch = () => {
 	const route = useRoute();
 	const isAuthenticated = useSelector(selectAuthentication);
 	const currentUser = useSelector(selectCurrentUser);
+	const _cartItems = useSelector(selectCartItems);
 
 	useEffect(() => {
-		console.log(currentUser?.cartItems?.length);
-	}, [currentUser]);
+		console.log(_cartItems?.length);
+	}, [_cartItems]);
 
 	const [searchString, setSearchString] = useState("");
 	// const searchResult = filterData(searchString);
@@ -154,7 +156,7 @@ const HeaderWithSearch = () => {
 					}
 				}}
 			>
-				{currentUser && currentUser?.cartItems?.length > 0 && (
+				{currentUser && _cartItems?.length > 0 && (
 					<Badge
 						style={{
 							position: "absolute",
@@ -169,7 +171,7 @@ const HeaderWithSearch = () => {
 						}}
 					>
 						<Text style={{ color: "white", fontSize: 10 }}>
-							{currentUser?.cartItems?.length}
+							{_cartItems?.length}
 						</Text>
 					</Badge>
 				)}

@@ -1,17 +1,17 @@
 import React from "react";
-import { ScrollView, View, Image, Text } from "react-native";
+import { ScrollView, View, Image, Text, TouchableOpacity } from "react-native";
 // import { Text } from "../typography/text.component";
 import styled from "styled-components";
 import { Spacer } from "../spacer/spacer.component";
 import SectionTitle from "../utils/title.component";
 import { useSelector } from "react-redux";
 import { selectCategories } from "../../services/category/category.selectors";
-
+import { useNavigation } from "@react-navigation/core";
 const HorizontalScrollView = styled(ScrollView)`
 	width: 100%;
 `;
 
-const CategoryItemContainer = styled(View)`
+const CategoryItemContainer = styled(TouchableOpacity)`
 	border-radius: 8px;
 	width: 120;
 `;
@@ -28,7 +28,10 @@ export const CategoriesList = () => {
 			<SectionTitle text1="Product" text2="categories" />
 			<Spacer position="bottom" size="large" />
 
-			<HorizontalScrollView horizontal>
+			<HorizontalScrollView
+				horizontal
+				showsHorizontalScrollIndicator={false}
+			>
 				{categories &&
 					categories?.map((cat) => {
 						return <CategoryItem category={cat} key={cat?._id} />;
@@ -39,6 +42,7 @@ export const CategoriesList = () => {
 };
 
 export const CategoryItem = ({ category }) => {
+	const navigation = useNavigation();
 	return (
 		<CategoryItemContainer
 			style={{
@@ -47,6 +51,12 @@ export const CategoryItem = ({ category }) => {
 				shadowOffset: { width: 0, height: 1 },
 				shadowOpacity: 0.5,
 				shadowRadius: 1,
+			}}
+			onPress={() => {
+				navigation.navigate("Categories", {
+					id: category?._id,
+					name: category?.name,
+				});
 			}}
 		>
 			<CategoryItemImageContainer

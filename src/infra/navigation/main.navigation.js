@@ -30,6 +30,9 @@ import {
 } from "../../services/auth/auth.selectors";
 import { Spinner } from "native-base";
 import OrderDetailsScreen from "../../screens/order-details.screen";
+import CategoriesScreen from "../../screens/categories.screen";
+import ForgotPassword from "../../screens/forgot-password.screen";
+import TemporaryRegister from "../../screens/temporary-register.screen";
 export const navigationRef = React.createRef();
 
 export function openDrawer(routeName, params) {
@@ -69,8 +72,6 @@ const MainNavigator = () => {
 	const currentUser = useSelector(selectCurrentUser);
 	const userLoginLoading = useSelector(selectLoginLoading);
 
-	const [initialScreenName, setInitialScreenName] = useState("Login");
-
 	useEffect(() => {
 		const fetchUser = async () => {
 			const token = await asyncStoreGet("token");
@@ -83,6 +84,10 @@ const MainNavigator = () => {
 		fetchUser();
 	}, [dispatch]);
 
+	useEffect(() => {
+		console.log(currentUser?.fname);
+	}, [currentUser]);
+
 	// useEffect(() => {
 	// 	Alert.alert(userLoginLoading);
 	// 	if (!userLoginLoading) {
@@ -94,28 +99,28 @@ const MainNavigator = () => {
 	// 	}
 	// }, [userLoginLoading]);
 
-	// if (authLoading && !currentUser && userLoginLoading) {
-	// 	return (
-	// 		authLoading && (
-	// 			<View
-	// 				style={{
-	// 					flex: 1,
-	// 					display: "flex",
-	// 					justifyContent: "center",
-	// 					alignItems: "center",
-	// 				}}
-	// 			>
-	// 				<Spinner color="orange" />
-	// 			</View>
-	// 		)
-	// 	);
-	// }
+	if (authLoading && !currentUser && userLoginLoading) {
+		return (
+			authLoading && (
+				<View
+					style={{
+						flex: 1,
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+					}}
+				>
+					<Spinner color="orange" />
+				</View>
+			)
+		);
+	}
 
 	return (
 		<NavigationContainer ref={navigationRef}>
 			<MainStackNavigator.Navigator
 				headerMode="none"
-				initialRouteName={"Login"}
+				initialRouteName={"Menu"}
 				screenOptions={{
 					...TransitionPresets.ModalPresentationIOS,
 				}}
@@ -134,7 +139,7 @@ const MainNavigator = () => {
 				/>
 				<MainStackNavigator.Screen
 					name="Registration Form"
-					component={RegistrationScreen}
+					component={TemporaryRegister}
 				/>
 				<MainStackNavigator.Screen
 					name="Menu"
@@ -148,6 +153,14 @@ const MainNavigator = () => {
 				<MainStackNavigator.Screen
 					name="Checkout"
 					component={CheckoutScreen}
+				/>
+				<MainStackNavigator.Screen
+					name="Categories"
+					component={CategoriesScreen}
+				/>
+				<MainStackNavigator.Screen
+					name="ForgotPassword"
+					component={ForgotPassword}
 				/>
 				<MainStackNavigator.Screen name="Map" component={MapScreen} />
 			</MainStackNavigator.Navigator>

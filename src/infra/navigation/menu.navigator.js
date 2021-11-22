@@ -17,7 +17,6 @@ import { asyncStoreRemove } from "../../services/utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import RNRestart from "react-native-restart";
 import FAQScreen from "../../screens/FAQ,screen";
 import {
 	selectCurrentUser,
@@ -65,8 +64,8 @@ function CustomDrawerContent(props) {
 
 							if (response.success === true) {
 								await asyncStoreRemove("token");
-								navigation.navigate("Login");
 								dispatch(logout());
+								navigation.navigate("Login");
 							} else {
 								throw Error;
 							}
@@ -133,6 +132,7 @@ const DrawerMenuNavigator = () => {
 				style={{ background: "red" }}
 				options={{
 					title: "Home",
+
 					drawerIcon: ({ size }) => (
 						<View style={{ width: 27, marginRight: -15 }}>
 							<FontAwesome

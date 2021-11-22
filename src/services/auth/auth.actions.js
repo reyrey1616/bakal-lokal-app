@@ -144,7 +144,6 @@ export const setDeliveryLocation = (payload) => {
 
 // UPDATE CUSTOMER INFO
 export const updateCustomerInfoStart = ({ payload, callback = () => {} }) => {
-	console.log(payload);
 	return {
 		type: AuthActionTypes.UPDATE_CUSTOMER_INFO_START,
 		payload,

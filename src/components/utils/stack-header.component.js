@@ -6,6 +6,7 @@ import { asyncStoreGet } from "../../services/utils";
 import {
 	selectAuthentication,
 	selectCurrentUser,
+	selectCartItems,
 } from "../../services/auth/auth.selectors";
 import { useSelector } from "react-redux";
 import { Badge, Button, Icon } from "native-base";
@@ -13,6 +14,7 @@ export const StackHeader = ({ previousScreen }) => {
 	const navigation = useNavigation();
 	const isAuthenticated = useSelector(selectAuthentication);
 	const currentUser = useSelector(selectCurrentUser);
+	const _cartItems = useSelector(selectCartItems);
 
 	return (
 		<View
@@ -46,7 +48,7 @@ export const StackHeader = ({ previousScreen }) => {
 				onPress={async () => {
 					const token = await asyncStoreGet("token");
 					if (isAuthenticated && currentUser && token) {
-						navigation.navigate("Cart");
+						navigation.navigate("Products");
 					} else {
 						Alert.alert(
 							"Bakal Lokal",
@@ -56,7 +58,7 @@ export const StackHeader = ({ previousScreen }) => {
 					}
 				}}
 			>
-				{currentUser && currentUser?.cartItems?.length > 0 && (
+				{currentUser && _cartItems?.length > 0 && (
 					<Badge
 						style={{
 							position: "absolute",
@@ -71,7 +73,7 @@ export const StackHeader = ({ previousScreen }) => {
 						}}
 					>
 						<Text style={{ color: "white", fontSize: 10 }}>
-							{currentUser?.cartItems?.length}
+							{_cartItems?.length}
 						</Text>
 					</Badge>
 				)}

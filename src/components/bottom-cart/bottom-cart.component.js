@@ -9,8 +9,15 @@ import { Input, Item } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import ButtonTypes from "../utils/buttons.component";
 import { colors } from "../../infra/theme/colors";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../services/auth/auth.selectors";
+import { useNavigation } from "@react-navigation/core";
+
 export const BottomCart = ({ onValueChange, onAddToCart, disabled }) => {
 	const [quantity, setQuantity] = useState(1);
+
+	const currentUser = useSelector(selectCurrentUser);
+	const navigation = useNavigation();
 
 	const quantityChange = (type = "add", value = 1) => {
 		let newValue;
@@ -75,7 +82,15 @@ export const BottomCart = ({ onValueChange, onAddToCart, disabled }) => {
 					height: 50,
 				}}
 				onPress={() => {
-					onAddToCart(quantity);
+					if (!currentUser) {
+						navigation.navigate("Login");
+						Alert.alert(
+							"Bakal Lokal",
+							"Please login first to add items to bayong."
+						);
+					} else {
+						onAddToCart(quantity);
+					}
 				}}
 			>
 				<ButtonTypes.PrimaryButtonText>

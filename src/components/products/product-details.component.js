@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { Spinner } from "native-base";
 import { theme } from "../../infra/theme";
 import { Text } from "../typography/text.component";
 import styled from "styled-components/native";
@@ -12,6 +13,9 @@ import { BottomCart } from "../bottom-cart/bottom-cart.component";
 import { useRoute } from "@react-navigation/core";
 import { updateCartStart } from "../../services/auth/auth.actions";
 import { useDispatch } from "react-redux";
+import Reviews from "../reviews/reviews.component";
+import AddReviewForm from "../reviews/add-review.component";
+import axios from "axios";
 const SectionView = styled(View)`
 	margin-top: 5;
 	padding-top: 10;
@@ -50,10 +54,84 @@ const dateCompareIfOnSale = (date1, date2) => {
 		return false;
 	}
 };
-export const ProductDetails = ({ product, navigation }) => {
+
+const addNewReview = async (reviewForm, id, merchant) => {
+	try {
+		const reviews = await axios.post(`/reviews/${id}`, {
+			...reviewForm,
+			merchant,
+		});
+		const response = await reviews?.data;
+
+		if (response?.success) {
+			Alert.alert("Bakal Lokal", "Review has been submitted.");
+
+			return true;
+		} else {
+			throw Error;
+		}
+	} catch (error) {
+		if (error.response && error.response.data.error) {
+			const errorResponse = error.response.data.error;
+
+			Alert.alert("Bakal Lokal", errorResponse);
+		} else {
+			Alert.alert(
+				"Bakal Lokal",
+				"Error adding review. Please try again later!"
+			);
+		}
+
+		return false;
+	}
+};
+
+export const ProductDetails = ({
+	product,
+	navigation,
+	reviews,
+	reviewsLoading,
+}) => {
 	const [variant, setVariant] = useState(null);
 	const dispatch = useDispatch();
 	const route = useRoute();
+
+	const [reviewForm, onSetReviewForm] = useState({
+		comment: "",
+		ratings: 1,
+	});
+
+	const onHandleAddReview = async (reviewData) => {
+		onSetReviewForm(reviewData);
+	};
+
+	const onAddReview = async () => {
+		if (!product?._id) {
+			Alert.alert(
+				"Bakal Lokal",
+				"Something went wrong. Please reload the app."
+			);
+		} else if (!product?.merchant?._id) {
+			Alert.alert(
+				"Bakal Lokal",
+				"Something went wrong. Please reload the app."
+			);
+		} else if (!reviewForm?.comment) {
+			Alert.alert("Bakal Lokal", "Please specify your comment!");
+		} else {
+			const added = await addNewReview(
+				reviewForm,
+				product?._id,
+				product?.merchant?._id
+			);
+			if (added) {
+				onSetReviewForm({
+					comment: "",
+					ratings: 1,
+				});
+			}
+		}
+	};
 
 	const onSelectVariation = (variant) => {
 		setVariant(variant);
@@ -299,6 +377,24 @@ export const ProductDetails = ({ product, navigation }) => {
 					>
 						{product?.merchant?.name}
 					</Text>
+				</SectionView>
+
+				<SectionView>
+					{!reviews && !reviewsLoading ? (
+						<Spinner color="orange" />
+					) : (
+						<Reviews data={reviews && reviews} />
+					)}
+				</SectionView>
+
+				<SectionView>
+					<AddReviewForm
+						form={reviewForm}
+						onSetForm={(d) => {
+							onHandleAddReview(d);
+						}}
+						onAddReview={onAddReview}
+					/>
 				</SectionView>
 
 				{/* Name */}

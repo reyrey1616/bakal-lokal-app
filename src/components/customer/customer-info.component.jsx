@@ -67,6 +67,8 @@ export const CustomerInfo = ({ currentUser }) => {
 		} else if (!bdate) {
 			Alert.alert("Bakal Lokal", "Please select birthday!");
 		}
+
+		console.log(form);
 		dispatch(
 			updateCustomerInfoStart({
 				payload: form,

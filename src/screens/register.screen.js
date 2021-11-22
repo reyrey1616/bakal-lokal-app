@@ -23,6 +23,7 @@ import { useDispatch, connect } from "react-redux";
 import { registerStart } from "../services/auth/auth.actions";
 import moment from "moment";
 import { AntDesign } from "@expo/vector-icons";
+import axios from "axios";
 
 const RegistrationScreen = ({ navigation, register }) => {
 	const dispatch = useDispatch();
@@ -47,7 +48,6 @@ const RegistrationScreen = ({ navigation, register }) => {
 	});
 
 	const onSubmit = (data) => {
-		console.log(data);
 		if (data?.fname === "") {
 			Alert.alert("Bakal Lokal", "Please input first name!");
 		} else if (data?.lname === "") {
@@ -69,6 +69,7 @@ const RegistrationScreen = ({ navigation, register }) => {
 						"Bakal Lokal",
 						"Registration successfull, We've sent you a mail to verify your account."
 					);
+
 					navigation.navigate("Login");
 				})
 			);

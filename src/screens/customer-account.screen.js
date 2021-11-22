@@ -8,7 +8,6 @@ import {
 } from "../services/auth/auth.selectors";
 import { useSelector } from "react-redux";
 import { CustomerInfo } from "../components/customer/customer-info.component";
-import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 
 const CustomerAccountScreen = () => {
@@ -21,7 +20,6 @@ const CustomerAccountScreen = () => {
 	}
 
 	if (!currentUser) {
-		Alert.alert("Bakal Lokal", "You need to login first!");
 		navigation.navigate("Login");
 	}
 

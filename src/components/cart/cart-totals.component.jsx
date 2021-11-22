@@ -11,6 +11,7 @@ import {
 	selectDiscount,
 	selectVoucher,
 	selectTransactionFee,
+	selectCartItems,
 } from "../../services/auth/auth.selectors";
 import VoucherModal from "../vouchers/voucher-modal.component";
 
@@ -29,6 +30,8 @@ export const CartTotals = () => {
 	const _transactionFee = useSelector(selectTransactionFee);
 	const _voucher = useSelector(selectVoucher);
 
+	const _cartItems = useSelector(selectCartItems);
+
 	const [data, setData] = useState({
 		subTotal: 0,
 		deliveryFee: 0,
@@ -39,19 +42,22 @@ export const CartTotals = () => {
 	});
 
 	useEffect(() => {
-		const subTotal = currentUser?.cartItems?.reduce((acc, item) => {
+		const subTotal = _cartItems?.reduce((acc, item) => {
 			return acc + item?.subTotal;
 		}, 0);
 
 		const grandTotal =
 			subTotal + _transactionFee + _deliveryFee - _discount;
 
+		console.log(subTotal);
+		console.log(grandTotal);
+
 		setData({
 			...data,
 			subTotal,
 			grandTotal,
 		});
-	}, [currentUser, _voucher, _deliveryFee]);
+	}, [_cartItems, _voucher, _deliveryFee, currentUser]);
 	return (
 		<View
 			style={{

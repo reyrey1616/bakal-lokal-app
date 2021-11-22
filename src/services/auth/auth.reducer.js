@@ -15,6 +15,7 @@ const INITIAL_STATE = {
 	orders: [],
 	ordersLoading: false,
 	userLoginLoading: false,
+	cartItems: [],
 
 	deliveryDetails: {
 		deliveryOption: "Pick-up",
@@ -108,7 +109,6 @@ const register = (state) => {
 };
 
 const loadUser = (state, action) => {
-	console.log(state.userLoginLoading);
 	return {
 		...state,
 		loading: false,
@@ -122,7 +122,7 @@ const loadUser = (state, action) => {
 };
 
 const updateUser = (state, action) => {
-	console.log(action);
+	console.log(action?.payload);
 	return {
 		...state,
 		loading: false,
@@ -133,7 +133,7 @@ const updateUser = (state, action) => {
 };
 
 const updateCart = (state, action) => {
-	console.log(action.payload);
+	console.log(action.payload.cartItems?.length);
 	return {
 		...state,
 		loading: false,
@@ -152,7 +152,6 @@ const setDeliveryFee = (state, action) => {
 
 const setVoucher = (state, action) => {
 	const voucher = action?.payload;
-	console.log(voucher?.discount);
 	return {
 		...state,
 		discount: voucher?.discount,
@@ -195,6 +194,8 @@ const orderSuccess = (state, action) => {
 		voucher: null,
 		transactionFee: 15,
 		userLoginLoading: false,
+		cartItems: [],
+
 		deliveryDetails: {
 			deliveryOption: "Pick-up",
 			date: moment(new Date(Date.now())).format("YYYY-MM-DD"),

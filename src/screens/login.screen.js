@@ -11,7 +11,13 @@ import {
 	Body,
 	Icon,
 } from "native-base";
-import { Image, View, Alert, ImageBackground } from "react-native";
+import {
+	Image,
+	View,
+	Alert,
+	ImageBackground,
+	TouchableOpacity,
+} from "react-native";
 import ButtonTypes from "../components/utils/buttons.component";
 import { Spacer } from "../components/spacer/spacer.component";
 import { AntDesign } from "@expo/vector-icons";
@@ -38,9 +44,14 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 	// 	password: "12345678",
 	// });
 	const navigation = useNavigation();
+	// const [form, setForm] = useState({
+	// 	email: "guidoriagaorey16@gmail.com",
+	// 	password: "12345678",
+	// });
+
 	const [form, setForm] = useState({
-		email: "guidoriagaorey16@gmail.com",
-		password: "12345678",
+		email: "",
+		password: "",
 	});
 
 	useEffect(() => {
@@ -185,11 +196,14 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 							/>
 						</Item>
 
-						<View
+						<TouchableOpacity
 							style={{
 								alignItems: "flex-end",
 								justifyContent: "flex-end",
 								padding: 15,
+							}}
+							onPress={() => {
+								navigation.navigate("ForgotPassword");
 							}}
 						>
 							<Text
@@ -198,7 +212,7 @@ const LoginScreen = ({ currentUser, isAuthenticated }) => {
 							>
 								Forgot password?
 							</Text>
-						</View>
+						</TouchableOpacity>
 					</View>
 				</View>
 

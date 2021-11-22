@@ -53,7 +53,6 @@ const CustomerOrdersScreen = ({ route }) => {
 		if (currentUser) {
 			dispatch(getAllOrderStart(currentUser?._id));
 		} else {
-			Alert.alert("Bakal Lokal", "You need to login first!");
 			navigation.navigate("Login");
 		}
 	}, []);

@@ -45,7 +45,6 @@ function* signInAsync({ payload, callback }) {
 
 			return;
 		} else if (loginResponse.token) {
-			console.log(loginResponse);
 			yield put(
 				loginSuccess({
 					token: loginResponse?.token,
@@ -57,7 +56,6 @@ function* signInAsync({ payload, callback }) {
 		}
 	} catch (error) {
 		const errorResponse = error?.response?.data?.error;
-		console.log(errorResponse);
 		if (errorResponse) {
 			yield put(loginFail(errorResponse));
 
@@ -69,10 +67,41 @@ function* signInAsync({ payload, callback }) {
 function* signUpAsync({ payload, callback }) {
 	try {
 		const request = yield axios.post("/customers", payload);
-		const response = yield request.data;
-		if (response.success === true) {
+		const response = yield request;
+
+		if (response?.data?.success === true) {
 			yield put(registerSuccess(response.data));
-			callback(response.data);
+
+			const id = response?.data?.otherResp[0];
+			const emailData = {
+				service_id: "service_i2md4po",
+				template_id: "template_bhh55j8",
+				user_id: "user_BgbYodHJVW1sBGMlZrluD",
+				template_params: {
+					to_name: `${payload?.fname} ${payload?.lname}`,
+					from_name: "Bakal Lokal",
+					email: payload?.email,
+					verification_link: `<a href = "https:/	/bakal-lokal.com/customer-verification/${id}">Confirm Your Email</a>`,
+				},
+			};
+
+			console.log(emailData);
+
+			// yield fetch(
+			// 	"https://api.emailjs.com/api/v1.0/email/send",
+			// 	emailData
+			// )
+			// 	.then((response) => {
+			// 		console.log(response);
+			// 		callback(response.data);
+			// 	})
+			// 	.catch((error) => {
+			// 		console.log(error);
+			// 		Alert.alert(
+			// 			"Bakal Lokal",
+			// 			"Verification email have failed to send. Please contact customer support of Bakal Lokal!"
+			// 		);
+			// 	});
 		} else {
 			throw Error;
 		}
@@ -256,7 +285,6 @@ function* addOrderAsync({ payload, callback }) {
 
 function* updateCustomerInfo({ payload, callback }) {
 	try {
-		console.log(payload);
 		let resp;
 		if (payload.actionType === "checkout") {
 			const {
@@ -299,18 +327,23 @@ function* updateCustomerInfo({ payload, callback }) {
 				cartItems: [],
 			});
 		} else if (payload.actionType === "profile") {
-			const formData = new FormData();
-			// formData.append("image", payload?.image);
-			formData.append("fname", payload.fname);
-			formData.append("mname", payload.mname);
-			formData.append("contactNumber", payload.contactNumber);
-			formData.append("gender", payload.gender);
-			formData.append("bdate", payload.bdate);
-			resp = yield axios.put(`/customers/`, formData, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			});
+			// const formData = new FormData();
+			// // formData.append("image", payload?.image);
+			// formData.append("fname", payload.fname);
+			// formData.append("mname", payload.mname);
+			// formData.append("contactNumber", payload.contactNumber);
+			// formData.append("gender", payload.gender);
+			// formData.append("bdate", payload.bdate);
+			const data = {
+				fname: payload?.fname,
+				mname: payload?.mname,
+				contactNumber: payload?.contactNumber,
+				gender: payload?.gender,
+				bdate: payload?.bdate,
+			};
+			console.log("profile");
+			console.log(data);
+			resp = yield axios.put(`/customers/`, data);
 		} else if (payload?.actionType === "billing_address") {
 			resp = yield axios.put(`/customers`, {
 				billing_fullAddress: payload?.fullAddress,

@@ -80,6 +80,7 @@ const CartTable = ({ data, readOnly }) => {
 								</Text>
 								<TouchableOpacity
 									onPress={() => {
+										console.log("owo");
 										dispatch(
 											updateCartStart({
 												payload: {

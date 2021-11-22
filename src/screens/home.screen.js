@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
 import { ScrollView, Text } from "react-native";
-import { Button } from "native-base";
+import { Spinner } from "native-base";
 import HeaderWithSearch from "../components/header-with-search/header-with-search.component";
 import WelcomeBanner from "../components/home-page/welcome-banner.component";
 import {
@@ -10,8 +10,9 @@ import {
 } from "../components/home-page/home.components";
 import styled from "styled-components";
 import { CategoriesList } from "../components/categories/categories.component";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesStart } from "../services/category/category.actions";
+import { selectLoading } from "../services/category/category.selectors";
 const ScrollViewContainer = styled(ScrollView)`
 	background-color: #fff;
 	height: auto;
@@ -19,6 +20,9 @@ const ScrollViewContainer = styled(ScrollView)`
 
 const HomeScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
+
+	const loading = useSelector(selectLoading);
+
 	useEffect(() => {
 		dispatch(getCategoriesStart());
 	}, []);
@@ -36,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
 				<WelcomeBanner />
 				<ShopAllProducts />
 				<Shops />
-				<CategoriesList />
+				{loading ? <Spinner color="orange" /> : <CategoriesList />}
 			</ScrollViewContainer>
 		</SafeArea>
 	);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeArea } from "../components/utils/safe-area.component";
 import { ScrollView, View, Alert } from "react-native";
 import { Button } from "native-base";
@@ -38,9 +38,9 @@ const CartScreen = ({ route }) => {
 				}}
 			>
 				<View style={{ width: "100%" }}>
-					<BLHeader title="Bayong" previousScreen={previousScreen} />
+					<BLHeader title="Bayong" previousScreen={"Home"} />
 					<CartTable data={currentUser && cartItems} />
-					<CartTotals data={{}} />
+					<CartTotals />
 				</View>
 				<View
 					style={{
@@ -53,7 +53,7 @@ const CartScreen = ({ route }) => {
 						block
 						warning
 						onPress={() => {
-							if (currentUser?.cartItems?.length <= 0) {
+							if (currentUser && cartItems.length <= 0) {
 								Alert.alert(
 									"Please add item to your bayong to proceed."
 								);

@@ -16,6 +16,7 @@ import {
 	selectTransactionFee,
 	selectCurrentUser,
 	selectAuthState,
+	selectCartItems,
 } from "../services/auth/auth.selectors";
 import {
 	setDeliveryDetails,
@@ -79,6 +80,7 @@ const CheckoutScreen = ({ route }) => {
 	const authState = useSelector(selectAuthState);
 	const [paymentMethodLoading, setPaymentMethodLoading] = useState(false);
 	const [paymentMethods, setPaymentMethods] = useState([]);
+	const _cartItems = useSelector(selectCartItems);
 
 	const getPaymentMethods = async () => {
 		try {
@@ -146,19 +148,21 @@ const CheckoutScreen = ({ route }) => {
 			pickupDate: deliveryDetails?.date,
 		};
 
-		const subTotal = user?.cartItems?.reduce((acc, item) => {
-			return item?.subTotal + acc;
-		}, 0);
+		const subTotal =
+			user &&
+			_cartItems?.reduce((acc, item) => {
+				return item?.subTotal + acc;
+			}, 0);
 
 		const grandTotal = subTotal + transactionFee + deliveryFee - discount;
 
 		if (!paymentMethod) {
 			Alert.alert("Please choose your payment method.");
-		} else if (!user || !user.cartItems) {
+		} else if (!user || !_cartItems) {
 			Alert.alert("Something went wrong, Please refresh the page.");
 		} else if (!deliveryFee && deliveryFee !== 0) {
 			Alert.alert("Please choose your payment method.");
-		} else if (user && user.cartItems && user.cartItems.length < 1) {
+		} else if (user && _cartItems && _cartItems.length < 1) {
 			Alert.alert("Add item to your cart before checkout.");
 		} else if (
 			deliveryOption === "Pick-up" &&
@@ -183,8 +187,8 @@ const CheckoutScreen = ({ route }) => {
 		} else {
 			const updatedCartItem =
 				user &&
-				user?.cartItems &&
-				user?.cartItems.map(
+				_cartItems &&
+				_cartItems.map(
 					({
 						buyPrice,
 						quantity,
@@ -263,7 +267,10 @@ const CheckoutScreen = ({ route }) => {
 							updateCustomerInfoStart({
 								payload: customerInfo,
 								callback: async () => {
-									Alert.alert("Order Successfully Placed!");
+									Alert.alert(
+										"Bakal Lokal",
+										" Order Successfully Placed!"
+									);
 									setTimeout(() => {
 										navigation.navigate("Products");
 									}, 1500);
