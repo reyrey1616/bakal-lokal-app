@@ -34,7 +34,6 @@ import {
 import { createStructuredSelector } from "reselect";
 import { fontSizes } from "../infra/theme/fonts";
 import { useNavigation } from "@react-navigation/native";
-import { asyncStoreSave } from "../services/utils";
 import setAuthToken from "../utils/setAuthToken";
 
 const LoginScreen = ({ currentUser, isAuthenticated }) => {

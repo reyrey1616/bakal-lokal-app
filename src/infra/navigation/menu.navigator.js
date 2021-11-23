@@ -130,6 +130,7 @@ const DrawerMenuNavigator = () => {
 		>
 			<Drawer.Screen
 				style={{ background: "red" }}
+				tabBar
 				options={{
 					title: "Home",
 

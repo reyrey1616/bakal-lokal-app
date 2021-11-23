@@ -25,6 +25,11 @@
 			"bundleIdentifier": "com.yobb16.bakallokalapp"
 		},
 		"android": {
+			"config": {
+				"googleMaps": {
+					"apiKey": "AIzaSyCKps5AWXn0f1da43ALOJY-ROV3b8lMpBA"
+				}
+			},
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#FFFFFF"

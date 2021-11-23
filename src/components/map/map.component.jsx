@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Button } from "native-base";
 import { Text } from "../typography/text.component";
 import ButtonTypes from "../utils/buttons.component";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { Alert } from "react-native";
 import * as Location from "expo-location";
 import { useDispatch } from "react-redux";
@@ -40,19 +40,19 @@ const Map = ({ user, previousScreen }) => {
 			});
 		}
 
-		(async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== "granted") {
-				Alert.alert(
-					"Bakal Lokal",
-					"Permission to access location was denied."
-				);
-				return;
-			}
+		// (async () => {
+		// 	let { status } = await Location.requestForegroundPermissionsAsync();
+		// 	if (status !== "granted") {
+		// 		Alert.alert(
+		// 			"Bakal Lokal",
+		// 			"Permission to access location was denied."
+		// 		);
+		// 		return;
+		// 	}
 
-			let location = await Location.getCurrentPositionAsync({});
-			setLocation(location?.coords);
-		})();
+		// 	let location = await Location.getCurrentPositionAsync({});
+		// 	setLocation(location?.coords);
+		// })();
 	}, []);
 
 	useEffect(() => {
@@ -66,23 +66,28 @@ const Map = ({ user, previousScreen }) => {
 
 	const calculateDistance = (to) => {
 		var dis = getDistance(
-			{ latitude: 10.7177168, longitude: 122.5598794 },
-			{ latitude: to?.latitude, longitude: to?.longitude }
+			{
+				latitude: parseFloat(10.7177168),
+				longitude: parseFloat(122.5598794),
+			},
+			{
+				latitude: parseFloat(to?.latitude),
+				longitude: parseFloat(to?.longitude),
+			}
 		);
 		return dis / 1000;
 	};
-
+	5.78;
 	return (
 		<>
 			<MapView
-				provider={PROVIDER_GOOGLE}
 				style={{ flex: 1 }}
 				zoomEnabled
 				initialRegion={{
-					latitude: parseFloat(10.6987864),
-					longitude: parseFloat(122.5485763),
-					latitudeDelta: parseFloat(0.0922),
-					longitudeDelta: parseFloat(0.0421),
+					latitude: 10.6987864,
+					longitude: 122.5485763,
+					latitudeDelta: 0.0922,
+					longitudeDelta: 0.0421,
 				}}
 				scrollEnabled
 			>
@@ -91,7 +96,15 @@ const Map = ({ user, previousScreen }) => {
 					draggable
 					coordinate={deliveryMarker}
 					onDragEnd={(e) => {
-						setDeliveryMarker(e.nativeEvent.coordinate);
+						console.log(e.nativeEvent.coordinate);
+
+						const latitute = e.nativeEvent?.coordinate?.latitude;
+						const longitude = e.nativeEvent?.coordinate?.longitude;
+
+						setDeliveryMarker({
+							latitude: parseFloat(latitute),
+							longitude: parseFloat(longitude),
+						});
 					}}
 					title={"Delivery Location"}
 				/>
@@ -105,6 +118,17 @@ const Map = ({ user, previousScreen }) => {
 					pinColor="orange"
 				/>
 			</MapView>
+			{/* <MapView
+				style={{
+					flex: 1,
+				}}
+				initialRegion={{
+					latitude: 37.78825,
+					longitude: -122.4324,
+					latitudeDelta: 0.0922,
+					longitudeDelta: 0.0421,
+				}}
+			/> */}
 			<View
 				style={{
 					width: "100%",
