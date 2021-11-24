@@ -29,7 +29,7 @@ const BillingAddressScreen = ({ route }) => {
 	const user = useSelector(selectCurrentUser);
 	const loading = useSelector(selectAuthLoading);
 	const [deliveryAddress, setDeliveryAddress] = useState({
-		fullAddress: "",
+		fullAddress: "nc",
 		baranggay: "",
 		city: "",
 		province: "",

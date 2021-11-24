@@ -7,114 +7,114 @@ import BLHeader from "../components/header/header.component";
 import styled from "styled-components";
 import { colors } from "../infra/theme/colors";
 import {
-	selectCurrentUser,
-	selectOrdersLoading,
-	selectOrders,
+  selectCurrentUser,
+  selectOrdersLoading,
+  selectOrders,
 } from "../services/auth/auth.selectors";
 import OrdersTable from "../components/orders/orders-table.component";
 import { OrderSearch } from "../components/orders/order-search.component";
 import { getAllOrderStart } from "../services/auth/auth.actions";
 import { useNavigation } from "@react-navigation/core";
 const ScrollViewContainer = styled(ScrollView)`
-	background-color: #fff;
-	height: auto;
+  background-color: #fff;
+  height: auto;
 `;
 
 const CustomerOrdersScreen = ({ route }) => {
-	// const { previousScreen } = route?.params;
-	// const page = useRoute();
-	// const navigation = useNavigation();
+  // const { previousScreen } = route?.params;
+  // const page = useRoute();
+  // const navigation = useNavigation();
 
-	const currentUser = useSelector(selectCurrentUser);
-	const [selectedSortField, setSelectedSortField] = useState("");
-	const [searchText, setSearchText] = useState("");
-	const loading = useSelector(selectOrdersLoading);
-	const orders = useSelector(selectOrders);
-	const [ordersState, setOrderState] = useState([]);
-	const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
+  const [selectedSortField, setSelectedSortField] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const loading = useSelector(selectOrdersLoading);
+  const orders = useSelector(selectOrders);
+  const [ordersState, setOrderState] = useState([]);
+  const dispatch = useDispatch();
 
-	const navigation = useNavigation();
+  const navigation = useNavigation();
 
-	if (loading) {
-		return <Spinner color="orange" />;
-	}
+  console.log(loading);
 
-	function compare(a, b, field) {
-		if (a[field] < b[field]) {
-			return -1;
-		}
-		if (a[field] > b[field]) {
-			return 1;
-		}
-		return 0;
-	}
+  function compare(a, b, field) {
+    if (a[field] < b[field]) {
+      return -1;
+    }
+    if (a[field] > b[field]) {
+      return 1;
+    }
+    return 0;
+  }
 
-	useEffect(() => {
-		if (currentUser) {
-			dispatch(getAllOrderStart(currentUser?._id));
-		} else {
-			navigation.navigate("Login");
-		}
-	}, []);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (currentUser) {
+        dispatch(getAllOrderStart(currentUser?._id));
+      }
+    });
 
-	useEffect(() => {
-		if (currentUser) {
-			setOrderState(orders);
-		}
-	}, [orders]);
+    return unsubscribe;
+  }, []);
 
-	const onSort = (val) => {
-		setSelectedSortField(val);
+  useEffect(() => {
+    if (currentUser) {
+      setOrderState(orders);
+    }
+  }, [orders]);
 
-		ordersState?.sort((a, b) =>
-			a[val] < b[val] ? 1 : b[val] < a[val] ? -1 : 0
-		);
-	};
+  const onSort = (val) => {
+    setSelectedSortField(val);
 
-	const onTextSearch = (val) => {
-		setSearchText(val);
+    ordersState?.sort((a, b) =>
+      a[val] < b[val] ? 1 : b[val] < a[val] ? -1 : 0
+    );
+  };
 
-		if (val === "") {
-			setOrderState(orders && orders);
-		}
+  const onTextSearch = (val) => {
+    setSearchText(val);
 
-		if (!val) return;
+    if (val === "") {
+      setOrderState(orders && orders);
+    }
 
-		let filtered = ordersState?.filter((data) => {
-			return data?.orderNumber.toString().includes(val?.toLowerCase());
-		});
-		setOrderState(filtered);
-	};
+    if (!val) return;
 
-	return (
-		<SafeArea>
-			<BLHeader title="My orders" previousScreen={"Home"} />
+    let filtered = ordersState?.filter((data) => {
+      return data?.orderNumber.toString().includes(val?.toLowerCase());
+    });
+    setOrderState(filtered);
+  };
 
-			{loading ? (
-				<Spinner color="orange" />
-			) : (
-				<View style={{ flex: 1, backgroundColor: "white" }}>
-					<ScrollViewContainer
-						contentContainerStyle={{
-							flexGrow: 1,
-							backgroundColor: colors.brand.dirtywhite,
-							flexDirection: "column",
-							padding: 10,
-						}}
-					>
-						<OrderSearch
-							onSort={onSort}
-							onTextSearch={onTextSearch}
-							selectedSortField={selectedSortField}
-							searchText={searchText}
-						/>
+  return (
+    <SafeArea>
+      <BLHeader title="My orders" previousScreen={"Home"} />
 
-						<OrdersTable data={orders && ordersState} />
-					</ScrollViewContainer>
-				</View>
-			)}
-		</SafeArea>
-	);
+      {loading ? (
+        <Spinner color="orange" />
+      ) : (
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+          <ScrollViewContainer
+            contentContainerStyle={{
+              flexGrow: 1,
+              backgroundColor: colors.brand.dirtywhite,
+              flexDirection: "column",
+              padding: 10,
+            }}
+          >
+            <OrderSearch
+              onSort={onSort}
+              onTextSearch={onTextSearch}
+              selectedSortField={selectedSortField}
+              searchText={searchText}
+            />
+
+            <OrdersTable data={orders && ordersState} />
+          </ScrollViewContainer>
+        </View>
+      )}
+    </SafeArea>
+  );
 };
 
 export default CustomerOrdersScreen;
