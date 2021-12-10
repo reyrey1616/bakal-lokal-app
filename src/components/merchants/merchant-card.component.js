@@ -32,7 +32,7 @@ export const MerchantCard = ({ merchant, navigation }) => {
         <CardItem cardBody>
           <Image
             source={{
-              uri: `https://bakal-lokal.xyz/merchants/${merchant?.banner}`,
+              uri: `https://bakal-lokal.xyz/merchant_banners/${merchant?.banner}`,
             }}
             style={{
               height: 150,
