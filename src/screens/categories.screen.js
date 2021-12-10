@@ -10,76 +10,76 @@ import { ProductsContainer } from "../components/products/products-container.com
 import styled from "styled-components";
 import { Spinner } from "native-base";
 const ScrollViewContainer = styled(ScrollView)`
-	background-color: #fff;
-	height: auto;
+  background-color: #fff;
+  height: auto;
 `;
 
 const getProductsByCategory = async (id) => {
-	console.log(id);
-	try {
-		const products = await axios.get(`products/${id}/category`);
-		const response = await products?.data;
-		if (response?.success) {
-			return response?.data;
-		} else {
-			throw Error;
-		}
-	} catch (error) {
-		if (error.response && error.response.data.error) {
-			const errorResponse = error.response.data.error;
+  console.log(id);
+  try {
+    const products = await axios.get(`products/${id}/category`);
+    const response = await products?.data;
+    if (response?.success) {
+      return response?.data;
+    } else {
+      throw Error;
+    }
+  } catch (error) {
+    if (error.response && error.response.data.error) {
+      const errorResponse = error.response.data.error;
 
-			Alert.alert("Bakal Lokal", errorResponse);
-		} else {
-			Alert.alert(
-				"Bakal Lokal",
-				"Error loading the products. Please try again later!"
-			);
-		}
+      Alert.alert("Bakal Lokal", errorResponse);
+    } else {
+      Alert.alert(
+        "Bakal Lokal",
+        "Error loading the products. Please try again later!"
+      );
+    }
 
-		return [];
-	}
+    return [];
+  }
 };
 
 const CategoriesScreen = ({ navigation, route }) => {
-	const [products, setProducts] = useState([]);
-	const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		if (!route?.params?.id && !route?.params?.name) return;
+  useEffect(() => {
+    if (!route?.params?.id && !route?.params?.name) return;
 
-		const getProducts = async () => {
-			const products = await getProductsByCategory(route?.params?.id);
-			if (products?.length > 0 && products) {
-				setProducts(products);
-				setLoading(false);
-			}
-		};
+    const getProducts = async () => {
+      const products = await getProductsByCategory(route?.params?.id);
+      if (products?.length > 0 && products) {
+        setProducts(products);
+        setLoading(false);
+      }
+    };
 
-		getProducts();
-	}, []);
+    getProducts();
+  }, []);
 
-	return (
-		<SafeArea>
-			<BLHeader title="Categories" previousScreen={"Home"} />
-			<PageHeader title={route?.params?.name && route?.params?.name} />
-			<View style={{ flex: 1, backgroundColor: "white" }}>
-				<ScrollViewContainer
-					contentContainerStyle={{
-						flexGrow: 1,
-						backgroundColor: colors.brand.dirtywhite,
-						flexDirection: "column",
-						padding: 10,
-					}}
-				>
-					{loading ? (
-						<Spinner color="orange" />
-					) : (
-						<ProductsContainer products={products && products} />
-					)}
-				</ScrollViewContainer>
-			</View>
-		</SafeArea>
-	);
+  return (
+    <SafeArea>
+      <BLHeader title="Categories" previousScreen={"Home"} />
+      <PageHeader title={route?.params?.name && route?.params?.name} />
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <ScrollViewContainer
+          contentContainerStyle={{
+            flexGrow: 1,
+            backgroundColor: colors.brand.dirtywhite,
+            flexDirection: "column",
+            padding: 10,
+          }}
+        >
+          {loading ? (
+            <Spinner color="orange" />
+          ) : (
+            <ProductsContainer products={products && products} />
+          )}
+        </ScrollViewContainer>
+      </View>
+    </SafeArea>
+  );
 };
 
 export default CategoriesScreen;

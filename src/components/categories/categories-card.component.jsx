@@ -17,14 +17,14 @@ const MerchantContentContainer = styled(View)`
   padding-bottom: 15px;
 `;
 
-export const MerchantCard = ({ merchant, navigation }) => {
+export const CategoriesCard = ({ category, navigation }) => {
   const route = useRoute();
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("ShopDetails", {
-          merchant,
-          previousScreen: route?.name,
+        navigation.navigate("Categories", {
+          id: category?._id,
+          name: category?.name,
         });
       }}
     >
@@ -32,7 +32,7 @@ export const MerchantCard = ({ merchant, navigation }) => {
         <CardItem cardBody>
           <Image
             source={{
-              uri: `https://bakal-lokal.xyz/merchants/${merchant?.banner}`,
+              uri: `https://bakal-lokal.xyz/categories/${category?.image}`,
             }}
             style={{
               height: 150,
@@ -54,35 +54,15 @@ export const MerchantCard = ({ merchant, navigation }) => {
                   color: "#555",
                 }}
               >
-                {merchant?.name}
+                {category?.name}
               </Text>
-            </View>
-            <Spacer position="bottom" size="medium" />
-            <View style={{ paddingLeft: 15 }}>
-              {merchant &&
-                merchant.categories.map((cat, index) => {
-                  return (
-                    <Text
-                      key={cat?._id}
-                      style={{
-                        fontSize: theme?.fontSizes.caption,
-                        color: theme.colors.brand.orange,
-                      }}
-                    >
-                      {cat?.name}{" "}
-                      {index < merchant?.categories?.length - 1
-                        ? ",\u00A0"
-                        : ""}
-                    </Text>
-                  );
-                })}
             </View>
           </View>
 
           <View style={{ width: "40%" }}>
             <Spacer position="bottom" size="large" />
-            <View style={{ paddingLeft: 15 }}>
-              {/* <Text
+            {/* <View style={{ paddingLeft: 15 }}>
+              <Text
                 style={{
                   fontSize: theme?.fontSizes.body,
                   fontWeight: "bold",
@@ -90,8 +70,8 @@ export const MerchantCard = ({ merchant, navigation }) => {
                 }}
               >
                 Ratings Here
-              </Text> */}
-            </View>
+              </Text>
+            </View> */}
             <Spacer position="bottom" size="medium" />
             <View style={{ paddingLeft: 15 }}>
               <Text

@@ -48,6 +48,7 @@ const CustomerOrdersScreen = ({ route }) => {
   }
 
   useEffect(() => {
+    console.log("GET ORDERS FIRED!");
     const unsubscribe = navigation.addListener("focus", () => {
       if (currentUser) {
         dispatch(getAllOrderStart(currentUser?._id));
