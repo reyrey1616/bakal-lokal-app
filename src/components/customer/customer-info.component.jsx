@@ -21,15 +21,16 @@ export const CustomerInfo = ({ currentUser }) => {
   const dispatch = useDispatch();
   const loading = useSelector(selectAuthLoading);
   const navigation = useNavigation();
+
   const [form, setForm] = useState({
-    fname: "Rey",
-    lname: "Guidoriagao",
-    contactNumber: "09182254329",
-    email: "guidoriagaorey16@gmail.com",
+    fname: "",
+    lname: "",
+    contactNumber: "",
+    email: "",
     // password: "Nice123",
-    gender: "Male",
-    bdate: moment(Date.now()).format("YYYY-MM-DD"),
-    actionType: "profile",
+    gender: "",
+    bdate: "",
+    actionType: "",
   });
 
   useEffect(() => {
