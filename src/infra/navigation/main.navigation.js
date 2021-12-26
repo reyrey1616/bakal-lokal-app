@@ -34,6 +34,7 @@ import CategoriesScreen from "../../screens/categories.screen";
 import ForgotPassword from "../../screens/forgot-password.screen";
 import TemporaryRegister from "../../screens/temporary-register.screen";
 import MainCategories from "../../screens/main-categories.screen";
+import EmailSender from "../../screens/email-sender.screen";
 
 export const navigationRef = React.createRef();
 
@@ -138,7 +139,7 @@ const MainNavigator = () => {
         />
         <MainStackNavigator.Screen
           name="Registration Form"
-          component={TemporaryRegister}
+          component={RegistrationScreen}
         />
         <MainStackNavigator.Screen
           name="Menu"
@@ -160,6 +161,7 @@ const MainNavigator = () => {
           component={ForgotPassword}
         />
         <MainStackNavigator.Screen name="Map" component={MapScreen} />
+        <MainStackNavigator.Screen name="EmailSender" component={EmailSender} />
       </MainStackNavigator.Navigator>
     </NavigationContainer>
   );

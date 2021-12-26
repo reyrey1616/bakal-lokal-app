@@ -67,41 +67,18 @@ function* signInAsync({ payload, callback }) {
 function* signUpAsync({ payload, callback }) {
   try {
     const request = yield axios.post("/customers", payload);
-    const response = yield request;
+    const response = yield request.data;
 
-    if (response?.data?.success === true) {
+    if (response?.success === true) {
       yield put(registerSuccess(response.data));
-
-      const id = response?.data?.otherResp[0];
-      const emailData = {
-        service_id: "service_i2md4po",
-        template_id: "template_bhh55j8",
-        user_id: "user_BgbYodHJVW1sBGMlZrluD",
-        template_params: {
-          to_name: `${payload?.fname} ${payload?.lname}`,
-          from_name: "Bakal Lokal",
-          email: payload?.email,
-          verification_link: `<a href = "https:/	/bakal-lokal.com/customer-verification/${id}">Confirm Your Email</a>`,
-        },
-      };
-
-      console.log(emailData);
-
-      // yield fetch(
-      // 	"https://api.emailjs.com/api/v1.0/email/send",
-      // 	emailData
-      // )
-      // 	.then((response) => {
-      // 		console.log(response);
-      // 		callback(response.data);
-      // 	})
-      // 	.catch((error) => {
-      // 		console.log(error);
-      // 		Alert.alert(
-      // 			"Bakal Lokal",
-      // 			"Verification email have failed to send. Please contact customer support of Bakal Lokal!"
-      // 		);
-      // 	});
+      const id = response?.otherResp[0];
+      console.log(response);
+      if (id) {
+        const redirectTo = `https://bakal-lokal.com/send-customer-verification/${payload?.fname}/${payload?.lname}/${payload?.email}/${id}`;
+        callback(redirectTo);
+      } else {
+        throw Error;
+      }
     } else {
       throw Error;
     }
@@ -265,7 +242,6 @@ function* addOrderAsync({ payload, callback }) {
     // 	merchants,
     // 	orderDetailsContent,
     // });
-
 
     yield put(addOrderSuccess(orderRes));
     callback();

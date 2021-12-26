@@ -2,7 +2,7 @@
   "expo": {
     "name": "Bakal Lokal",
     "slug": "bakal-lokal-app",
-    "version": "6.0.0",
+    "version": "7.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -35,7 +35,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.yobb16.bakallokalapp",
-      "versionCode": 6,
+      "versionCode": 7,
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
