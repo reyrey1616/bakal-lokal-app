@@ -3,41 +3,41 @@ import { createSelector } from "reselect";
 const productsSelector = (state) => state.products;
 
 export const selectLoading = createSelector(
-	[productsSelector],
-	(prod) => prod.loading
+  [productsSelector],
+  (prod) => prod.loading
 );
 
 export const selectSaleProducts = createSelector(
-	[productsSelector],
-	(prod) => prod.saleProducts
+  [productsSelector],
+  (prod) => prod.saleProducts
 );
 
 export const selectPublicProducts = createSelector(
-	[productsSelector],
-	(prod) => {
-		return shuffle(prod.products);
-	}
+  [productsSelector],
+  (prod) => {
+    return shuffle(prod.products);
+  }
 );
 
 export const selectPublicSaleProducts = createSelector(
-	[productsSelector],
-	(prod) => {
-		return shuffle(prod.onSaleProducts);
-	}
+  [productsSelector],
+  (prod) => {
+    return shuffle(prod.onSaleProducts);
+  }
 );
 
 export const selectNewArrivalProducts = createSelector(
-	[productsSelector],
-	(prod) => {
-		return prod.newArrivalProducts;
-	}
+  [productsSelector],
+  (prod) => {
+    return prod.newArrivalProducts;
+  }
 );
 
 function shuffle(array) {
-	let i = array && array.length;
-	while (i--) {
-		const ri = Math.floor(Math.random() * (i + 1));
-		[array[i], array[ri]] = [array[ri], array[i]];
-	}
-	return array;
+  let i = array && array.length;
+  while (i--) {
+    const ri = Math.floor(Math.random() * (i + 1));
+    [array[i], array[ri]] = [array[ri], array[i]];
+  }
+  return array;
 }

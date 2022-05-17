@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, View } from "react-native";
+import { Alert } from "react-native";
 import { SafeArea } from "../components/utils/safe-area.component";
 import Carousel from "../components/carousel/carousel.component";
 import { StackHeader } from "../components/utils/stack-header.component";

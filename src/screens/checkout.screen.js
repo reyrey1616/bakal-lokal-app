@@ -28,6 +28,7 @@ import {
   updateCustomerInfoStart,
 } from "../services/auth/auth.actions";
 import axios from "axios";
+import receiptItemsOrderedGenerator from "../utils/itemOrderReceiptGenerator";
 
 const updateCouponUsage = async (coupon) => {
   if (!coupon) return;
@@ -216,13 +217,11 @@ const CheckoutScreen = ({ route }) => {
         lng: deliveryDetails?.lng,
         email: user?.email,
         contactNumber: user?.contactNumber,
-        fullName: user?.fname + " " + user?.mname + " " + user?.lname,
+        fullName: user?.fname + " " + user?.lname,
 
-        // orderDetailsContent: receiptItemsOrderedGenerator(
-        // 	updatedCartItem
-        // ).tabledProducts,
-        // merchants: receiptItemsOrderedGenerator(updatedCartItem)
-        // 	.merchants,
+        orderDetailsContent:
+          receiptItemsOrderedGenerator(updatedCartItem).tabledProducts,
+        merchants: receiptItemsOrderedGenerator(updatedCartItem).merchants,
       };
 
       dispatch(

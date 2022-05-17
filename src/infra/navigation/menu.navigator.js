@@ -117,6 +117,7 @@ const SampleScreen = () => (
 
 const DrawerMenuNavigator = () => {
   const navigation = useNavigation();
+  const currentUser = useSelector(selectCurrentUser);
 
   return (
     <Drawer.Navigator
@@ -133,7 +134,6 @@ const DrawerMenuNavigator = () => {
         tabBar
         options={{
           title: "Home",
-
           drawerIcon: ({ size }) => (
             <View style={{ width: 27, marginRight: -15 }}>
               <FontAwesome
@@ -147,57 +147,63 @@ const DrawerMenuNavigator = () => {
         name="Home"
         component={BottomNavigator}
       />
-      <Drawer.Screen
-        style={{ background: "red" }}
-        options={{
-          title: "Account settings",
-          drawerIcon: ({ size }) => (
-            <View style={{ width: 27, marginRight: -15 }}>
-              <FontAwesome
-                name="user"
-                size={size}
-                color={theme.colors.brand.orange}
-              />
-            </View>
-          ),
-        }}
-        name="Account settings"
-        component={UserAccountScreen}
-      />
+      {currentUser && (
+        <Drawer.Screen
+          style={{ background: "red" }}
+          options={{
+            drawerItemStyle: { height: 0, background: "red" },
+            title: "Account settings",
+            drawerIcon: ({ size }) => (
+              <View style={{ width: 27, marginRight: -15 }}>
+                <FontAwesome
+                  name="user"
+                  size={size}
+                  color={theme.colors.brand.orange}
+                />
+              </View>
+            ),
+          }}
+          name="Account settings"
+          component={UserAccountScreen}
+        />
+      )}
+      {currentUser && (
+        <Drawer.Screen
+          options={{
+            title: "Orders",
+            drawerIcon: ({ size }) => (
+              <View style={{ width: 27, marginRight: -15 }}>
+                <FontAwesome5
+                  name="shopping-bag"
+                  size={size}
+                  color={theme.colors.brand.orange}
+                />
+              </View>
+            ),
+          }}
+          name="Orders"
+          component={CustomerOrdersScreen}
+        />
+      )}
 
-      <Drawer.Screen
-        options={{
-          title: "Orders",
-          drawerIcon: ({ size }) => (
-            <View style={{ width: 27, marginRight: -15 }}>
-              <FontAwesome5
-                name="shopping-bag"
-                size={size}
-                color={theme.colors.brand.orange}
-              />
-            </View>
-          ),
-        }}
-        name="Orders"
-        component={CustomerOrdersScreen}
-      />
-
-      <Drawer.Screen
-        options={{
-          title: "Billing adress",
-          drawerIcon: ({ size }) => (
-            <View style={{ width: 27, marginRight: -15 }}>
-              <FontAwesome
-                name="credit-card-alt"
-                size={18}
-                color={theme.colors.brand.orange}
-              />
-            </View>
-          ),
-        }}
-        name="Billing"
-        component={BillingAddressScreen}
-      />
+      {currentUser && (
+        <Drawer.Screen
+          options={{
+            title: "Billing adress",
+            drawerIcon: ({ size }) => (
+              <View style={{ width: 27, marginRight: -15 }}>
+                <FontAwesome
+                  name="credit-card-alt"
+                  size={18}
+                  color={theme.colors.brand.orange}
+                />
+              </View>
+            ),
+          }}
+          name="Billing"
+          component={BillingAddressScreen}
+        />
+      )}
 
       {/* <Drawer.Screen
 				style={{

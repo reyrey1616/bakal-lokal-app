@@ -66,22 +66,54 @@ function* signInAsync({ payload, callback }) {
 
 function* signUpAsync({ payload, callback }) {
   try {
+    const { fname, lname, email } = payload;
     const request = yield axios.post("/customers", payload);
     const response = yield request.data;
-
-    if (response?.success === true) {
-      yield put(registerSuccess(response.data));
-      const id = response?.otherResp[0];
-      console.log(response);
+    if (response.success === true) {
+      const id = response.otherResp[0];
       if (id) {
-        const redirectTo = `https://bakal-lokal.com/send-customer-verification/${payload?.fname}/${payload?.lname}/${payload?.email}/${id}`;
-        callback(redirectTo);
+        const emailData = {
+          service_id: "service_m22plwp",
+          template_id: "template_bhh55j8",
+          user_id: "user_BgbYodHJVW1sBGMlZrluD",
+          template_params: {
+            to_name: `${fname} ${lname}`,
+            from_name: "Bakal Lokal",
+            email: email,
+            verification_link: `<a href = "https://bakal-lokal.com/customer-verification/${id}">Confirm Your Email</a>`,
+          },
+        };
+
+        yield fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(emailData),
+        })
+          .then((response) => {
+            console.log(response);
+            Alert.alert(
+              "Bakal Lokal",
+              "Registration successfull, We've sent you a mail to verify your account."
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+            Alert.alert(
+              "Bakal Lokal",
+              "Verification email failed to send. Please contact customer support(support@bakallokal.com) for assistance for verifying your account."
+            );
+          });
       } else {
         throw Error;
       }
     } else {
       throw Error;
     }
+    yield registerSuccess(response?.data);
+    callback();
   } catch (error) {
     if (error.response && error.response.data.error) {
       const errorResponse = error.response.data.error;
@@ -184,12 +216,12 @@ function* addOrderAsync({ payload, callback }) {
       billing_baranggay,
       lat,
       lng,
-      // email,
-      // fullName,
+      email,
+      fullName,
       deliveryOption,
       contactNumber,
-      // merchants,
-      // orderDetailsContent,
+      merchants,
+      orderDetailsContent,
       pickupDate,
       pickupTime,
     } = payload;
@@ -215,33 +247,60 @@ function* addOrderAsync({ payload, callback }) {
       lat,
       lng,
       contactNumber,
-
-      // merchants,
-      // orderDetailsContent,
+      merchants,
+      orderDetailsContent,
       logistic: "Lihog",
       orderDate: new Date(Date.now()),
     });
 
     const orderRes = yield orderReq.data.data;
 
-    // newOrderEmail({
-    // 	to_name: fullName,
-    // 	email: `${email}, bakallokal@gmail.com`,
-    // 	orderNo: `BL-${orderRes.orderNumber}`,
-    // 	amount: grandTotal,
-    // 	orderDateTime: Date.now(),
-    // 	deliveryOption,
-    // 	subTotal,
-    // 	discount,
-    // 	deliveryFee,
-    // 	transactionFee,
-    // 	grandTotal,
-    // 	contactNumber,
-    // 	fullAddress: billing_fullAddress,
-    // 	paymentMethod,
-    // 	merchants,
-    // 	orderDetailsContent,
-    // });
+    const emailData = {
+      service_id: "service_m22plwp",
+      template_id: "template_aylpu6a",
+      user_id: "user_BgbYodHJVW1sBGMlZrluD",
+      template_params: {
+        to_name: fullName,
+        email: `${email}, bakallokal@gmail.com`,
+        orderNo: `BL-${orderRes.orderNumber}`,
+        amount: grandTotal,
+        orderDateTime: Date.now(),
+        deliveryOption,
+        subTotal,
+        discount,
+        deliveryFee,
+        transactionFee,
+        grandTotal,
+        contactNumber,
+        fullAddress: billing_fullAddress,
+        paymentMethod,
+        merchants,
+        orderDetailsContent,
+      },
+    };
+
+    yield fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(emailData),
+    })
+      .then((response) => {
+        console.log(response);
+        Alert.alert(
+          "Bakal Lokal",
+          "Order placed. We sent a receipt to your email"
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+        Alert.alert(
+          "Bakal Lokal",
+          "Sending of receipt e-mail failed to send. Please contact customer support(support@bakallokal.com) for assistance."
+        );
+      });
 
     yield put(addOrderSuccess(orderRes));
     callback();

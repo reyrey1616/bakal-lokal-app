@@ -18,7 +18,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   ScrollView,
-  Linking,
+  TouchableOpacity,
 } from "react-native";
 import ButtonTypes from "../components/utils/buttons.component";
 import { Spacer } from "../components/spacer/spacer.component";
@@ -28,30 +28,31 @@ import CustomDatePicker from "../components/utils/date-picker.component";
 import { useDispatch, connect } from "react-redux";
 import { registerStart } from "../services/auth/auth.actions";
 import moment from "moment";
-import { AntDesign } from "@expo/vector-icons";
-import axios from "axios";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 
 const RegistrationScreen = ({ navigation, register }) => {
   const dispatch = useDispatch();
-  const [form, setForm] = useState({
-    fname: "Rey",
-    lname: "Guidoriagao",
-    contactNumber: "09182254329",
-    email: "jeannieguidoriagao12@gmail.com",
-    password: "1111111111",
-    bdate: moment(new Date(Date.now())).format("YYYY-MM-DD"),
-    gender: "Male",
-  });
+  const [hidePassword, setHidePassword] = useState(true);
+  const [loading, setLoading] = useState(false);
+  // const [form, setForm] = useState({
+  //   fname: "Rey",
+  //   lname: "Guidoriagao",
+  //   contactNumber: "09182254329",
+  //   email: "jeannieguidoriagao12@gmail.com",
+  //   password: "1111111111",
+  //   bdate: moment(new Date(Date.now())).format("YYYY-MM-DD"),
+  //   gender: "Male",
+  // });
 
-  //   const [form, setForm] = useState({
-  //     fname: "",
-  //     lname: "",
-  //     contactNumber: "",
-  //     email: "",
-  //     password: "",
-  //     bdate: moment(new Date(Date.now())).format("YYYY-MM-DD"),
-  //     gender: "",
-  //   });
+  const [form, setForm] = useState({
+    fname: "",
+    lname: "",
+    contactNumber: "",
+    email: "",
+    password: "",
+    bdate: moment(new Date(Date.now())).format("YYYY-MM-DD"),
+    gender: "",
+  });
 
   const onSubmit = (data) => {
     if (data?.fname === "") {
@@ -69,17 +70,12 @@ const RegistrationScreen = ({ navigation, register }) => {
     } else if (data?.password === "") {
       Alert.alert("Bakal Lokal", "Please input password!");
     } else {
+      setLoading(true);
+      Alert.alert("wow");
       dispatch(
-        register(data, (redirectTo) => {
-          Alert.alert(
-            "Bakal Lokal",
-            "Registration successfull, We've sent you a mail to verify your account."
-          );
-          console.log(redirectTo);
-          navigation.navigate("EmailSender", {
-            redirectTo,
-          });
-          //   Linking.openURL(redirectTo);
+        register(data, () => {
+          setLoading(false);
+          navigation.navigate("Login");
         })
       );
     }
@@ -311,9 +307,9 @@ const RegistrationScreen = ({ navigation, register }) => {
                   Password
                 </Label>
 
-                <Item regular>
+                <Item regular icon="fa-envelope">
                   <Input
-                    secureTextEntry={true}
+                    secureTextEntry={hidePassword}
                     onChangeText={(text) => {
                       setForm({
                         ...form,
@@ -322,6 +318,25 @@ const RegistrationScreen = ({ navigation, register }) => {
                     }}
                     value={form?.password}
                   />
+                  {hidePassword ? (
+                    <TouchableOpacity
+                      style={{ marginRight: 10 }}
+                      onPress={() => {
+                        setHidePassword(false);
+                      }}
+                    >
+                      <AntDesign name="eye" size={18} color="black" />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      style={{ marginRight: 10 }}
+                      onPress={() => {
+                        setHidePassword(true);
+                      }}
+                    >
+                      <Entypo name="eye-with-line" size={18} color="black" />
+                    </TouchableOpacity>
+                  )}
                 </Item>
               </View>
               <View
@@ -345,6 +360,7 @@ const RegistrationScreen = ({ navigation, register }) => {
           >
             <Spacer position="bottom" size="large" />
             <ButtonTypes.PrimaryButton
+              disabled={loading}
               style={{
                 width: "100%",
               }}

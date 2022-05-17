@@ -27,7 +27,6 @@ const getFeaturedProducts = async () => {
     const products = await axios.get(`/products?isFeatured=true`);
     const response = await products?.data;
 
-    console.log(products?.data);
     if (response?.success) {
       console.log(response.data);
       return response?.data;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View, Text, TouchableOpacity } from "react-native";
+import { Image, View, Text, TouchableOpacity, Alert } from "react-native";
 import { Card, CardItem } from "native-base";
 import styled from "styled-components/native";
 import { theme } from "../../infra/theme";
@@ -7,6 +7,9 @@ import { Spacer } from "../spacer/spacer.component";
 import currencyFormat from "../../utils/currencyFormat";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCartStart } from "../../services/auth/auth.actions";
+import { selectCurrentUser } from "../../services/auth/auth.selectors";
 const CardContainer = styled(Card)`
   border-radius: 12;
   overflow: hidden;
@@ -36,6 +39,8 @@ const dateCompareIfOnSale = (date1, date2) => {
 export const ProductCard = ({ product }) => {
   const navigation = useNavigation();
   const route = useRoute();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
 
   return (
     <TouchableOpacity
@@ -73,7 +78,7 @@ export const ProductCard = ({ product }) => {
             <View>
               <Text
                 style={{
-                  fontSize: theme?.fontSizes.button,
+                  fontSize: 13,
                   fontWeight: "bold",
                   color: "#555",
                 }}
@@ -154,7 +159,7 @@ export const ProductCard = ({ product }) => {
           >
             <Text
               style={{
-                fontSize: theme?.fontSizes.caption,
+                fontSize: 12,
                 color: theme.colors.brand.grey,
               }}
             >
@@ -169,6 +174,30 @@ export const ProductCard = ({ product }) => {
                 right: 10,
                 bottom: 10,
               }}
+              onPress={() => {
+                if (!currentUser) {
+                  navigation.navigate("Login");
+                  Alert.alert(
+                    "Bakal Lokal",
+                    "Please login first to add items to bayong."
+                  );
+                } else {
+                  dispatch(
+                    updateCartStart({
+                      payload: {
+                        product: product?._id,
+                        variant: null,
+                        variantDetails: null,
+                        quantity: 1,
+                        actionType: "ADD",
+                      },
+                      callback: () => {
+                        Alert.alert("Bakal Lokal", "Added to Bayong");
+                      },
+                    })
+                  );
+                }
+              }}
             >
               {/* <FontAwesome
 								name="plus"
@@ -178,7 +207,7 @@ export const ProductCard = ({ product }) => {
 
               <Image
                 source={require("../../assets/design/cart-icon.png")}
-                style={{ width: 20, height: 20 }}
+                style={{ width: 25, height: 25 }}
               />
             </TouchableOpacity>
           )}

@@ -39,14 +39,10 @@ import setAuthToken from "../utils/setAuthToken";
 const LoginScreen = ({ currentUser, isAuthenticated }) => {
   const dispatch = useDispatch();
   // const [form, setForm] = useState({
-  // 	email: "guidoriagaorey16@gmail.com",
-  // 	password: "12345678",
+  //   email: "guidoriagaorey16@gmail.com",
+  //   password: "12345678",
   // });
   const navigation = useNavigation();
-  // const [form, setForm] = useState({
-  // 	email: "guidoriagaorey16@gmail.com",
-  // 	password: "12345678",
-  // });
 
   const [form, setForm] = useState({
     email: "",
