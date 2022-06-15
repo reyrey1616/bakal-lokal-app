@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+// import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Item } from "native-base";
 
 const CustomDatePicker = ({ onSelectDate, value, mode, title, icon }) => {
