@@ -1,5 +1,7 @@
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { BackHandler } from "react-native";
+
 import { ThemeProvider } from "styled-components/native";
 // import { StyleProvider } from "native-base";
 // import getTheme from "./native-base-theme/components";
@@ -13,7 +15,6 @@ import {
   useFonts as useMontserrat,
   Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
-
 import { theme } from "./src/infra/theme/";
 import { SafeArea } from "./src/components/utils/safe-area.component";
 // import MenuNavigator from "./src/infra/navigation/menu.navigator";
@@ -25,7 +26,7 @@ import { init } from "emailjs-com";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 
-import { AppRegistry } from "react-native";
+import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 
 // axios.defaults.baseURL = "http://localhost:5000/api/v1/";
 axios.defaults.baseURL = "https://bakal-lokal.xyz/api/v1/";
@@ -42,6 +43,15 @@ function App() {
     };
 
     loadFont();
+
+    (async () => {
+      const { status } = await requestTrackingPermissionsAsync();
+      if (status === "granted") {
+        console.log("Permission to track data is Granted");
+      } else if (status === "denied") {
+        BackHandler.exitApp();
+      }
+    })();
   }, []);
 
   const [cabinLoaded] = useCabin({

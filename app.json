@@ -11,7 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": ["@react-native-mapbox-gl/maps", "expo-location"],
+    "plugins": ["expo-tracking-transparency"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -21,7 +21,8 @@
       "infoPlist": {
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to access your location",
         "NSLocationAlwaysUsageDescription": "Allow $(PRODUCT_NAME) to access your location",
-        "NSLocationWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to access your location"
+        "NSLocationWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to access your location",
+        "NSUserTrackingUsageDescription": "Bakal Lokal App requires permission to track your data such as basic information and location for your future orders and delivery."
       },
       "bundleIdentifier": "com.yobb16.bakallokalapp"
     },
