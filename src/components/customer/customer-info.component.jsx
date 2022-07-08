@@ -76,7 +76,6 @@ export const CustomerInfo = ({ currentUser }) => {
       Alert.alert("Bakal Lokal", "Please select birthday!");
     }
 
-    console.log(form);
     dispatch(
       updateCustomerInfoStart({
         payload: form,
@@ -214,7 +213,7 @@ export const CustomerInfo = ({ currentUser }) => {
                   justifyContent: "space-around",
                 }}
               >
-                <View style={{ padding: 10, width: "50%" }}>
+                {/* <View style={{ padding: 10, width: "50%" }}>
                   <Label
                     style={{
                       padding: 5,
@@ -225,7 +224,6 @@ export const CustomerInfo = ({ currentUser }) => {
                   </Label>
                   <CustomDatePicker
                     onSelectDate={(date) => {
-                      console.log(date);
                       setForm({
                         ...form,
                         bdate: moment(date).format("YYYY-MM-DD"),
@@ -242,7 +240,7 @@ export const CustomerInfo = ({ currentUser }) => {
                       />
                     }
                   />
-                </View>
+                </View> */}
                 <View style={{ padding: 10, width: "50%" }}>
                   <Label
                     style={{
